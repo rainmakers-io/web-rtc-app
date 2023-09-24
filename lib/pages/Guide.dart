@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:web_rtc_app/controller/CounterCtl.dart';
 
 class PageGuide extends StatelessWidget {
-  var counterCtl = Get.put(CounterCtl());
-
   PageGuide({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Scaffold(
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                const Image(image: AssetImage('assets/images/google.png')),
                 const Text(
-                  'You have pushed the button this many times:',
+                  'TITLE',
                 ),
-                Text(
-                  '${counterCtl.counter}',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                const Text(
+                  'SUB_TITLe',
                 ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    onPressed: () {
+                      Get.toNamed('/');
+                    },
+                    child: const Text('시작하기'))
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: counterCtl.increment,
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
-        ));
+        );
   }
 }

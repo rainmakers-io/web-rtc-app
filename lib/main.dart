@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+import 'package:web_rtc_app/utils/localStorage.dart';
 
 void displaySplashScreen(cb) {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -34,9 +35,7 @@ void main() {
   });
 }
 
-// 시작하기 페이지
-// 기타 선택창 (local에 저장하기)
-// app & web 지원
+// 사용자 정보 받기
 // 권한 받는 기능
 // 딥링크
 
@@ -47,6 +46,7 @@ class RootApp extends StatelessWidget {
     String route = '';
 
     bool enableForceUpdate = false;
+    // bool enableGuide = LocalStorage().storage.getBool('enableGuide') ?? false;
     bool enableGuide = true;
 
     // ignore: dead_code
