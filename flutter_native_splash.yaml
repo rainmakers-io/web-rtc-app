@@ -3,8 +3,8 @@ flutter_native_splash:
   color_dark: "#32de84"
   # The image parameter allows you to specify an image used in the splash screen.  It must be a
   # png file and should be sized for 4x pixel density.
-  image: assets/images/logos/google.png
-  image_dark: assets/images/logos/google.png
+  image: assets/images/google.png
+  image_dark: assets/images/google.png
 
   fullscreen: true
 
@@ -26,5 +26,5 @@ flutter_native_splash:
     #image: assets/android12splash.png
     color: "#32de84"
     color_dark: "#32de84"
-    image: assets/images/logos/google.png
-    image_dark: assets/images/logos/google.png
+    image: assets/images/google.png
+    image_dark: assets/images/google.png
