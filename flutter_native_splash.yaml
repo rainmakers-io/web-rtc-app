@@ -1,0 +1,30 @@
+flutter_native_splash:
+  color: "#32de84"
+  color_dark: "#32de84"
+  # The image parameter allows you to specify an image used in the splash screen.  It must be a
+  # png file and should be sized for 4x pixel density.
+  image: assets/images/logos/google.png
+  image_dark: assets/images/logos/google.png
+
+  fullscreen: true
+
+  android: true
+  ios: true
+  web: false
+
+  # Android 12 handles the splash screen differently than previous versions.  Please visit
+  # https://developer.android.com/guide/topics/ui/splash-screen
+  # Following are Android 12 specific parameter.
+  android_12:
+    # The image parameter sets the splash screen icon image.  If this parameter is not specified,
+    # the app's launcher icon will be used instead.
+    # Please note that the splash screen will be clipped to a circle on the center of the screen.
+    # App icon with an icon background: This should be 960×960 pixels, and fit within a circle
+    # 640 pixels in diameter.
+    # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
+    # 768 pixels in diameter.
+    #image: assets/android12splash.png
+    color: "#32de84"
+    color_dark: "#32de84"
+    image: assets/images/logos/google.png
+    image_dark: assets/images/logos/google.png

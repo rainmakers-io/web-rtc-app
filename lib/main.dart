@@ -1,55 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:web_rtc_app/controller/CounterCtl.dart';
+import 'package:web_rtc_app/pages/Guide.dart';
+import 'package:web_rtc_app/pages/Home.dart';
+import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+
+void displaySplashScreen(cb) {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  cb();
+  Future.delayed(const Duration(seconds: 1), () {
+    try {
+      FlutterNativeSplash.remove();
+    } catch (error) {
+      // 웹 에서는 splash screen을 껐으므로 관련 에러 발생시 아무것도 하지 않는다...
+      // HACK: 콘솔 창에서 에러는 계속 나고있음 왜?
+    }
+  });
+}
 
 void main() {
-  runApp(const MyApp());
+  displaySplashScreen(() {
+    // 세로 화면 고정
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    // app bar 스타일 설정
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light));
+    runApp(const RootApp());
+  });
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// 시작하기 페이지
+// 기타 선택창 (local에 저장하기)
+// app & web 지원
+// 권한 받는 기능
+// 딥링크
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: MyHomePage(),
-    );
+class RootApp extends StatelessWidget {
+  const RootApp({super.key});
+
+  String buildInitialRoute() {
+    String route = '';
+
+    bool enableForceUpdate = false;
+    bool enableGuide = true;
+
+    // ignore: dead_code
+    if (enableForceUpdate) {
+      // TODO: 강제 업데이트 되도록 유도한다.
+    } else if (enableGuide) {
+      route = '/guide';
+    }
+
+    return route;
   }
-}
-
-class MyHomePage extends StatelessWidget {
-
-  var counterCtl = Get.put(CounterCtl());
-
-  MyHomePage({super.key}); 
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '${counterCtl.counter}',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: counterCtl.increment,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    ));
+    return GetMaterialApp(
+      getPages: [
+        GetPage(name: '/', page: () => PageHome()),
+        GetPage(name: '/guide', page: () => PageGuide()),
+        GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
+      ],
+      initialRoute: buildInitialRoute(),
+    );
   }
 }
