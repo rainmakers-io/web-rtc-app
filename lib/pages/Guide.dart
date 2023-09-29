@@ -24,7 +24,7 @@ class PageGuide extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onPressed: () {
-                      Get.toNamed('/');
+                      Get.toNamed('/select-my-info');
                     },
                     child: const Text('시작하기'))
               ],

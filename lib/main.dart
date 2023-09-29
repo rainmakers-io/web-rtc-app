@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
@@ -36,6 +37,7 @@ void main() {
 }
 
 // 사용자 정보 받기
+// 바텀 네비게이션 구현
 // 권한 받는 기능
 // 딥링크
 
@@ -43,17 +45,20 @@ class RootApp extends StatelessWidget {
   const RootApp({super.key});
 
   String buildInitialRoute() {
-    String route = '';
+    String route = '/';
 
     bool enableForceUpdate = false;
     // bool enableGuide = LocalStorage().storage.getBool('enableGuide') ?? false;
     bool enableGuide = true;
+    bool enableSelectMyInfo = true;
 
     // ignore: dead_code
     if (enableForceUpdate) {
       // TODO: 강제 업데이트 되도록 유도한다.
     } else if (enableGuide) {
       route = '/guide';
+    } else if (enableSelectMyInfo) {
+      route = '/select-my-info';
     }
 
     return route;
@@ -67,6 +72,9 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
       ],
+      initialBinding: BindingsBuilder(() {
+        selectMyInfoCtl = Get.put<SelectMyInfoCtl>(SelectMyInfoCtl());
+      }),
       initialRoute: buildInitialRoute(),
     );
   }
