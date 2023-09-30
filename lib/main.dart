@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
+import 'package:web_rtc_app/pages/VideoChat.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
@@ -15,7 +16,7 @@ void displaySplashScreen(cb) {
   Future.delayed(const Duration(seconds: 1), () {
     try {
       FlutterNativeSplash.remove();
-    } catch (error) {
+    } on PlatformException catch (error) {
       // 웹 에서는 splash screen을 껐으므로 관련 에러 발생시 아무것도 하지 않는다...
       // HACK: 콘솔 창에서 에러는 계속 나고있음 왜?
     }
@@ -45,7 +46,7 @@ class RootApp extends StatelessWidget {
   const RootApp({super.key});
 
   String buildInitialRoute() {
-    String route = '/';
+    String route = '/video-chat';
 
     bool enableForceUpdate = false;
     // bool enableGuide = LocalStorage().storage.getBool('enableGuide') ?? false;
@@ -71,6 +72,7 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/', page: () => PageHome()),
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
+        GetPage(name: '/video-chat', page: () => PageVideoChat()),
       ],
       initialBinding: BindingsBuilder(() {
         selectMyInfoCtl = Get.put<SelectMyInfoCtl>(SelectMyInfoCtl());
