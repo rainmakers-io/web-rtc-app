@@ -6,16 +6,16 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:web_rtc_app/widgets/dialog/Default.dart';
 
-class ImageSelection {
-  static final ImageSelection _instance = ImageSelection._();
+class UtilImageSelection {
+  static final UtilImageSelection _instance = UtilImageSelection._();
   late ImagePicker _imagePicker;
 
   // constructor for private
-  ImageSelection._() {
+  UtilImageSelection._() {
     init();
   }
 
-  factory ImageSelection() {
+  factory UtilImageSelection() {
     return _instance;
   }
 

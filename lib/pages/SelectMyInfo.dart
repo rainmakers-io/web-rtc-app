@@ -4,7 +4,7 @@ import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:web_rtc_app/utils/ImageSelection.dart';
 
-class Sex extends GetView<SelectMyInfoCtl> {
+class Sex extends GetView<CtlSelectMyInfo> {
   const Sex({super.key});
 
   @override
@@ -29,7 +29,7 @@ class Sex extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class BirthDay extends GetView<SelectMyInfoCtl> {
+class BirthDay extends GetView<CtlSelectMyInfo> {
   const BirthDay({super.key});
 
   @override
@@ -49,7 +49,7 @@ class BirthDay extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class Location extends GetView<SelectMyInfoCtl> {
+class Location extends GetView<CtlSelectMyInfo> {
   const Location({super.key});
 
   @override
@@ -75,7 +75,7 @@ class Location extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class Interests extends GetView<SelectMyInfoCtl> {
+class Interests extends GetView<CtlSelectMyInfo> {
   Interests({super.key});
 
   var interests = ['게임', '캠핑', '헬스장', '노래방'];
@@ -121,7 +121,7 @@ class Interests extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class Purpose extends GetView<SelectMyInfoCtl> {
+class Purpose extends GetView<CtlSelectMyInfo> {
   Purpose({super.key});
 
   var purposes = ['진지한 연애', '커피 한잔', '캐쥬얼한 친구', '술 한잔'];
@@ -152,7 +152,7 @@ class Purpose extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class Nickname extends GetView<SelectMyInfoCtl> {
+class Nickname extends GetView<CtlSelectMyInfo> {
   Nickname({super.key});
 
   final _formKey = GlobalKey<FormState>();
@@ -189,7 +189,7 @@ class Nickname extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class Photo extends GetView<SelectMyInfoCtl> {
+class Photo extends GetView<CtlSelectMyInfo> {
   const Photo({super.key});
 
   @override
@@ -209,9 +209,9 @@ class Photo extends GetView<SelectMyInfoCtl> {
               Image.network(controller.profileImageUrl.value),
               FilledButton(
                   onPressed: () async {
-                    var file = await ImageSelection().getImage();
+                    var file = await UtilImageSelection().getImage();
                     if (file == null) return;
-                    var fileString = ImageSelection().toBase64(file);
+                    var fileString = UtilImageSelection().toBase64(file);
                     controller.isLoading.value = true;
                     // TODO: fileString을 서버로 업로드한다.
                     // 업로드 후에 가져온 link 값을 Image로 보여준다.
@@ -230,7 +230,7 @@ class Photo extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class Welcome extends GetView<SelectMyInfoCtl> {
+class Welcome extends GetView<CtlSelectMyInfo> {
   const Welcome({super.key});
 
   @override
@@ -248,7 +248,7 @@ class Welcome extends GetView<SelectMyInfoCtl> {
   }
 }
 
-class PageSelectMyInfo extends GetView<SelectMyInfoCtl> {
+class PageSelectMyInfo extends GetView<CtlSelectMyInfo> {
   const PageSelectMyInfo({super.key});
 
   @override

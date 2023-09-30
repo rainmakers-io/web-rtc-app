@@ -1,15 +1,15 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalStorage {
-  static final LocalStorage _instance = LocalStorage._();
+class UtilLocalStorage {
+  static final UtilLocalStorage _instance = UtilLocalStorage._();
   late SharedPreferences _storage;
 
   // constructor for private
-  LocalStorage._() {
+  UtilLocalStorage._() {
     init();
   }
 
-  factory LocalStorage() {
+  factory UtilLocalStorage() {
     return _instance;
   }
 

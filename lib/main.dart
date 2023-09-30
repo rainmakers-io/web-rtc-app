@@ -49,7 +49,7 @@ class RootApp extends StatelessWidget {
     String route = '/video-chat';
 
     bool enableForceUpdate = false;
-    // bool enableGuide = LocalStorage().storage.getBool('enableGuide') ?? false;
+    // bool enableGuide = UtilLocalStorage().storage.getBool('enableGuide') ?? false;
     bool enableGuide = true;
     bool enableSelectMyInfo = true;
 
@@ -75,7 +75,7 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/video-chat', page: () => PageVideoChat()),
       ],
       initialBinding: BindingsBuilder(() {
-        selectMyInfoCtl = Get.put<SelectMyInfoCtl>(SelectMyInfoCtl());
+        selectMyInfoCtl = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
       }),
       initialRoute: buildInitialRoute(),
     );

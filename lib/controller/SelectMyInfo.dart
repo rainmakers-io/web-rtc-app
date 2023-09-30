@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 
-late SelectMyInfoCtl selectMyInfoCtl;
+late CtlSelectMyInfo selectMyInfoCtl;
 
-class SelectMyInfoCtl extends GetxController {
+class CtlSelectMyInfo extends GetxController {
   RxInt _step = 0.obs;
   var _birthDay = DateTime.now().obs;
   var sex = 'M'.obs; // F or M;
