@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
-import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:web_rtc_app/utils/ImageSelection.dart';
 
 class Sex extends GetView<CtlSelectMyInfo> {
@@ -38,12 +38,19 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
         child: Column(children: [
       SizedBox(
           height: 250,
-          child: ScrollDatePicker(
-              selectedDate: controller.birthDay.value,
-              locale: const Locale('ko'),
-              onDateTimeChanged: (DateTime value) {
-                controller.birthDay.value = value;
-              })),
+          child: DatePickerWidget(
+            lastDate: DateTime.now(),
+            dateFormat: 'yyyy/MM/dd',
+            locale: DatePicker.localeFromString('ko'),
+            onChange: (DateTime dateTime, _) {
+              controller.birthDay.value = dateTime;
+            },
+            pickerTheme: const DateTimePickerTheme(
+              backgroundColor: Colors.transparent,
+              itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
+              dividerColor: Colors.transparent,
+            ),
+          )),
       FilledButton(onPressed: controller.next, child: const Text('다음'))
     ]));
   }
@@ -241,7 +248,7 @@ class Welcome extends GetView<CtlSelectMyInfo> {
         const Text('환영합니다.'),
         FilledButton(
             // TODO: 서버 전송이 완료되면 활성화되도록 수정
-            onPressed: () => Get.offAllNamed('/video-chat'),
+            onPressed: () => Get.offAllNamed('/matching-room'),
             child: const Text('다음'))
       ],
     ));
@@ -254,6 +261,6 @@ class PageSelectMyInfo extends GetView<CtlSelectMyInfo> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-        body: Column(children: [controller.steps[controller.step.value]])));
+        body: SafeArea(child: controller.steps[controller.step.value])));
   }
 }
