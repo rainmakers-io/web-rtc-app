@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 
-late CtlSelectMyInfo selectMyInfoCtl;
+late CtlSelectMyInfo ctlSelectMyInfo;
 
 class CtlSelectMyInfo extends GetxController {
   RxInt _step = 0.obs;
   var _birthDay = DateTime.now().obs;
-  var sex = 'M'.obs; // F or M;
+  var _sex = 'M'.obs; // F or M;
   var _location = ''.obs;
   var _myInterests = [].obs;
   var _purpose = ''.obs;
@@ -33,8 +33,11 @@ class CtlSelectMyInfo extends GetxController {
     return _step;
   }
 
+  get sex {
+    return _sex;
+  }
+
   get steps {
-    print(_steps);
     return _steps;
   }
 
@@ -78,7 +81,7 @@ class CtlSelectMyInfo extends GetxController {
 
   void next() {
     // 환영하기 화면 일경우 받은 모든 정보를 서버에 전달한다.
-    if (_step.value == _steps.length - 1) {
+    if (_step.value == _steps.length - 2) {
       createNewUser();
     }
     _step++;
