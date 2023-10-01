@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
-import 'package:web_rtc_app/pages/VideoChat.dart';
+import 'package:web_rtc_app/controller/MatchingRoom.dart';
+import 'package:web_rtc_app/pages/MatchingRoom.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
@@ -46,7 +47,7 @@ class RootApp extends StatelessWidget {
   const RootApp({super.key});
 
   String buildInitialRoute() {
-    String route = '/video-chat';
+    String route = '/matching-room';
 
     bool enableForceUpdate = false;
     // bool enableGuide = UtilLocalStorage().storage.getBool('enableGuide') ?? false;
@@ -72,10 +73,11 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/', page: () => PageHome()),
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
-        GetPage(name: '/video-chat', page: () => PageVideoChat()),
+        GetPage(name: '/matching-room', page: () => PageMatchingRoom()),
       ],
       initialBinding: BindingsBuilder(() {
-        selectMyInfoCtl = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
+        ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
+        ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
       }),
       initialRoute: buildInitialRoute(),
     );
