@@ -9,19 +9,24 @@ class PageMatchingRoom extends GetView<CtlMatchingRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Obx(() => SafeArea(
         child: Scaffold(
             body: VisibilityDetector(
                 key: const Key('page-matching-room'),
                 onVisibilityChanged: controller.onVisible,
                 child: Stack(
                   children: [
+                    FilledButton(
+                        onPressed: controller.ableMatching.value
+                            ? controller.startMatching
+                            : null,
+                        child: const Text('매칭 시작!')),
                     Column(
                       children: [
                         Expanded(child: RTCVideoView(controller.localRenderer))
                       ],
                     )
                   ],
-                ))));
+                )))));
   }
 }

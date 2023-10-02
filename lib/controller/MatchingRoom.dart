@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -8,18 +10,17 @@ import 'package:permission_handler/permission_handler.dart';
 late CtlMatchingRoom ctlMatchingRoom;
 
 class CtlMatchingRoom extends SuperController {
-  final MatchingSignaling _signaling = MatchingSignaling();
-  RTCVideoRenderer localRenderer = RTCVideoRenderer();
+  MatchingSignaling? _signaling;
+  final RTCVideoRenderer localRenderer = RTCVideoRenderer();
+  var inCalling = false.obs;
+  var ableMatching = false.obs;
 
-  void initRenderer() {
-    localRenderer.initialize();
+  void initRenderer() async {
+    await localRenderer.initialize();
   }
 
-  void connectSignaling() {
-    _signaling?.onLocalStream = ((stream) {
-      localRenderer.srcObject = stream;
-      update();
-    });
+  startMatching() {
+    if (!ableMatching.value) return;
   }
 
   Future<bool> isGrantedAllPermissions() async {
@@ -40,9 +41,14 @@ class CtlMatchingRoom extends SuperController {
       Wakelock.enable();
     }
     if (await isGrantedAllPermissions()) {
-      connectSignaling();
       initRenderer();
-      await _signaling.connect();
+      _signaling ??= MatchingSignaling()..connect();
+      _signaling?.init();
+      _signaling?.onLocalStream = ((stream) {
+        localRenderer.srcObject = stream;
+        ableMatching.value = true;
+      });
+      inCalling.value = true;
     }
   }
 
@@ -65,8 +71,22 @@ class CtlMatchingRoom extends SuperController {
     if (GetPlatform.isMobile) {
       Wakelock.disable();
     }
-    _signaling.dispose();
-    localRenderer.dispose();
+    if (inCalling.value) {
+      off();
+    }
+  }
+
+  void off() async {
+    try {
+      if (inCalling.value) {
+        _signaling?.dispose();
+        inCalling.value = false;
+      }
+      localRenderer.dispose();
+      localRenderer.srcObject = null;
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -88,7 +108,7 @@ class CtlMatchingRoom extends SuperController {
   void onResumed() async {
     print("resume");
   }
-  
+
   @override
   void onHidden() {
     print("hidden");
