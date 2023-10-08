@@ -1,18 +1,25 @@
 import 'package:get/get.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+import 'package:web_rtc_app/utils/LocalStorage.dart';
 
 late CtlSelectMyInfo ctlSelectMyInfo;
 
 class CtlSelectMyInfo extends GetxController {
-  RxInt _step = 0.obs;
-  var _birthDay = DateTime.now().obs;
-  var _sex = 'M'.obs; // F or M;
-  var _location = ''.obs;
-  var _myInterests = [].obs;
-  var _purpose = ''.obs;
-  var _nickname = ''.obs;
-  var _isLoading = false.obs;
-  var _profileImageUrl = ''.obs;
+  final RxInt _step = 0.obs;
+  final Rx<DateTime> _birthDay = DateTime.now().obs;
+  final Rx<String> _sex = ''.obs; // F or M;
+  final Rx<String> _location = ''.obs;
+  final RxList _myInterests = [].obs;
+  final Rx<String> _purpose = ''.obs;
+  final Rx<String> _nickname = ''.obs;
+  final RxBool _isLoading = false.obs;
+  final Rx<String> _profileImageUrl = ''.obs;
+
+  constructor() {
+    // TODO:
+    // storage에 저장된 정보를 받는다.
+    // next를 변경한다.
+  }
 
   final _steps = [
     const Sex(),
@@ -80,10 +87,24 @@ class CtlSelectMyInfo extends GetxController {
   }
 
   void next() {
-    // 환영하기 화면 일경우 받은 모든 정보를 서버에 전달한다.
+    localStorage.setString('user.sex', _sex.value);
+    localStorage.setString('user.birthDay', _birthDay.value.toString());
+    localStorage.setString('user.location', _location.value);
+    List<String> interests = [];
+    for (String interest in _myInterests) {
+      interests.add(interest);
+    }
+    localStorage.setStringList('user.myInterests', interests);
+    localStorage.setString('user.purpose', _purpose.value);
+    localStorage.setString('user.nickname', _nickname.value);
+    localStorage.setString('user.profileImageUrl', _profileImageUrl.value);
+    localStorage.setBool('enableSelectMyInfo', false);
+    localStorage.setBool('enableGuide', false);
+
+    // 환영하기 화면일 경우 받은 모든 정보를 서버에 전달한다.
     if (_step.value == _steps.length - 2) {
       createNewUser();
     }
-    _step++;
+    _step.value++;
   }
 }

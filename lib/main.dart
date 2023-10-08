@@ -8,7 +8,7 @@ import 'package:web_rtc_app/pages/MatchingRoom.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
-import 'package:web_rtc_app/utils/localStorage.dart';
+import 'package:web_rtc_app/utils/LocalStorage.dart';
 
 void displaySplashScreen(cb) {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -34,27 +34,22 @@ void main() {
         systemNavigationBarColor: Colors.transparent,
         statusBarBrightness: Brightness.dark,
         statusBarIconBrightness: Brightness.light));
-    runApp(const RootApp());
+    runApp(RootApp());
   });
 }
 
-// 사용자 정보 받기
 // 바텀 네비게이션 구현
-// 권한 받는 기능
 // 딥링크
-
 class RootApp extends StatelessWidget {
-  const RootApp({super.key});
 
   String buildInitialRoute() {
     String route = '/matching-room';
 
     bool enableForceUpdate = false;
-    // bool enableGuide = UtilLocalStorage().storage.getBool('enableGuide') ?? false;
-    bool enableGuide = true;
-    bool enableSelectMyInfo = true;
+    String version = '0.0.1';
+    bool enableGuide = localStorage.storage.getBool('enableGuide') ?? true;
+    bool enableSelectMyInfo = localStorage.storage.getBool('enableSelectMyInfo') ?? true;
 
-    // ignore: dead_code
     if (enableForceUpdate) {
       // TODO: 강제 업데이트 되도록 유도한다.
     } else if (enableGuide) {
@@ -66,20 +61,29 @@ class RootApp extends StatelessWidget {
     return route;
   }
 
+  Future<String> init() async {
+    localStorage.init();
+    return 'complete';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      getPages: [
-        GetPage(name: '/', page: () => PageHome()),
-        GetPage(name: '/guide', page: () => PageGuide()),
-        GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
-        GetPage(name: '/matching-room', page: () => PageMatchingRoom()),
-      ],
-      initialBinding: BindingsBuilder(() {
-        ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
-        ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
-      }),
-      initialRoute: buildInitialRoute(),
-    );
+    return FutureBuilder<String>(
+        future: init(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) =>
+            GetMaterialApp(
+              getPages: [
+                GetPage(name: '/', page: () => PageHome()),
+                GetPage(name: '/guide', page: () => PageGuide()),
+                GetPage(
+                    name: '/select-my-info', page: () => PageSelectMyInfo()),
+                GetPage(name: '/matching-room', page: () => PageMatchingRoom()),
+              ],
+              initialBinding: BindingsBuilder(() {
+                ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
+                ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
+              }),
+              initialRoute: buildInitialRoute(),
+            ));
   }
 }
