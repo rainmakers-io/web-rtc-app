@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:web_rtc_app/controller/CounterCtl.dart';
+import 'package:web_rtc_app/controller/HomeCtl.dart';
+import 'package:web_rtc_app/pages/MatchingRoom.dart';
+import 'package:web_rtc_app/pages/MyInfo.dart';
 
-class PageHome extends StatelessWidget {
-  var counterCtl = Get.put(CounterCtl());
-
-  PageHome({super.key});
+class PageHome extends GetView<CtlHome> {
+  const PageHome({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '${counterCtl.counter}',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
-            ),
+          bottomNavigationBar: NavigationBar(
+            onDestinationSelected: (int index) {
+              controller.currentPageIndex.value = index;
+            },
+            selectedIndex: controller.currentPageIndex.value,
+            destinations: const <Widget>[
+              NavigationDestination(icon: Icon(Icons.home), label: ''),
+              NavigationDestination(icon: Icon(Icons.abc_sharp), label: '')
+            ],
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: counterCtl.increment,
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
+          body: [
+            PageMatchingRoom(),
+            PageMyInfo()
+          ][controller.currentPageIndex.value],
         ));
   }
 }

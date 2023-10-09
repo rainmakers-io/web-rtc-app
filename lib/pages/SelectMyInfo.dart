@@ -248,7 +248,7 @@ class Welcome extends GetView<CtlSelectMyInfo> {
         const Text('환영합니다.'),
         FilledButton(
             // TODO: 서버 전송이 완료되면 활성화되도록 수정
-            onPressed: () => Get.offAllNamed('/matching-room'),
+            onPressed: () => Get.offAllNamed('/'),
             child: const Text('다음'))
       ],
     ));

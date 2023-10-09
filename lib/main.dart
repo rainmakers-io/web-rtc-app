@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:web_rtc_app/controller/HomeCtl.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/controller/MatchingRoom.dart';
-import 'package:web_rtc_app/pages/MatchingRoom.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
@@ -41,14 +41,14 @@ void main() {
 // 바텀 네비게이션 구현
 // 딥링크
 class RootApp extends StatelessWidget {
-
   String buildInitialRoute() {
-    String route = '/matching-room';
+    String route = '/';
 
     bool enableForceUpdate = false;
     String version = '0.0.1';
     bool enableGuide = localStorage.storage.getBool('enableGuide') ?? true;
-    bool enableSelectMyInfo = localStorage.storage.getBool('enableSelectMyInfo') ?? true;
+    bool enableSelectMyInfo =
+        localStorage.storage.getBool('enableSelectMyInfo') ?? true;
 
     if (enableForceUpdate) {
       // TODO: 강제 업데이트 되도록 유도한다.
@@ -77,11 +77,11 @@ class RootApp extends StatelessWidget {
                 GetPage(name: '/guide', page: () => PageGuide()),
                 GetPage(
                     name: '/select-my-info', page: () => PageSelectMyInfo()),
-                GetPage(name: '/matching-room', page: () => PageMatchingRoom()),
               ],
               initialBinding: BindingsBuilder(() {
                 ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
                 ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
+                ctlHome = Get.put<CtlHome>(CtlHome());
               }),
               initialRoute: buildInitialRoute(),
             ));
