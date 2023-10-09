@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:web_rtc_app/controller/HomeCtl.dart';
+import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/controller/MatchingRoom.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
