@@ -15,12 +15,6 @@ class CtlSelectMyInfo extends GetxController {
   final RxBool _isLoading = false.obs;
   final Rx<String> _profileImageUrl = ''.obs;
 
-  constructor() {
-    // TODO:
-    // storage에 저장된 정보를 받는다.
-    // next를 변경한다.
-  }
-
   final _steps = [
     const Sex(),
     const BirthDay(),
@@ -87,24 +81,29 @@ class CtlSelectMyInfo extends GetxController {
   }
 
   void next() {
-    localStorage.setString('user.sex', _sex.value);
-    localStorage.setString('user.birthDay', _birthDay.value.toString());
-    localStorage.setString('user.location', _location.value);
-    List<String> interests = [];
-    for (String interest in _myInterests) {
-      interests.add(interest);
-    }
-    localStorage.setStringList('user.myInterests', interests);
-    localStorage.setString('user.purpose', _purpose.value);
-    localStorage.setString('user.nickname', _nickname.value);
-    localStorage.setString('user.profileImageUrl', _profileImageUrl.value);
-    localStorage.setBool('enableSelectMyInfo', false);
-    localStorage.setBool('enableGuide', false);
-
-    // 환영하기 화면일 경우 받은 모든 정보를 서버에 전달한다.
-    if (_step.value == _steps.length - 2) {
+    if (_step.value == 0) {
+      localStorage.setString('user.sex', _sex.value);
+    } else if (_step.value == 1) {
+      localStorage.setString('user.birthDay', _birthDay.value.toString());
+    } else if (_step.value == 2) {
+      localStorage.setString('user.location', _location.value);
+    } else if (_step.value == 3) {
+      List<String> interests = [];
+      for (String interest in _myInterests) {
+        interests.add(interest);
+      }
+      localStorage.setStringList('user.myInterests', interests);
+    } else if (_step.value == 4) {
+      localStorage.setString('user.purpose', _purpose.value);
+    } else if (_step.value == 5) {
+      localStorage.setString('user.nickname', _nickname.value);
+    } else if (_step.value == 6) {
+      localStorage.setString('user.profileImageUrl', _profileImageUrl.value);
+      localStorage.setBool('enableSelectMyInfo', false);
+      localStorage.setBool('enableGuide', false);
       createNewUser();
     }
+
     _step.value++;
   }
 }
