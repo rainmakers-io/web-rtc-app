@@ -54,9 +54,10 @@ class Guide3 extends StatelessWidget {
         child: Column(children: [
           const Text('Guide3.'),
           FilledButton(
-              onPressed: () => scrollController.animateTo(0 - 100,
-                  curve: Curves.linear,
-                  duration: const Duration(microseconds: 1000)),
+              onPressed: () {
+                localStorage.setBool('enableGuide', false);
+                Get.to(const PageSelectMyInfo());
+              },
               child: const Text('다음'))
         ]));
   }
