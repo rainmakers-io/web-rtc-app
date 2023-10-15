@@ -13,13 +13,25 @@ import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 
-void displaySplashScreen(cb) async {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // 스플레쉬 스크린 표시
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await localStorage.init();
   await config.init();
   apiProvider.init();
-  cb();
+  // 세로 화면 고정
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // app bar 스타일 설정
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light));
+  runApp(RootApp());
+
+  // 스플레쉬 스크린 종료
   Future.delayed(const Duration(seconds: 1), () {
     try {
       FlutterNativeSplash.remove();
@@ -27,20 +39,6 @@ void displaySplashScreen(cb) async {
       // 웹 에서는 splash screen을 껐으므로 관련 에러 발생시 아무것도 하지 않는다...
       // HACK: 콘솔 창에서 에러는 계속 나고있음 왜?
     }
-  });
-}
-
-void main() {
-  displaySplashScreen(() {
-    // 세로 화면 고정
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    // app bar 스타일 설정
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.light));
-    runApp(RootApp());
   });
 }
 
