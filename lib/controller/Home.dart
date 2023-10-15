@@ -6,6 +6,6 @@ class CtlHome extends GetxController {
   final RxInt _currentPageIndex = 0.obs;
 
   get currentPageIndex {
-    return _currentPageIndex.value;
+    return _currentPageIndex;
   }
 }
