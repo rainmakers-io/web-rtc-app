@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+import 'package:web_rtc_app/utils/Fonts.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
+import 'package:web_rtc_app/utils/Colors.dart';
 
 class Guide1 extends StatelessWidget {
   const Guide1({super.key});
@@ -78,7 +80,12 @@ class PageGuide extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: const Text('HAZE'),
+        backgroundColor: const Color(ColorContent.content1),
+        title: const Image(
+          image: AssetImage('images/haze_header_logo.png'),
+          width: 54,
+          height: 15,
+        ),
         actions: [
           TextButton(
               style: TextButton.styleFrom(
@@ -88,7 +95,12 @@ class PageGuide extends StatelessWidget {
                 localStorage.setBool('enableGuide', false);
                 Get.to(const PageSelectMyInfo());
               },
-              child: const Text('건너뛰기'))
+              child: const Text('건너뛰기',
+                  style: TextStyle(
+                    color: Color(ColorGrayScale.h8c),
+                    fontSize: FontBodySemibold01.size,
+                    fontWeight: FontBodySemibold01.weight,
+                  )))
         ],
       ),
       body: ListView.builder(

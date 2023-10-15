@@ -70,6 +70,7 @@ class RootApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeData(fontFamily: 'PretendardVariable'),
       getPages: [
         GetPage(name: '/', page: () => const PageHome()),
         GetPage(name: '/guide', page: () => const PageGuide()),
