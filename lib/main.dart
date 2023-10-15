@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/controller/MatchingRoom.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
+import 'package:web_rtc_app/pages/Health.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 
 void displaySplashScreen(cb) {
@@ -62,7 +65,9 @@ class RootApp extends StatelessWidget {
   }
 
   Future<String> init() async {
-    localStorage.init();
+    await localStorage.init();
+    await config.init();
+    apiProvider.init();
     return 'complete';
   }
 
@@ -70,20 +75,24 @@ class RootApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
         future: init(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) =>
-            GetMaterialApp(
-              getPages: [
-                GetPage(name: '/', page: () => PageHome()),
-                GetPage(name: '/guide', page: () => PageGuide()),
-                GetPage(
-                    name: '/select-my-info', page: () => PageSelectMyInfo()),
-              ],
-              initialBinding: BindingsBuilder(() {
-                ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
-                ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
-                ctlHome = Get.put<CtlHome>(CtlHome());
-              }),
-              initialRoute: buildInitialRoute(),
-            ));
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.hasData == false) {
+            return const Center(child: SizedBox(height: 30, width: 30, child: CircularProgressIndicator()));
+          }
+          return GetMaterialApp(
+            getPages: [
+              GetPage(name: '/', page: () => const PageHome()),
+              GetPage(name: '/guide', page: () => const PageGuide()),
+              GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
+              GetPage(name: '/health', page: () => const PageHealth())
+            ],
+            initialBinding: BindingsBuilder(() {
+              ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
+              ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
+              ctlHome = Get.put<CtlHome>(CtlHome());
+            }),
+            initialRoute: buildInitialRoute(),
+          );
+        });
   }
 }
