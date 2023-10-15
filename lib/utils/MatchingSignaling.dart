@@ -33,8 +33,6 @@ class MatchingSignaling {
             'minHeight': '480',
             'minFrameRate': '30',
           },
-          'facingMode': 'user',
-          'optional': [],
         }
       });
 
