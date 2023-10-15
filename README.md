@@ -1,5 +1,5 @@
 # 시작하기
-1. flutter run
+1. flutter run --dart-define="env=.env.stag"
 
 # 개발 가이드
 1. 모바일(ios, ans), 웹을 지원하도록 개발한다.
