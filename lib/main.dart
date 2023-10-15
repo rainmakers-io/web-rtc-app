@@ -13,9 +13,12 @@ import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 
-void displaySplashScreen(cb) {
+void displaySplashScreen(cb) async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await localStorage.init();
+  await config.init();
+  apiProvider.init();
   cb();
   Future.delayed(const Duration(seconds: 1), () {
     try {
@@ -64,35 +67,21 @@ class RootApp extends StatelessWidget {
     return route;
   }
 
-  Future<String> init() async {
-    await localStorage.init();
-    await config.init();
-    apiProvider.init();
-    return 'complete';
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: init(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData == false) {
-            return const Center(child: SizedBox(height: 30, width: 30, child: CircularProgressIndicator()));
-          }
-          return GetMaterialApp(
-            getPages: [
-              GetPage(name: '/', page: () => const PageHome()),
-              GetPage(name: '/guide', page: () => const PageGuide()),
-              GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
-              GetPage(name: '/health', page: () => const PageHealth())
-            ],
-            initialBinding: BindingsBuilder(() {
-              ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
-              ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
-              ctlHome = Get.put<CtlHome>(CtlHome());
-            }),
-            initialRoute: buildInitialRoute(),
-          );
-        });
+    return GetMaterialApp(
+      getPages: [
+        GetPage(name: '/', page: () => const PageHome()),
+        GetPage(name: '/guide', page: () => const PageGuide()),
+        GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
+        GetPage(name: '/health', page: () => const PageHealth())
+      ],
+      initialBinding: BindingsBuilder(() {
+        ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
+        ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
+        ctlHome = Get.put<CtlHome>(CtlHome());
+      }),
+      initialRoute: buildInitialRoute(),
+    );
   }
 }
