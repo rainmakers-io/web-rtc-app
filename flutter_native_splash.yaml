@@ -3,14 +3,14 @@ flutter_native_splash:
   color_dark: "#18181B"
   # The image parameter allows you to specify an image used in the splash screen.  It must be a
   # png file and should be sized for 4x pixel density.
-  image: assets/images/haze_logo.png
-  image_dark: assets/images/haze_logo.png
-  # background_image: assets/images/haze_logo_background.png
+  image: assets/images/haze-logo.png
+  image_dark: assets/images/haze-logo.png
+  background_image: assets/images/haze-splash-background.png
   fullscreen: true
 
   android: true
   ios: true
-  web: false
+  web: true
 
   # Android 12 handles the splash screen differently than previous versions.  Please visit
   # https://developer.android.com/guide/topics/ui/splash-screen
@@ -26,5 +26,5 @@ flutter_native_splash:
     #image: assets/android12splash.png
     color: "#18181B"
     color_dark: "#18181B"
-    image: assets/images/haze_logo_12.png
-    image_dark: assets/images/haze_logo_12.png
+    image: assets/images/haze-logo12.png
+    image_dark: assets/images/haze-logo12.png
