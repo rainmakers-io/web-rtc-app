@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
+import 'package:web_rtc_app/controller/Guide.dart';
 import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/controller/MatchingRoom.dart';
@@ -71,7 +72,7 @@ class RootApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'PretendardVariable'),
       getPages: [
         GetPage(name: '/', page: () => const PageHome()),
-        GetPage(name: '/guide', page: () => const PageGuide()),
+        GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
         GetPage(name: '/health', page: () => const PageHealth())
       ],
@@ -79,6 +80,7 @@ class RootApp extends StatelessWidget {
         ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
         ctlMatchingRoom = Get.put<CtlMatchingRoom>(CtlMatchingRoom());
         ctlHome = Get.put<CtlHome>(CtlHome());
+        ctlGuide = Get.put<CtlGuide>(CtlGuide());
       }),
       initialRoute: buildInitialRoute(),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:web_rtc_app/controller/Guide.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/Fonts.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
@@ -10,79 +12,166 @@ class Guide1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Column(children: [
-          const Text('Guide1.'),
-          FilledButton(
-              onPressed: () => scrollController.animateTo(
-                  MediaQuery.of(context).size.width - 100,
-                  curve: Curves.linear,
-                  duration: const Duration(microseconds: 1000)),
-              child: const Text('다음'))
-        ]));
+    return SingleChildScrollView(
+        child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height,
+              minWidth: MediaQuery.of(context).size.width,
+            ),
+            child: DecoratedBox(
+                decoration: const BoxDecoration(
+                  color: Color(ColorContent.content1),
+                ),
+                child: Column(children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 39),
+                    child: const Image(
+                      image: AssetImage('images/guide01.png'),
+                      width: 330,
+                      height: 426,
+                    ),
+                  ),
+                  const Text('불안한 화상채팅 이제그만.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(ColorGrayScale.d9),
+                          fontSize: FontTitleBold01.size,
+                          fontWeight: FontTitleBold01.weight)),
+                  Container(
+                      margin: const EdgeInsets.only(top: 12, bottom: 36),
+                      child: const Text(
+                        '블라인드로 안전하게\n이야기부터 해봐요',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: FontDisplay03.size,
+                            fontWeight: FontDisplay03.weight),
+                      )),
+                ]))));
   }
 }
 
-class Guide2 extends StatelessWidget {
+class Guide2 extends GetView<CtlGuide> {
   const Guide2({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Column(children: [
-          const Text('Guide2.'),
-          FilledButton(
-              onPressed: () => scrollController.animateTo(
-                  MediaQuery.of(context).size.width * 2 - 100,
-                  curve: Curves.linear,
-                  duration: const Duration(microseconds: 1000)),
-              child: const Text('다음'))
-        ]));
+    return VisibilityDetector(
+        key: const Key('page-guide-guide03'),
+        onVisibilityChanged: (info) {
+          controller.buttonText.value = '다음';
+        },
+        child: SingleChildScrollView(
+            child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height,
+                  minWidth: MediaQuery.of(context).size.width,
+                ),
+                child: DecoratedBox(
+                    decoration: const BoxDecoration(
+                      color: Color(ColorContent.content1),
+                    ),
+                    child: Column(children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 39),
+                        child: const Image(
+                          image: AssetImage('images/guide02.png'),
+                          width: 330,
+                          height: 426,
+                        ),
+                      ),
+                      const Text('불안한 화상채팅 이제그만.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(ColorGrayScale.d9),
+                              fontSize: FontTitleBold01.size,
+                              fontWeight: FontTitleBold01.weight)),
+                      Container(
+                          margin: const EdgeInsets.only(top: 12, bottom: 36),
+                          child: const Text(
+                            '서로 동의하에\n얼굴을 공개하세요',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: FontDisplay03.size,
+                                fontWeight: FontDisplay03.weight),
+                          )),
+                    ])))));
   }
 }
 
-class Guide3 extends StatelessWidget {
+class Guide3 extends GetView<CtlGuide> {
   const Guide3({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Column(children: [
-          const Text('Guide3.'),
-          FilledButton(
-              onPressed: () {
-                localStorage.setBool('enableGuide', false);
-                Get.to(const PageSelectMyInfo());
-              },
-              child: const Text('다음'))
-        ]));
+    return VisibilityDetector(
+        key: const Key('page-guide-guide03'),
+        onVisibilityChanged: (info) {
+          controller.buttonText.value = '시작!';
+        },
+        child: SingleChildScrollView(
+            child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height,
+                  minWidth: MediaQuery.of(context).size.width,
+                ),
+                child: DecoratedBox(
+                    decoration: const BoxDecoration(
+                      color: Color(ColorContent.content1),
+                    ),
+                    child: Column(children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 39),
+                        child: const Image(
+                          image: AssetImage('images/guide03.png'),
+                          width: 330,
+                          height: 426,
+                        ),
+                      ),
+                      const Text('서로 꽤 잘 맞는 것 같나요?',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(ColorGrayScale.d9),
+                              fontSize: FontTitleBold01.size,
+                              fontWeight: FontTitleBold01.weight)),
+                      Container(
+                          margin: const EdgeInsets.only(top: 12, bottom: 36),
+                          child: const Text(
+                            '연락처를 교환하고\n직접 만나세요!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: FontDisplay03.size,
+                                fontWeight: FontDisplay03.weight),
+                          )),
+                    ])))));
   }
 }
 
 ScrollController scrollController = ScrollController();
 
-class PageGuide extends StatelessWidget {
-  const PageGuide({super.key});
-
-  final List<Widget> guides = const [
-    Guide1(),
-    Guide2(),
-    Guide3(),
+class PageGuide extends GetView<CtlGuide> {
+  final List<Widget> guides = [
+    const Guide1(),
+    const Guide2(),
+    const Guide3(),
   ];
+
+  PageGuide({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+      backgroundColor: const Color(ColorContent.content1),
       appBar: AppBar(
         backgroundColor: const Color(ColorContent.content1),
+        elevation: 0,
+        bottomOpacity: 0,
+        scrolledUnderElevation: 0,
         title: const Image(
-          image: AssetImage('images/haze_header_logo.png'),
+          image: AssetImage('images/haze-header-logo.png'),
           width: 54,
           height: 15,
         ),
@@ -103,6 +192,49 @@ class PageGuide extends StatelessWidget {
                   )))
         ],
       ),
+      bottomNavigationBar: DecoratedBox(
+          decoration: const BoxDecoration(
+            color: Color(ColorContent.content1),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 32,
+                left: 24,
+                right: 24,
+              ),
+              child: FilledButton(
+                  style: const ButtonStyle(
+                      backgroundColor:
+                          MaterialStatePropertyAll(Color(ColorBase.primary)),
+                      padding: MaterialStatePropertyAll(
+                          EdgeInsets.symmetric(vertical: 20))),
+                  onPressed: () {
+                    int curIndex = (scrollController.offset /
+                            MediaQuery.of(context).size.width)
+                        .round();
+                    if (curIndex == 0) {
+                      scrollController.animateTo(
+                          MediaQuery.of(context).size.width,
+                          curve: Curves.linear,
+                          duration: const Duration(microseconds: 200));
+                    } else if (curIndex == 1) {
+                      scrollController.animateTo(
+                          MediaQuery.of(context).size.width * 2,
+                          curve: Curves.linear,
+                          duration: const Duration(microseconds: 200));
+                    } else if (curIndex == 2) {
+                      localStorage.setBool('enableGuide', false);
+                      Get.to(const PageSelectMyInfo());
+                    }
+                  },
+                  child: Obx(() => Text(
+                        controller.buttonText.value,
+                        style: const TextStyle(
+                            fontSize: FontBodyBold01.size,
+                            fontWeight: FontBodyBold01.weight,
+                            color: Color(ColorGrayScale.fa)),
+                      ))))),
       body: ListView.builder(
         controller: scrollController,
         itemBuilder: (_, index) {
