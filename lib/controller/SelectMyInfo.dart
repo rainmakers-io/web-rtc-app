@@ -80,6 +80,14 @@ class CtlSelectMyInfo extends GetxController {
     // TODO: 입력한 모든 정보를 서버에 기록한다.
   }
 
+  void prev() {
+    if (_step.value == 0) {
+      Get.toNamed('/guide');
+      return;
+    }
+    _step.value--;
+  }
+
   void next() {
     if (_step.value == 0) {
       localStorage.setString('user.sex', _sex.value);

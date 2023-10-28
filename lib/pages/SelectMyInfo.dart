@@ -7,6 +7,7 @@ import 'package:web_rtc_app/utils/Fonts.dart';
 import 'package:web_rtc_app/utils/ImageSelection.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
+import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
 
 class Sex extends GetView<CtlSelectMyInfo> {
   const Sex({super.key});
@@ -31,101 +32,145 @@ class Sex extends GetView<CtlSelectMyInfo> {
                 const SizedBox(
                   height: 24,
                 ),
-                Obx(() => SizedBox(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Obx(() => AtomCardButton(
+                          backgroundColor: controller.sex.value == 'F'
+                              ? const Color(ColorBase.primary).withOpacity(0.33)
+                              : Colors.transparent,
+                          onPressed: () {
+                            controller.sex.value = 'F';
+                          },
+                          child: const Column(
                             children: [
-                          AtomCardButton(
-                              backgroundColor: controller.sex.value == 'F'
-                                  ? const Color(ColorBase.primary)
-                                      .withOpacity(0.33)
-                                  : Colors.transparent,
-                              onPressed: () {
-                                controller.sex.value = 'F';
-                              },
-                              child: const Column(
-                                children: [
-                                  Image(
-                                      height: 36,
-                                      width: 36,
-                                      image: AssetImage(
-                                          'images/woman-red-hair.png')),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    '여성',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: FontBodySemibold01.size,
-                                        fontWeight: FontBodySemibold01.weight),
-                                  ),
-                                ],
-                              )),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          AtomCardButton(
-                              backgroundColor: controller.sex.value == 'M'
-                                  ? const Color(ColorBase.primary)
-                                      .withOpacity(0.33)
-                                  : Colors.transparent,
-                              onPressed: () {
-                                controller.sex.value = 'M';
-                              },
-                              child: const Column(children: [
-                                Image(
-                                    height: 36,
-                                    width: 36,
-                                    image: AssetImage(
-                                        'images/man-blond-hair.png')),
-                                SizedBox(height: 8),
-                                Text(
-                                  '남성',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: FontBodySemibold01.size,
-                                      fontWeight: FontBodySemibold01.weight),
-                                )
-                              ]))
-                        ]))),
+                              Image(
+                                  height: 36,
+                                  width: 36,
+                                  image:
+                                      AssetImage('images/woman-red-hair.png')),
+                              SizedBox(height: 8),
+                              Text(
+                                '여성',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: FontBodySemibold01.size,
+                                    fontWeight: FontBodySemibold01.weight),
+                              ),
+                            ],
+                          ))),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Obx(() => AtomCardButton(
+                          backgroundColor: controller.sex.value == 'M'
+                              ? const Color(ColorBase.primary).withOpacity(0.33)
+                              : Colors.transparent,
+                          onPressed: () {
+                            controller.sex.value = 'M';
+                          },
+                          child: const Column(children: [
+                            Image(
+                                height: 36,
+                                width: 36,
+                                image: AssetImage('images/man-blond-hair.png')),
+                            SizedBox(height: 8),
+                            Text(
+                              '남성',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: FontBodySemibold01.size,
+                                  fontWeight: FontBodySemibold01.weight),
+                            )
+                          ])))
+                    ]),
               ]),
               Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
                     bottom: 32,
                   ),
-                  child:
-                      Obx(() => AtomFillButton(onPressed: controller.next, text: '다음', isDisable: controller.sex.value.isEmpty ))),
+                  child: Obx(() => AtomFillButton(
+                      onPressed: controller.next,
+                      text: '다음',
+                      isDisable: controller.sex.value.isEmpty))),
             ]));
   }
 }
+
+final now = DateTime.now();
+final pivotDate = DateTime(now.year - 1, now.month - 1);
 
 class BirthDay extends GetView<CtlSelectMyInfo> {
   const BirthDay({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(children: [
-      SizedBox(
-          height: 250,
-          child: DatePickerWidget(
-            lastDate: DateTime.now(),
-            dateFormat: 'yyyy/MM/dd',
-            locale: DatePicker.localeFromString('ko'),
-            onChange: (DateTime dateTime, _) {
-              controller.birthDay.value = dateTime;
-            },
-            pickerTheme: const DateTimePickerTheme(
-              backgroundColor: Colors.transparent,
-              itemTextStyle: TextStyle(color: Colors.black, fontSize: 19),
-              dividerColor: Colors.transparent,
-            ),
-          )),
-      FilledButton(onPressed: controller.next, child: const Text('다음'))
-    ]));
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(
+                children: [
+                  SizedBox(
+                      height: 62,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            AtomIconButton(
+                                child: const Image(
+                                    height: 24,
+                                    width: 24,
+                                    image: AssetImage('images/left-arrow.png')),
+                                onPressed: () {
+                                  controller.prev();
+                                })
+                          ])),
+                  const Text('생년월일이 언제신가요?',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: FontTitleBold01.size,
+                          fontWeight: FontTitleBold01.weight)),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  DatePickerWidget(
+                    lastDate: DateTime.now(),
+                    dateFormat: 'yyyy/MM/dd',
+                    locale: DatePicker.localeFromString('ko'),
+                    onChange: (DateTime dateTime, _) {
+                      controller.birthDay.value = dateTime;
+                    },
+                    pickerTheme: const DateTimePickerTheme(
+                      backgroundColor: Colors.transparent,
+                      itemTextStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: FontDisplay03.size,
+                          fontWeight: FontDisplay03.weight),
+                      dividerColor: Colors.transparent,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 32,
+                  ),
+                  child: Obx(() => AtomFillButton(
+                      onPressed: controller.next,
+                      text: '다음',
+                      isDisable:
+                          !controller.birthDay.value.isBefore(pivotDate))))
+            ]));
   }
 }
 
@@ -134,24 +179,90 @@ class Location extends GetView<CtlSelectMyInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(children: [
-      Row(
-        children: [
-          FilledButton(
-              onPressed: () {
-                controller.location.value = '서울';
-              },
-              child: const Text('서울')),
-          FilledButton(
-              onPressed: () {
-                controller.location.value = '경기';
-              },
-              child: const Text('경기'))
-        ],
-      ),
-      FilledButton(onPressed: controller.next, child: const Text('다음'))
-    ]));
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(children: [
+                SizedBox(
+                    height: 62,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          AtomIconButton(
+                              child: const Image(
+                                  height: 24,
+                                  width: 24,
+                                  image: AssetImage('images/left-arrow.png')),
+                              onPressed: () {
+                                controller.prev();
+                              })
+                        ])),
+                const Text('어디 거주중이세요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: FontTitleBold01.size,
+                        fontWeight: FontTitleBold01.weight)),
+                const SizedBox(
+                  height: 24,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Obx(() => AtomCardButton(
+                          backgroundColor: controller.location.value == 'seoul'
+                              ? const Color(ColorBase.primary).withOpacity(0.33)
+                              : Colors.transparent,
+                          onPressed: () {
+                            controller.location.value = 'seoul';
+                          },
+                          child: const Text(
+                            '서울',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: FontBodySemibold01.size,
+                                fontWeight: FontBodySemibold01.weight),
+                          ))),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Obx(() => AtomCardButton(
+                          backgroundColor: controller.location.value ==
+                                  'gyeonggi'
+                              ? const Color(ColorBase.primary).withOpacity(0.33)
+                              : Colors.transparent,
+                          onPressed: () {
+                            controller.location.value = 'gyeonggi';
+                          },
+                          child: const Column(children: [
+                            Text(
+                              '경기',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: FontBodySemibold01.size,
+                                  fontWeight: FontBodySemibold01.weight),
+                            )
+                          ])))
+                    ])
+              ]),
+              Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 32,
+                  ),
+                  child: Obx(() => AtomFillButton(
+                      onPressed: controller.next,
+                      text: '다음',
+                      isDisable: controller.location.value.isEmpty)))
+            ]));
   }
 }
 
