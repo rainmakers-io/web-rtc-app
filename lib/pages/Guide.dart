@@ -6,6 +6,7 @@ import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/Fonts.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/utils/Colors.dart';
+import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 
 class Guide1 extends StatelessWidget {
   const Guide1({super.key});
@@ -182,7 +183,7 @@ class PageGuide extends GetView<CtlGuide> {
               ),
               onPressed: () {
                 localStorage.setBool('enableGuide', false);
-                Get.to(const PageSelectMyInfo());
+                Get.toNamed('select-my-info');
               },
               child: const Text('건너뛰기',
                   style: TextStyle(
@@ -203,38 +204,29 @@ class PageGuide extends GetView<CtlGuide> {
                 left: 24,
                 right: 24,
               ),
-              child: FilledButton(
-                  style: const ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(Color(ColorBase.primary)),
-                      padding: MaterialStatePropertyAll(
-                          EdgeInsets.symmetric(vertical: 20))),
-                  onPressed: () {
-                    int curIndex = (scrollController.offset /
-                            MediaQuery.of(context).size.width)
-                        .round();
-                    if (curIndex == 0) {
-                      scrollController.animateTo(
-                          MediaQuery.of(context).size.width,
-                          curve: Curves.linear,
-                          duration: const Duration(microseconds: 200));
-                    } else if (curIndex == 1) {
-                      scrollController.animateTo(
-                          MediaQuery.of(context).size.width * 2,
-                          curve: Curves.linear,
-                          duration: const Duration(microseconds: 200));
-                    } else if (curIndex == 2) {
-                      localStorage.setBool('enableGuide', false);
-                      Get.to(const PageSelectMyInfo());
-                    }
-                  },
-                  child: Obx(() => Text(
-                        controller.buttonText.value,
-                        style: const TextStyle(
-                            fontSize: FontBodyBold01.size,
-                            fontWeight: FontBodyBold01.weight,
-                            color: Color(ColorGrayScale.fa)),
-                      ))))),
+              child: Obx(() => AtomFillButton(
+                    onPressed: () {
+                      int curIndex = (scrollController.offset /
+                              MediaQuery.of(context).size.width)
+                          .round();
+                      if (curIndex == 0) {
+                        scrollController.animateTo(
+                            MediaQuery.of(context).size.width,
+                            curve: Curves.linear,
+                            duration: const Duration(microseconds: 200));
+                      } else if (curIndex == 1) {
+                        scrollController.animateTo(
+                            MediaQuery.of(context).size.width * 2,
+                            curve: Curves.linear,
+                            duration: const Duration(microseconds: 200));
+                        controller.buttonText.value = '시작!';
+                      } else if (curIndex == 2) {
+                        localStorage.setBool('enableGuide', false);
+                        Get.toNamed('select-my-info');
+                      }
+                    },
+                    text: controller.buttonText.value,
+                  )))),
       body: ListView.builder(
         controller: scrollController,
         itemBuilder: (_, index) {

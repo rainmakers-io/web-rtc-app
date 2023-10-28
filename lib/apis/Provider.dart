@@ -56,7 +56,7 @@ class ApiProvider extends GetConnect {
         } catch (error) {
           // 로그인 페이지로 이동한다.
           // TODO: 로그인 토큰 만료 팝업 띄우기
-          Get.toNamed('/');
+          Get.toNamed('/guide');
         }
       }
       return request;

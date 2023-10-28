@@ -46,8 +46,10 @@ void main() async {
 // 바텀 네비게이션 구현
 // 딥링크
 class RootApp extends StatelessWidget {
-  String buildInitialRoute() {
-    String route = '/';
+  const RootApp({super.key});
+
+  String initialRoute() {
+    String route = '/home';
 
     bool enableForceUpdate = false;
     String version = '0.0.1';
@@ -71,7 +73,7 @@ class RootApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'PretendardVariable'),
       getPages: [
-        GetPage(name: '/', page: () => const PageHome()),
+        GetPage(name: '/home', page: () => const PageHome()),
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
         GetPage(name: '/health', page: () => const PageHealth())
@@ -82,7 +84,7 @@ class RootApp extends StatelessWidget {
         ctlHome = Get.put<CtlHome>(CtlHome());
         ctlGuide = Get.put<CtlGuide>(CtlGuide());
       }),
-      initialRoute: buildInitialRoute(),
+      initialRoute: initialRoute(),
     );
   }
 }

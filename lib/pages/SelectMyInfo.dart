@@ -2,30 +2,103 @@ import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
+import 'package:web_rtc_app/utils/Colors.dart';
+import 'package:web_rtc_app/utils/Fonts.dart';
 import 'package:web_rtc_app/utils/ImageSelection.dart';
+import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
+import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
 
 class Sex extends GetView<CtlSelectMyInfo> {
   const Sex({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(children: [
-      const Text('내 성별을 알려주세요.'),
-      Row(children: [
-        FilledButton(
-            onPressed: () {
-              controller.sex.value = 'M';
-            },
-            child: const Text('남')),
-        FilledButton(
-            onPressed: () {
-              controller.sex.value = 'F';
-            },
-            child: const Text('여'))
-      ]),
-      FilledButton(onPressed: controller.next, child: const Text('다음'))
-    ]));
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(children: [
+                SizedBox(height: 62, width: MediaQuery.of(context).size.width),
+                const Text('성별이 어떻게 되세요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: FontTitleBold01.size,
+                        fontWeight: FontTitleBold01.weight)),
+                const SizedBox(
+                  height: 24,
+                ),
+                Obx(() => SizedBox(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                          AtomCardButton(
+                              backgroundColor: controller.sex.value == 'F'
+                                  ? const Color(ColorBase.primary)
+                                      .withOpacity(0.33)
+                                  : Colors.transparent,
+                              onPressed: () {
+                                controller.sex.value = 'F';
+                              },
+                              child: const Column(
+                                children: [
+                                  Image(
+                                      height: 36,
+                                      width: 36,
+                                      image: AssetImage(
+                                          'images/woman-red-hair.png')),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    '여성',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: FontBodySemibold01.size,
+                                        fontWeight: FontBodySemibold01.weight),
+                                  ),
+                                ],
+                              )),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          AtomCardButton(
+                              backgroundColor: controller.sex.value == 'M'
+                                  ? const Color(ColorBase.primary)
+                                      .withOpacity(0.33)
+                                  : Colors.transparent,
+                              onPressed: () {
+                                controller.sex.value = 'M';
+                              },
+                              child: const Column(children: [
+                                Image(
+                                    height: 36,
+                                    width: 36,
+                                    image: AssetImage(
+                                        'images/man-blond-hair.png')),
+                                SizedBox(height: 8),
+                                Text(
+                                  '남성',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: FontBodySemibold01.size,
+                                      fontWeight: FontBodySemibold01.weight),
+                                )
+                              ]))
+                        ]))),
+              ]),
+              Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 32,
+                  ),
+                  child:
+                      Obx(() => AtomFillButton(onPressed: controller.next, text: '다음', isDisable: controller.sex.value.isEmpty ))),
+            ]));
   }
 }
 
@@ -248,7 +321,7 @@ class Welcome extends GetView<CtlSelectMyInfo> {
         const Text('환영합니다.'),
         FilledButton(
             // TODO: 서버 전송이 완료되면 활성화되도록 수정
-            onPressed: () => Get.offAllNamed('/'),
+            onPressed: () => Get.offAllNamed('/home'),
             child: const Text('다음'))
       ],
     ));
@@ -264,6 +337,14 @@ class PageSelectMyInfo extends GetView<CtlSelectMyInfo> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-        body: SafeArea(child: controller.steps[controller.step.value])));
+        backgroundColor: const Color(ColorContent.content1),
+        body: SafeArea(
+          child: Padding(
+              padding: const EdgeInsets.only(
+                left: 24,
+                right: 24,
+              ),
+              child: controller.steps[controller.step.value]),
+        )));
   }
 }
