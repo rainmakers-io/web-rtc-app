@@ -1,3 +1,4 @@
+# dart run flutter_native_splash:create
 flutter_native_splash:
   color: "#18181B"
   color_dark: "#18181B"
@@ -10,7 +11,7 @@ flutter_native_splash:
 
   android: true
   ios: true
-  web: true
+  web: false
 
   # Android 12 handles the splash screen differently than previous versions.  Please visit
   # https://developer.android.com/guide/topics/ui/splash-screen
