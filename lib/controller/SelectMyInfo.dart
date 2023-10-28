@@ -15,6 +15,22 @@ class CtlSelectMyInfo extends GetxController {
   final RxBool _isLoading = false.obs;
   final Rx<String> _profileImageUrl = ''.obs;
 
+  @override
+  void onReady() {
+    super.onReady();
+    _sex.value = localStorage.storage.getString('user.sex') ?? '';
+    _birthDay.value =
+        DateTime.parse(localStorage.storage.getString('user.birthDay') ?? '');
+    _location.value = localStorage.storage.getString('user.location') ?? '';
+    _myInterests.value =
+        localStorage.storage.getStringList('user.myInterests') ?? [];
+    _purpose.value = localStorage.storage.getString('user.purpose') ?? '';
+    _nickname.value = localStorage.storage.getString('user.nickname') ?? '';
+    _profileImageUrl.value =
+        localStorage.storage.getString('user.profileImageUrl') ?? '';
+    _step.value = currentStep();
+  }
+
   final _steps = [
     const Sex(),
     const BirthDay(),
@@ -66,6 +82,23 @@ class CtlSelectMyInfo extends GetxController {
     return _profileImageUrl;
   }
 
+  // 입력해야될 step으로 이동한다.
+  currentStep() {
+    for (final (index, value) in [
+      _sex.value.isEmpty,
+      _birthDay.value.toString().isEmpty,
+      _location.value.isEmpty,
+      _myInterests.isEmpty,
+      _purpose.value.isEmpty,
+      _nickname.value.isEmpty,
+      _profileImageUrl.value.isEmpty
+    ].indexed) {
+      if (value) return index;
+    }
+
+    return _steps.length - 1;
+  }
+
   addInterest(interest) {
     _myInterests.add(interest);
     update();
@@ -77,6 +110,8 @@ class CtlSelectMyInfo extends GetxController {
   }
 
   createNewUser() {
+    localStorage.setBool('enableSelectMyInfo', false);
+    localStorage.setBool('enableGuide', false);
     // TODO: 입력한 모든 정보를 서버에 기록한다.
   }
 
@@ -107,8 +142,6 @@ class CtlSelectMyInfo extends GetxController {
       localStorage.setString('user.nickname', _nickname.value);
     } else if (_step.value == 6) {
       localStorage.setString('user.profileImageUrl', _profileImageUrl.value);
-      localStorage.setBool('enableSelectMyInfo', false);
-      localStorage.setBool('enableGuide', false);
       createNewUser();
     }
 

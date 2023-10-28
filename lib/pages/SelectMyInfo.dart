@@ -142,22 +142,23 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
                   const SizedBox(
                     height: 24,
                   ),
-                  DatePickerWidget(
-                    lastDate: DateTime.now(),
-                    dateFormat: 'yyyy/MM/dd',
-                    locale: DatePicker.localeFromString('ko'),
-                    onChange: (DateTime dateTime, _) {
-                      controller.birthDay.value = dateTime;
-                    },
-                    pickerTheme: const DateTimePickerTheme(
-                      backgroundColor: Colors.transparent,
-                      itemTextStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: FontDisplay03.size,
-                          fontWeight: FontDisplay03.weight),
-                      dividerColor: Colors.transparent,
-                    ),
-                  ),
+                  Obx(() => DatePickerWidget(
+                        lastDate: DateTime.now(),
+                        initialDate: controller.birthDay.value,
+                        dateFormat: 'yyyy/MM/dd',
+                        locale: DatePicker.localeFromString('ko'),
+                        onChange: (DateTime dateTime, _) {
+                          controller.birthDay.value = dateTime;
+                        },
+                        pickerTheme: const DateTimePickerTheme(
+                          backgroundColor: Colors.transparent,
+                          itemTextStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: FontDisplay03.size,
+                              fontWeight: FontDisplay03.weight),
+                          dividerColor: Colors.transparent,
+                        ),
+                      )),
                 ],
               ),
               Padding(
@@ -251,7 +252,18 @@ class Location extends GetView<CtlSelectMyInfo> {
                                   fontWeight: FontBodySemibold01.weight),
                             )
                           ])))
-                    ])
+                    ]),
+                const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    '다른 지역은 추후\n업데이트 예정입니다.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color(ColorGrayScale.h8c),
+                        fontSize: FontCaptionMedium02.size,
+                        fontWeight: FontCaptionMedium02.weight),
+                  ),
+                )
               ]),
               Padding(
                   padding: const EdgeInsets.only(
@@ -441,9 +453,6 @@ class Welcome extends GetView<CtlSelectMyInfo> {
 
 class PageSelectMyInfo extends GetView<CtlSelectMyInfo> {
   const PageSelectMyInfo({super.key});
-
-  // TODO: 중간에 나갔을 때의 UX처리 구현 이 페이지에 왔을 때 저장되어있는 값이 있다면 그 다음 페이지로 이동한다.
-  // 이전 버튼도 있으면 좋을 듯
 
   @override
   Widget build(BuildContext context) {
