@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/Colors.dart';
@@ -281,9 +282,38 @@ class Location extends GetView<CtlSelectMyInfo> {
 class Interests extends GetView<CtlSelectMyInfo> {
   Interests({super.key});
 
-  var interests = ['게임', '캠핑', '헬스장', '노래방'];
+  final interests = [
+    '게임',
+    '캠핑',
+    '헬스장',
+    '노래방',
+    '여행',
+    '카페',
+    '호캉스',
+    '독서',
+    '사진',
+    '만화',
+    '영화',
+    '에니메이션',
+    'PC방',
+    '치맥',
+    '한강',
+    '와인',
+    '카공',
+    '맛집 탐방',
+    '주식/투자',
+    '음악감상',
+    '드라이브',
+    '자기계발',
+    '요리',
+    '드로잉',
+    '악기연주',
+    '위스키',
+    '와인'
+  ];
+  final interestLimit = 3;
 
-  bool selectedLabel(String label) {
+  bool isSelectedLabel(String label) {
     bool result = false;
     for (var selectedLabel in controller.myInterests.value) {
       if (selectedLabel == label) {
@@ -295,32 +325,87 @@ class Interests extends GetView<CtlSelectMyInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Center(
-            child: Column(children: [
-          Text('요즘 관심사 ${controller.myInterests.length}/3'),
-          Row(
-            children: interests.map<Widget>((label) {
-              return ChoiceChip(
-                label: Text(label),
-                selected: selectedLabel(label),
-                onSelected: (value) {
-                  if (value) {
-                    controller.addInterest(label);
-                  } else {
-                    controller.removeInterest(label);
-                  }
-                },
-              );
-            }).toList(),
-          ),
-          FilledButton(
-              onPressed: () {
-                if (controller.myInterests.length == 3) {
-                  controller.next();
-                }
-              },
-              child: const Text('다음'))
-        ])));
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(children: [
+                SizedBox(
+                    height: 62,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          AtomIconButton(
+                              child: const Image(
+                                  height: 24,
+                                  width: 24,
+                                  image: AssetImage('images/left-arrow.png')),
+                              onPressed: () {
+                                controller.prev();
+                              })
+                        ])),
+                const Text('요즘 관심사는 무엇인가요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: FontTitleBold01.size,
+                        fontWeight: FontTitleBold01.weight)),
+                Obx(() => Container(
+                    margin: const EdgeInsets.only(bottom: 24, top: 8),
+                    child: Text(
+                        '${controller.myInterests.length}/${interestLimit}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: Color(ColorGrayScale.bf),
+                            fontSize: FontBodyBold01.size,
+                            fontWeight: FontBodyBold01.weight)))),
+                Tags(
+                  itemCount: interests.length,
+                  itemBuilder: (int index) {
+                    final itemLabel = interests[index];
+                    return Obx(() => ChoiceChip(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          backgroundColor: const Color(ColorContent.content1),
+                          shape: StadiumBorder(
+                              side: BorderSide(
+                                  color: isSelectedLabel(itemLabel)
+                                      ? const Color(ColorBase.primary)
+                                      : const Color(ColorContent.content3))),
+                          label: Text(itemLabel),
+                          labelStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: FontCaptionSemibold02.size,
+                              fontWeight: FontCaptionSemibold02.weight),
+                          selected: isSelectedLabel(itemLabel),
+                          selectedColor: const Color(0xFF103561),
+                          onSelected: (value) {
+                            if (value &&
+                                controller.myInterests.length < interestLimit) {
+                              controller.addInterest(itemLabel);
+                            } else {
+                              controller.removeInterest(itemLabel);
+                            }
+                          },
+                        ));
+                  },
+                )
+              ]),
+              Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 32,
+                  ),
+                  child: Obx(() => AtomFillButton(
+                      onPressed: controller.next,
+                      text: '다음',
+                      isDisable:
+                          controller.myInterests.length < interestLimit)))
+            ]));
   }
 }
 
