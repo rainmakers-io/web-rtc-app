@@ -38,6 +38,9 @@ class Sex extends GetView<CtlSelectMyInfo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Obx(() => AtomCardButton(
+                          borderColor: controller.sex.value == 'F'
+                              ? const Color(ColorBase.primary)
+                              : const Color(ColorContent.content3),
                           backgroundColor: controller.sex.value == 'F'
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
@@ -66,6 +69,9 @@ class Sex extends GetView<CtlSelectMyInfo> {
                         width: 16,
                       ),
                       Obx(() => AtomCardButton(
+                          borderColor: controller.sex.value == 'M'
+                              ? const Color(ColorBase.primary)
+                              : const Color(ColorContent.content3),
                           backgroundColor: controller.sex.value == 'M'
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
@@ -177,7 +183,9 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
 }
 
 class Location extends GetView<CtlSelectMyInfo> {
-  const Location({super.key});
+  Location({super.key});
+
+  final locations = ['seoul', 'gyeonggi'];
 
   @override
   Widget build(BuildContext context) {
@@ -218,11 +226,15 @@ class Location extends GetView<CtlSelectMyInfo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Obx(() => AtomCardButton(
-                          backgroundColor: controller.location.value == 'seoul'
+                          borderColor: controller.location.value == locations[0]
+                              ? const Color(ColorBase.primary)
+                              : const Color(ColorContent.content3),
+                          backgroundColor: controller.location.value ==
+                                  locations[0]
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
                           onPressed: () {
-                            controller.location.value = 'seoul';
+                            controller.location.value = locations[0];
                           },
                           child: const Text(
                             '서울',
@@ -236,12 +248,15 @@ class Location extends GetView<CtlSelectMyInfo> {
                         width: 16,
                       ),
                       Obx(() => AtomCardButton(
+                          borderColor: controller.location.value == locations[1]
+                              ? const Color(ColorBase.primary)
+                              : const Color(ColorContent.content3),
                           backgroundColor: controller.location.value ==
-                                  'gyeonggi'
+                                  locations[1]
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
                           onPressed: () {
-                            controller.location.value = 'gyeonggi';
+                            controller.location.value = locations[1];
                           },
                           child: const Column(children: [
                             Text(
@@ -412,31 +427,200 @@ class Interests extends GetView<CtlSelectMyInfo> {
 class Purpose extends GetView<CtlSelectMyInfo> {
   Purpose({super.key});
 
-  var purposes = ['진지한 연애', '커피 한잔', '캐쥬얼한 친구', '술 한잔'];
+  final purposes = ['진지한 연애', '새로운 친구', '술 한잔', '캐쥬얼한 친구'];
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(children: [
-      const Text('만남 목적 1개'),
-      Row(
-        children: purposes.map<Widget>((label) {
-          return FilledButton(
-            child: Text(label),
-            onPressed: () {
-              controller.purpose.value = label;
-            },
-          );
-        }).toList(),
-      ),
-      FilledButton(
-          onPressed: () {
-            if (controller.purpose.value.isNotEmpty) {
-              controller.next();
-            }
-          },
-          child: const Text('다음'))
-    ]));
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(children: [
+                SizedBox(
+                    height: 62,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          AtomIconButton(
+                              child: const Image(
+                                  height: 24,
+                                  width: 24,
+                                  image: AssetImage('images/left-arrow.png')),
+                              onPressed: () {
+                                controller.prev();
+                              })
+                        ])),
+                const Text('어떤 관계를 찾고있어요?',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: FontTitleBold01.size,
+                        fontWeight: FontTitleBold01.weight)),
+                const SizedBox(
+                  height: 24,
+                ),
+                Obx(() => Column(
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              AtomCardButton(
+                                  borderColor:
+                                      controller.purpose.value == purposes[0]
+                                          ? const Color(ColorFeature.pink01)
+                                          : const Color(ColorContent.content3),
+                                  backgroundColor:
+                                      controller.purpose.value == purposes[0]
+                                          ? const Color(ColorFeature.pink01)
+                                              .withOpacity(0.33)
+                                          : Colors.transparent,
+                                  onPressed: () {
+                                    controller.purpose.value = purposes[0];
+                                  },
+                                  child: Column(
+                                    children: [
+                                      const Image(
+                                          height: 36,
+                                          width: 36,
+                                          image: AssetImage(
+                                              'images/smiling-face-with-heart-eyes.png')),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        purposes[0],
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: FontBodySemibold01.size,
+                                            fontWeight:
+                                                FontBodySemibold01.weight),
+                                      ),
+                                    ],
+                                  )),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              AtomCardButton(
+                                  borderColor:
+                                      controller.purpose.value == purposes[1]
+                                          ? const Color(ColorFeature.green01)
+                                          : const Color(ColorContent.content3),
+                                  backgroundColor:
+                                      controller.purpose.value == purposes[1]
+                                          ? const Color(ColorFeature.green01)
+                                              .withOpacity(0.33)
+                                          : Colors.transparent,
+                                  onPressed: () {
+                                    controller.purpose.value = purposes[1];
+                                  },
+                                  child: Column(children: [
+                                    const Image(
+                                        height: 36,
+                                        width: 36,
+                                        image: AssetImage(
+                                            'images/waving-hand.png')),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      purposes[1],
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: FontBodySemibold01.size,
+                                          fontWeight:
+                                              FontBodySemibold01.weight),
+                                    )
+                                  ]))
+                            ]),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              AtomCardButton(
+                                  borderColor:
+                                      controller.purpose.value == purposes[2]
+                                          ? const Color(ColorBase.secondary)
+                                          : const Color(ColorContent.content3),
+                                  backgroundColor:
+                                      controller.purpose.value == purposes[2]
+                                          ? const Color(ColorBase.secondary)
+                                              .withOpacity(0.33)
+                                          : Colors.transparent,
+                                  onPressed: () {
+                                    controller.purpose.value = purposes[2];
+                                  },
+                                  child: Column(
+                                    children: [
+                                      const Image(
+                                          height: 36,
+                                          width: 36,
+                                          image: AssetImage(
+                                              'images/wine-glass.png')),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        purposes[2],
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: FontBodySemibold01.size,
+                                            fontWeight:
+                                                FontBodySemibold01.weight),
+                                      ),
+                                    ],
+                                  )),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              AtomCardButton(
+                                  borderColor:
+                                      controller.purpose.value == purposes[3]
+                                          ? const Color(ColorFeature.blue04)
+                                          : const Color(ColorContent.content3),
+                                  backgroundColor:
+                                      controller.purpose.value == purposes[3]
+                                          ? const Color(ColorFeature.blue04)
+                                              .withOpacity(0.33)
+                                          : Colors.transparent,
+                                  onPressed: () {
+                                    controller.purpose.value = purposes[3];
+                                  },
+                                  child: Column(children: [
+                                    const Image(
+                                        height: 36,
+                                        width: 36,
+                                        image: AssetImage(
+                                            'images/hot-beverage.png')),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      purposes[3],
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: FontBodySemibold01.size,
+                                          fontWeight:
+                                              FontBodySemibold01.weight),
+                                    )
+                                  ]))
+                            ]),
+                      ],
+                    ))
+              ]),
+              Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 32,
+                  ),
+                  child: Obx(() => AtomFillButton(
+                      onPressed: controller.next,
+                      text: '다음',
+                      isDisable: controller.sex.value.isEmpty))),
+            ]));
   }
 }
 

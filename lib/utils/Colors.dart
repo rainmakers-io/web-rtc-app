@@ -31,3 +31,23 @@ class ColorGrayScale {
   static const h1f = 0xFF1F1F1F;
   static const h14 = 0xFF141414;
 }
+
+class ColorFeature {
+  static const pink01 = 0xFFFF77B9;
+  static const pink02 = 0xFFEB459F;
+  static const pink03 = 0xFFD11583;
+  static const yellow01 = 0xFFFFF5B3;
+  static const yellow02 = 0xFFFFE75C;
+  static const yellow03 = 0xFFFFC61A;
+
+  static const green01 = 0xFF8BF2B2;
+  static const green02 = 0xFF58D093;
+  static const green03 = 0xFF12B161;
+  static const blue01 = 0xFFBAE8FF;
+  static const blue02 = 0xFF8BD9FF;
+  static const blue03 = 0xFF66BDFF;
+  static const blue04 = 0xFF5865F2;
+  static const blue05 = 0xFF404EED;
+  static const blue06 = 0xFF3442D9;
+  static const blue07 = 0xFF8BD9FF;
+}

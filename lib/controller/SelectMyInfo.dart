@@ -34,7 +34,7 @@ class CtlSelectMyInfo extends GetxController {
   final _steps = [
     const Sex(),
     const BirthDay(),
-    const Location(),
+    Location(),
     Interests(),
     Purpose(),
     Nickname(),
