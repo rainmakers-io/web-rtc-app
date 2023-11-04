@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:get/get.dart';
@@ -324,7 +325,6 @@ class Interests extends GetView<CtlSelectMyInfo> {
     '드로잉',
     '악기연주',
     '위스키',
-    '와인'
   ];
   final interestLimit = 3;
 
@@ -619,7 +619,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,
                       text: '다음',
-                      isDisable: controller.sex.value.isEmpty))),
+                      isDisable: controller.purpose.value.isEmpty))),
             ]));
   }
 }
@@ -632,32 +632,97 @@ class Nickname extends GetView<CtlSelectMyInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         child: Form(
             key: _formKey,
-            child: Column(children: [
-              const Text('닉네임 8자 이하'),
-              TextFormField(
-                controller: nicknameCtl,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  if (value.length > 8) {
-                    return '8자 초과 입력';
-                  }
-                  return null;
-                },
-              ),
-              FilledButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Column(children: [
+                  SizedBox(
+                      height: 62,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            AtomIconButton(
+                                child: const Image(
+                                    height: 24,
+                                    width: 24,
+                                    image: AssetImage('images/left-arrow.png')),
+                                onPressed: () {
+                                  controller.prev();
+                                })
+                          ])),
+                  const Text('닉네임을 알려주세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: FontTitleBold01.size,
+                          fontWeight: FontTitleBold01.weight)),
+                  const SizedBox(
+                    height: 22,
+                  ),
+                  TextFormField(
+                    onChanged: (value) {
                       controller.nickname.value = nicknameCtl.text;
-                      controller.next();
-                    }
-                  },
-                  child: const Text('다음'))
-            ])));
+                    },
+                    controller: nicknameCtl,
+                    textAlign: TextAlign.center,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                    maxLength: 8,
+                    autofocus: true,
+                    style: const TextStyle(
+                        fontSize: FontDisplay03.size,
+                        fontWeight: FontDisplay03.weight,
+                        color: Color(ColorGrayScale.fa)),
+                    cursorColor: const Color(ColorBase.primary),
+                    decoration: const InputDecoration(
+                        errorStyle: TextStyle(
+                          color: Color(ColorBase.danger),
+                          fontSize: FontCaptionMedium02.size,
+                          fontWeight: FontCaptionMedium02.weight,
+                        ),
+                        counterText: '',
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        hintStyle: TextStyle(
+                            fontSize: FontDisplay03.size,
+                            fontWeight: FontDisplay03.weight,
+                            color: Color(ColorGrayScale.h59)),
+                        hintText: '8글자까지 입력가능'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '닉네임을 입력해주세요.';
+                      }
+                      if (RegExp(r'[^가-힣a-zA-Z0-9]').hasMatch(value)) {
+                        return '한글, 영어, 숫자만 입력해주세요.';
+                      }
+                      return null;
+                    },
+                  ),
+                ]),
+                Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      bottom: 32,
+                    ),
+                    child: Obx(() => AtomFillButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            controller.nickname.value = nicknameCtl.text;
+                            controller.next();
+                          }
+                        },
+                        text: '다음',
+                        isDisable: controller.nickname.value.isEmpty)))
+              ],
+            )));
   }
 }
 
