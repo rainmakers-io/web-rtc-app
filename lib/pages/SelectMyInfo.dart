@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
@@ -729,41 +731,136 @@ class Nickname extends GetView<CtlSelectMyInfo> {
 class Photo extends GetView<CtlSelectMyInfo> {
   const Photo({super.key});
 
+  myProfileImage() async {
+    var file = await UtilImageSelection().getImage();
+    if (file == null) return;
+    var fileString = await UtilImageSelection().toBase64(file);
+    controller.profileImageFile.value = fileString;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Center(
-            child: Stack(children: [
-          Visibility(
-              visible: controller.isLoading.value,
-              child: const CircularProgressIndicator(
-                strokeWidth: 10,
-                backgroundColor: Colors.black,
-                color: Colors.green,
-              )),
-          Column(
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('사진 최소 1장'),
-              Image.network(controller.profileImageUrl.value),
-              FilledButton(
-                  onPressed: () async {
-                    var file = await UtilImageSelection().getImage();
-                    if (file == null) return;
-                    var fileString = UtilImageSelection().toBase64(file);
-                    controller.isLoading.value = true;
-                    // TODO: fileString을 서버로 업로드한다.
-                    // 업로드 후에 가져온 link 값을 Image로 보여준다.
-                    controller.isLoading.value = false;
-                    controller.profileImageUrl.value =
-                        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg';
-                  },
-                  child: const Text('이미지 추가')),
-              Visibility(
-                  visible: controller.profileImageUrl.value.length > 0,
-                  child: FilledButton(
-                      onPressed: controller.next, child: const Text('다음')))
-            ],
-          )
-        ])));
+              Column(
+                children: [
+                  SizedBox(
+                      height: 62,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            AtomIconButton(
+                                child: const Image(
+                                    height: 24,
+                                    width: 24,
+                                    image: AssetImage('images/left-arrow.png')),
+                                onPressed: () {
+                                  controller.prev();
+                                })
+                          ])),
+                  const Text('프로필 사진을 등록해주세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: FontTitleBold01.size,
+                          fontWeight: FontTitleBold01.weight)),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Obx(() => Container(
+                      height: 160,
+                      width: 160,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              width: 3,
+                              color: controller.profileImageFile.value.isEmpty
+                                  ? const Color(ColorContent.content3)
+                                  : const Color(ColorBase.primary))),
+                      child: Stack(
+                        children: [
+                          Visibility(
+                              visible:
+                                  controller.profileImageFile.value.isNotEmpty,
+                              child: LayoutBuilder(
+                                  builder: (context, constraints) => Stack(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            child: Image.memory(
+                                                fit: BoxFit.cover,
+                                                height: 160,
+                                                width: 160,
+                                                base64Decode(controller
+                                                    .profileImageFile.value)),
+                                          ),
+                                          Positioned(
+                                              top: 116,
+                                              right: -7,
+                                              child: AtomIconButton(
+                                                  paddingAll: 18,
+                                                  child: const Image(
+                                                      height: 18,
+                                                      width: 18,
+                                                      image: AssetImage(
+                                                          'images/edit.png')),
+                                                  onPressed: () {
+                                                    myProfileImage();
+                                                  })),
+                                        ],
+                                      ))),
+                          Visibility(
+                              visible:
+                                  controller.profileImageFile.value.isEmpty,
+                              child: Center(
+                                  child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: const CircleBorder(),
+                                          padding: const EdgeInsets.all(65),
+                                          shadowColor: const Color(
+                                              ColorContent.content1),
+                                          backgroundColor: const Color(
+                                              ColorContent.content1),
+                                          foregroundColor: const Color(
+                                              ColorContent.content1)),
+                                      onPressed: () async {
+                                        myProfileImage();
+                                      },
+                                      child: Image.asset(
+                                        'images/plus.png',
+                                        height: 26,
+                                        width: 26,
+                                      )))),
+                        ],
+                      ))),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  const Text('내가 공개하기 전까지\n상대방에게는 블러 처리돼요.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Color(ColorGrayScale.d9),
+                          fontSize: FontCaptionMedium02.size,
+                          fontWeight: FontCaptionMedium02.weight)),
+                ],
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 32,
+                  ),
+                  child: Obx(() => AtomFillButton(
+                      onPressed: controller.next,
+                      text: '다음',
+                      isDisable: controller.profileImageFile.value.isEmpty)))
+            ]));
   }
 }
 

@@ -5,13 +5,14 @@ class AtomIconButton extends StatelessWidget {
   final Function onPressed;
   final Widget child;
   final Color backgroundColor;
+  final double paddingAll;
 
-  const AtomIconButton({
-    super.key,
-    required this.onPressed,
-    required this.child,
-    this.backgroundColor = const Color(ColorGrayScale.h30),
-  });
+  const AtomIconButton(
+      {super.key,
+      required this.onPressed,
+      required this.child,
+      this.backgroundColor = const Color(ColorGrayScale.h30),
+      this.paddingAll = 8.0});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class AtomIconButton extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(paddingAll),
         backgroundColor: backgroundColor,
       ),
       child: child,

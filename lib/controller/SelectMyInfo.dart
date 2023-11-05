@@ -14,6 +14,7 @@ class CtlSelectMyInfo extends GetxController {
   final Rx<String> _nickname = ''.obs;
   final RxBool _isLoading = false.obs;
   final Rx<String> _profileImageUrl = ''.obs;
+  final Rx<String> _profileImageFile = ''.obs;
 
   @override
   void onReady() {
@@ -82,6 +83,10 @@ class CtlSelectMyInfo extends GetxController {
     return _profileImageUrl;
   }
 
+  get profileImageFile {
+    return _profileImageFile;
+  }
+
   // 입력해야될 step으로 이동한다.
   currentStep() {
     for (final (index, value) in [
@@ -112,7 +117,12 @@ class CtlSelectMyInfo extends GetxController {
   createNewUser() {
     localStorage.setBool('enableSelectMyInfo', false);
     localStorage.setBool('enableGuide', false);
-    // TODO: 입력한 모든 정보를 서버에 기록한다.
+    // 회원가입
+
+    // 사진 생성
+    // _profileImageFile
+    // setting
+    localStorage.setString('user.profileImageUrl', _profileImageUrl.value);
   }
 
   void prev() {
@@ -141,7 +151,6 @@ class CtlSelectMyInfo extends GetxController {
     } else if (_step.value == 5) {
       localStorage.setString('user.nickname', _nickname.value);
     } else if (_step.value == 6) {
-      localStorage.setString('user.profileImageUrl', _profileImageUrl.value);
       createNewUser();
     }
 
