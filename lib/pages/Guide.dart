@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:web_rtc_app/controller/Guide.dart';
-import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/Fonts.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/utils/Colors.dart';
@@ -27,7 +26,7 @@ class Guide1 extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(bottom: 39),
                     child: const Image(
-                      image: AssetImage('images/guide01.png'),
+                      image: AssetImage('assets/images/guide01.png'),
                       width: 330,
                       height: 426,
                     ),
@@ -76,7 +75,7 @@ class Guide2 extends GetView<CtlGuide> {
                       Container(
                         margin: const EdgeInsets.only(bottom: 39),
                         child: const Image(
-                          image: AssetImage('images/guide02.png'),
+                          image: AssetImage('assets/images/guide02.png'),
                           width: 330,
                           height: 426,
                         ),
@@ -125,7 +124,7 @@ class Guide3 extends GetView<CtlGuide> {
                       Container(
                         margin: const EdgeInsets.only(bottom: 39),
                         child: const Image(
-                          image: AssetImage('images/guide03.png'),
+                          image: AssetImage('assets/images/guide03.png'),
                           width: 330,
                           height: 426,
                         ),
@@ -172,7 +171,7 @@ class PageGuide extends GetView<CtlGuide> {
         bottomOpacity: 0,
         scrolledUnderElevation: 0,
         title: const Image(
-          image: AssetImage('images/haze-header-logo.png'),
+          image: AssetImage('assets/images/haze-header-logo.png'),
           width: 54,
           height: 15,
         ),

@@ -56,7 +56,7 @@ class Sex extends GetView<CtlSelectMyInfo> {
                                   height: 36,
                                   width: 36,
                                   image:
-                                      AssetImage('images/woman-red-hair.png')),
+                                      AssetImage('assets/images/woman-red-hair.png')),
                               SizedBox(height: 8),
                               Text(
                                 '여성',
@@ -85,7 +85,7 @@ class Sex extends GetView<CtlSelectMyInfo> {
                             Image(
                                 height: 36,
                                 width: 36,
-                                image: AssetImage('images/man-blond-hair.png')),
+                                image: AssetImage('assets/images/man-blond-hair.png')),
                             SizedBox(height: 8),
                             Text(
                               '남성',
@@ -138,7 +138,7 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
                                 child: const Image(
                                     height: 24,
                                     width: 24,
-                                    image: AssetImage('images/left-arrow.png')),
+                                    image: AssetImage('assets/images/left-arrow.png')),
                                 onPressed: () {
                                   controller.prev();
                                 })
@@ -210,7 +210,7 @@ class Location extends GetView<CtlSelectMyInfo> {
                               child: const Image(
                                   height: 24,
                                   width: 24,
-                                  image: AssetImage('images/left-arrow.png')),
+                                  image: AssetImage('assets/images/left-arrow.png')),
                               onPressed: () {
                                 controller.prev();
                               })
@@ -360,7 +360,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
                               child: const Image(
                                   height: 24,
                                   width: 24,
-                                  image: AssetImage('images/left-arrow.png')),
+                                  image: AssetImage('assets/images/left-arrow.png')),
                               onPressed: () {
                                 controller.prev();
                               })
@@ -451,7 +451,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                               child: const Image(
                                   height: 24,
                                   width: 24,
-                                  image: AssetImage('images/left-arrow.png')),
+                                  image: AssetImage('assets/images/left-arrow.png')),
                               onPressed: () {
                                 controller.prev();
                               })
@@ -490,7 +490,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                           height: 36,
                                           width: 36,
                                           image: AssetImage(
-                                              'images/smiling-face-with-heart-eyes.png')),
+                                              'assets/images/smiling-face-with-heart-eyes.png')),
                                       const SizedBox(height: 8),
                                       Text(
                                         purposes[0],
@@ -524,7 +524,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                         height: 36,
                                         width: 36,
                                         image: AssetImage(
-                                            'images/waving-hand.png')),
+                                            'assets/images/waving-hand.png')),
                                     const SizedBox(height: 8),
                                     Text(
                                       purposes[1],
@@ -563,7 +563,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                           height: 36,
                                           width: 36,
                                           image: AssetImage(
-                                              'images/wine-glass.png')),
+                                              'assets/images/wine-glass.png')),
                                       const SizedBox(height: 8),
                                       Text(
                                         purposes[2],
@@ -597,7 +597,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                         height: 36,
                                         width: 36,
                                         image: AssetImage(
-                                            'images/hot-beverage.png')),
+                                            'assets/images/hot-beverage.png')),
                                     const SizedBox(height: 8),
                                     Text(
                                       purposes[3],
@@ -654,7 +654,7 @@ class Nickname extends GetView<CtlSelectMyInfo> {
                                 child: const Image(
                                     height: 24,
                                     width: 24,
-                                    image: AssetImage('images/left-arrow.png')),
+                                    image: AssetImage('assets/images/left-arrow.png')),
                                 onPressed: () {
                                   controller.prev();
                                 })
@@ -759,7 +759,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
                                 child: const Image(
                                     height: 24,
                                     width: 24,
-                                    image: AssetImage('images/left-arrow.png')),
+                                    image: AssetImage('assets/images/left-arrow.png')),
                                 onPressed: () {
                                   controller.prev();
                                 })
@@ -810,7 +810,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
                                                       height: 18,
                                                       width: 18,
                                                       image: AssetImage(
-                                                          'images/edit.png')),
+                                                          'assets/images/edit.png')),
                                                   onPressed: () {
                                                     myProfileImage();
                                                   })),
@@ -834,7 +834,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
                                         myProfileImage();
                                       },
                                       child: Image.asset(
-                                        'images/plus.png',
+                                        'assets/images/plus.png',
                                         height: 26,
                                         width: 26,
                                       )))),
