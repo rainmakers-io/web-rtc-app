@@ -55,8 +55,8 @@ class Sex extends GetView<CtlSelectMyInfo> {
                               Image(
                                   height: 36,
                                   width: 36,
-                                  image:
-                                      AssetImage('assets/images/woman-red-hair.png')),
+                                  image: AssetImage(
+                                      'assets/images/woman-red-hair.png')),
                               SizedBox(height: 8),
                               Text(
                                 '여성',
@@ -85,7 +85,8 @@ class Sex extends GetView<CtlSelectMyInfo> {
                             Image(
                                 height: 36,
                                 width: 36,
-                                image: AssetImage('assets/images/man-blond-hair.png')),
+                                image: AssetImage(
+                                    'assets/images/man-blond-hair.png')),
                             SizedBox(height: 8),
                             Text(
                               '남성',
@@ -101,7 +102,7 @@ class Sex extends GetView<CtlSelectMyInfo> {
               Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
-                    bottom: 32,
+                    bottom: 28,
                   ),
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,
@@ -138,7 +139,8 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
                                 child: const Image(
                                     height: 24,
                                     width: 24,
-                                    image: AssetImage('assets/images/left-arrow.png')),
+                                    image: AssetImage(
+                                        'assets/images/left-arrow.png')),
                                 onPressed: () {
                                   controller.prev();
                                 })
@@ -174,7 +176,7 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
               Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
-                    bottom: 32,
+                    bottom: 28,
                   ),
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,
@@ -210,7 +212,8 @@ class Location extends GetView<CtlSelectMyInfo> {
                               child: const Image(
                                   height: 24,
                                   width: 24,
-                                  image: AssetImage('assets/images/left-arrow.png')),
+                                  image: AssetImage(
+                                      'assets/images/left-arrow.png')),
                               onPressed: () {
                                 controller.prev();
                               })
@@ -287,7 +290,7 @@ class Location extends GetView<CtlSelectMyInfo> {
               Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
-                    bottom: 32,
+                    bottom: 28,
                   ),
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,
@@ -360,7 +363,8 @@ class Interests extends GetView<CtlSelectMyInfo> {
                               child: const Image(
                                   height: 24,
                                   width: 24,
-                                  image: AssetImage('assets/images/left-arrow.png')),
+                                  image: AssetImage(
+                                      'assets/images/left-arrow.png')),
                               onPressed: () {
                                 controller.prev();
                               })
@@ -380,42 +384,49 @@ class Interests extends GetView<CtlSelectMyInfo> {
                             color: Color(ColorGrayScale.bf),
                             fontSize: FontBodyBold01.size,
                             fontWeight: FontBodyBold01.weight)))),
-                Tags(
-                  itemCount: interests.length,
-                  itemBuilder: (int index) {
-                    final itemLabel = interests[index];
-                    return Obx(() => ChoiceChip(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 16),
-                          backgroundColor: const Color(ColorContent.content1),
-                          shape: StadiumBorder(
-                              side: BorderSide(
-                                  color: isSelectedLabel(itemLabel)
-                                      ? const Color(ColorBase.primary)
-                                      : const Color(ColorContent.content3))),
-                          label: Text(itemLabel),
-                          labelStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: FontCaptionSemibold02.size,
-                              fontWeight: FontCaptionSemibold02.weight),
-                          selected: isSelectedLabel(itemLabel),
-                          selectedColor: const Color(0xFF103561),
-                          onSelected: (value) {
-                            if (value &&
-                                controller.myInterests.length < interestLimit) {
-                              controller.addInterest(itemLabel);
-                            } else {
-                              controller.removeInterest(itemLabel);
-                            }
-                          },
-                        ));
-                  },
-                )
+                SizedBox(
+                  // HACK: 남은 공감 스크롤
+                    height: MediaQuery.of(context).size.height / 2 + 80,
+                    child: SingleChildScrollView(
+                        child: Tags(
+                      itemCount: interests.length,
+                      itemBuilder: (int index) {
+                        final itemLabel = interests[index];
+                        return Obx(() => ChoiceChip(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              backgroundColor:
+                                  const Color(ColorContent.content1),
+                              shape: StadiumBorder(
+                                  side: BorderSide(
+                                      color: isSelectedLabel(itemLabel)
+                                          ? const Color(ColorBase.primary)
+                                          : const Color(
+                                              ColorContent.content3))),
+                              label: Text(itemLabel),
+                              labelStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: FontCaptionSemibold02.size,
+                                  fontWeight: FontCaptionSemibold02.weight),
+                              selected: isSelectedLabel(itemLabel),
+                              selectedColor: const Color(0xFF103561),
+                              onSelected: (value) {
+                                if (value &&
+                                    controller.myInterests.length <
+                                        interestLimit) {
+                                  controller.addInterest(itemLabel);
+                                } else {
+                                  controller.removeInterest(itemLabel);
+                                }
+                              },
+                            ));
+                      },
+                    ))),
               ]),
               Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
-                    bottom: 32,
+                    bottom: 28,
                   ),
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,
@@ -451,7 +462,8 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                               child: const Image(
                                   height: 24,
                                   width: 24,
-                                  image: AssetImage('assets/images/left-arrow.png')),
+                                  image: AssetImage(
+                                      'assets/images/left-arrow.png')),
                               onPressed: () {
                                 controller.prev();
                               })
@@ -616,7 +628,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
               Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
-                    bottom: 32,
+                    bottom: 28,
                   ),
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,
@@ -654,7 +666,8 @@ class Nickname extends GetView<CtlSelectMyInfo> {
                                 child: const Image(
                                     height: 24,
                                     width: 24,
-                                    image: AssetImage('assets/images/left-arrow.png')),
+                                    image: AssetImage(
+                                        'assets/images/left-arrow.png')),
                                 onPressed: () {
                                   controller.prev();
                                 })
@@ -712,7 +725,7 @@ class Nickname extends GetView<CtlSelectMyInfo> {
                 Padding(
                     padding: const EdgeInsets.only(
                       top: 10,
-                      bottom: 32,
+                      bottom: 28,
                     ),
                     child: Obx(() => AtomFillButton(
                         onPressed: () {
@@ -759,7 +772,8 @@ class Photo extends GetView<CtlSelectMyInfo> {
                                 child: const Image(
                                     height: 24,
                                     width: 24,
-                                    image: AssetImage('assets/images/left-arrow.png')),
+                                    image: AssetImage(
+                                        'assets/images/left-arrow.png')),
                                 onPressed: () {
                                   controller.prev();
                                 })
@@ -854,7 +868,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
               Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
-                    bottom: 32,
+                    bottom: 28,
                   ),
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,

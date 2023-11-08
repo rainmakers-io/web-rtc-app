@@ -10,20 +10,21 @@ class PageHome extends GetView<CtlHome> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-          bottomNavigationBar: NavigationBar(
-            onDestinationSelected: (int index) {
-              controller.currentPageIndex.value = index;
-            },
-            selectedIndex: controller.currentPageIndex.value,
-            destinations: const <Widget>[
-              NavigationDestination(icon: Icon(Icons.home), label: ''),
-              NavigationDestination(icon: Icon(Icons.abc_sharp), label: '')
-            ],
-          ),
-          body: [
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (int index) {
+            controller.currentPageIndex.value = index;
+          },
+          selectedIndex: controller.currentPageIndex.value,
+          destinations: const <Widget>[
+            NavigationDestination(icon: Icon(Icons.home), label: ''),
+            NavigationDestination(icon: Icon(Icons.abc_sharp), label: '')
+          ],
+        ),
+        body: SafeArea(
+          child: [
             PageMatchingRoom(),
             PageMyInfo()
           ][controller.currentPageIndex.value],
-        ));
+        )));
   }
 }

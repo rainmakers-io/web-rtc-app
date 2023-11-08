@@ -21,7 +21,7 @@ class AtomFillButton extends StatelessWidget {
                 ? const Color(ColorGrayScale.h59)
                 : const Color(ColorBase.primary)),
             padding: const MaterialStatePropertyAll(
-                EdgeInsets.symmetric(vertical: 25))),
+                EdgeInsets.symmetric(vertical: 16))),
         onPressed: () {
           if (!isDisable) {
             onPressed();

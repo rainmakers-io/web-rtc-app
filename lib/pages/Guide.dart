@@ -162,14 +162,16 @@ class PageGuide extends GetView<CtlGuide> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: const Color(ColorContent.content1),
       appBar: AppBar(
         backgroundColor: const Color(ColorContent.content1),
         elevation: 0,
         bottomOpacity: 0,
+        centerTitle: true,
         scrolledUnderElevation: 0,
+        // 왼쪽 기본 백버튼 제거
+        leading: Container(),
         title: const Image(
           image: AssetImage('assets/images/haze-header-logo.png'),
           width: 54,
@@ -192,40 +194,41 @@ class PageGuide extends GetView<CtlGuide> {
                   )))
         ],
       ),
-      bottomNavigationBar: DecoratedBox(
-          decoration: const BoxDecoration(
-            color: Color(ColorContent.content1),
-          ),
-          child: Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                bottom: 32,
-                left: 24,
-                right: 24,
+      bottomNavigationBar: SafeArea(
+          child: DecoratedBox(
+              decoration: const BoxDecoration(
+                color: Color(ColorContent.content1),
               ),
-              child: Obx(() => AtomFillButton(
-                    onPressed: () {
-                      int curIndex = (scrollController.offset /
-                              MediaQuery.of(context).size.width)
-                          .round();
-                      if (curIndex == 0) {
-                        scrollController.animateTo(
-                            MediaQuery.of(context).size.width,
-                            curve: Curves.linear,
-                            duration: const Duration(microseconds: 200));
-                      } else if (curIndex == 1) {
-                        scrollController.animateTo(
-                            MediaQuery.of(context).size.width * 2,
-                            curve: Curves.linear,
-                            duration: const Duration(microseconds: 200));
-                        controller.buttonText.value = '시작!';
-                      } else if (curIndex == 2) {
-                        localStorage.setBool('enableGuide', false);
-                        Get.toNamed('select-my-info');
-                      }
-                    },
-                    text: controller.buttonText.value,
-                  )))),
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 32,
+                    left: 24,
+                    right: 24,
+                  ),
+                  child: Obx(() => AtomFillButton(
+                        onPressed: () {
+                          int curIndex = (scrollController.offset /
+                                  MediaQuery.of(context).size.width)
+                              .round();
+                          if (curIndex == 0) {
+                            scrollController.animateTo(
+                                MediaQuery.of(context).size.width,
+                                curve: Curves.linear,
+                                duration: const Duration(microseconds: 200));
+                          } else if (curIndex == 1) {
+                            scrollController.animateTo(
+                                MediaQuery.of(context).size.width * 2,
+                                curve: Curves.linear,
+                                duration: const Duration(microseconds: 200));
+                            controller.buttonText.value = '시작!';
+                          } else if (curIndex == 2) {
+                            localStorage.setBool('enableGuide', false);
+                            Get.toNamed('select-my-info');
+                          }
+                        },
+                        text: controller.buttonText.value,
+                      ))))),
       body: ListView.builder(
         controller: scrollController,
         itemBuilder: (_, index) {
@@ -235,6 +238,6 @@ class PageGuide extends GetView<CtlGuide> {
         physics: const PageScrollPhysics(),
         itemCount: guides.length,
       ),
-    ));
+    );
   }
 }
