@@ -1,13 +1,13 @@
-import 'package:get/get.dart';
+import 'package:dio/dio.dart';
 
 class ApiHealthService {
-  late GetConnect _provider;
+  late Dio api;
 
-  ApiHealthService(GetConnect provider) {
-    _provider = provider;
+  ApiHealthService(Dio provider) {
+    api = provider;
   }
 
-  checkHealth() {
-    return _provider.get<Map<String, String>>('/health');
+  Future<Response> checkHealth() {
+    return api.get<Map<String, String>>('/health');
   }
 }

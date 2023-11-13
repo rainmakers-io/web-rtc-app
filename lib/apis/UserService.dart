@@ -1,30 +1,30 @@
-import 'package:get/get.dart';
+import 'package:dio/dio.dart';
 
 class ApiUserService {
-  late GetConnect _provider;
+  late Dio api;
 
-  ApiUserService(GetConnect provider) {
-    _provider = provider;
+  ApiUserService(Dio provider) {
+    api = provider;
   }
 
   me() async {
-    var apiResponse = await _provider.get<Map<String, dynamic>>('/users/me');
+    var apiResponse = await api.get<Map<String, dynamic>>('/users/me');
     Map<String, dynamic> result = {
-      "id": apiResponse.body?['id'] ?? '',
-      "socketId": apiResponse.body?['socketId'] ?? '',
-      "gender": apiResponse.body?['gender'] ?? '',
-      "nickname": apiResponse.body?['nickname'] ?? '',
-      "location": apiResponse.body?['location'] ?? '',
-      "purpose": apiResponse.body?['purpose'] ?? '',
-      "interests": apiResponse.body?['interests'] ?? [] as List<String>,
-      "bans": apiResponse.body?['bans'] ?? [] as List<String>,
-      "reported": apiResponse.body?['reported'] ?? -1,
-      "createdAt": apiResponse.body?['createdAt'] ?? '',
-      "updatedAt": apiResponse.body?['updatedAt'] ?? '',
-      "name": apiResponse.body?['name'] ?? '',
-      "code": apiResponse.body?['code'] ?? -1,
-      "message": apiResponse.body?['message'] ?? '',
-      "error": apiResponse.body?['error'] ?? {},
+      "id": apiResponse.data?['id'] ?? '',
+      "socketId": apiResponse.data?['socketId'] ?? '',
+      "gender": apiResponse.data?['gender'] ?? '',
+      "nickname": apiResponse.data?['nickname'] ?? '',
+      "location": apiResponse.data?['location'] ?? '',
+      "purpose": apiResponse.data?['purpose'] ?? '',
+      "interests": apiResponse.data?['interests'] ?? [] as List<String>,
+      "bans": apiResponse.data?['bans'] ?? [] as List<String>,
+      "reported": apiResponse.data?['reported'] ?? -1,
+      "createdAt": apiResponse.data?['createdAt'] ?? '',
+      "updatedAt": apiResponse.data?['updatedAt'] ?? '',
+      "name": apiResponse.data?['name'] ?? '',
+      "code": apiResponse.data?['code'] ?? -1,
+      "message": apiResponse.data?['message'] ?? '',
+      "error": apiResponse.data?['error'] ?? {},
     };
     return result;
   }

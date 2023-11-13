@@ -1,43 +1,49 @@
-import 'dart:io';
-
-import 'package:get/get.dart';
+import 'package:dio/dio.dart';
 
 class ApiImageService {
-  late GetConnect _provider;
+  late Dio api;
 
-  ApiImageService(GetConnect provider) {
-    _provider = provider;
+  ApiImageService(Dio provider) {
+    api = provider;
   }
 
-  addImages(Map<String, dynamic> body) async {
-    var apiResponse = await _provider.post<Map<String, dynamic>>(
-        '/images', body["images"] as List<File>);
+  addImages(List<String> body) async {
+    // TODO: 웹에서는 다른 형태로 넣어야될듯...
+    var data = FormData.fromMap({
+      'images': body.map((path) {
+        return MultipartFile.fromFileSync(path);
+      }).toList()
+    });
+
+    var apiResponse =
+        await api.post<Map<String, dynamic>>('/images', data: data);
     Map<String, dynamic> result = {
-      "userId": apiResponse.body?['userId'] ?? '',
-      "keys": apiResponse.body?['keys'] ?? [] as List<String>,
-      "urls": apiResponse.body?['urls'] ?? [] as List<String>,
-      "createdAt": apiResponse.body?['createdAt'] ?? '',
-      "updatedAt": apiResponse.body?['updatedAt'] ?? '',
-      "name": apiResponse.body?['name'] ?? '',
-      "code": apiResponse.body?['code'] ?? -1,
-      "message": apiResponse.body?['message'] ?? '',
-      "error": apiResponse.body?['error'] ?? {},
+      "statusCode": apiResponse.statusCode,
+      "userId": apiResponse.data?['userId'] ?? '',
+      "keys": apiResponse.data?['keys'] ?? [] as List<String>,
+      "urls": apiResponse.data?['urls'] ?? [] as List<String>,
+      "createdAt": apiResponse.data?['createdAt'] ?? '',
+      "updatedAt": apiResponse.data?['updatedAt'] ?? '',
+      "name": apiResponse.data?['name'] ?? '',
+      "code": apiResponse.data?['code'] ?? -1,
+      "message": apiResponse.data?['message'] ?? '',
+      "error": apiResponse.data?['error'] ?? {},
     };
     return result;
   }
 
   myImages() async {
-    var apiResponse = await _provider.get<Map<String, dynamic>>('/images/me');
+    var apiResponse = await api.get<Map<String, dynamic>>('/images/me');
     Map<String, dynamic> result = {
-      "userId": apiResponse.body?['userId'] ?? '',
-      "keys": apiResponse.body?['keys'] ?? [] as List<String>,
-      "urls": apiResponse.body?['urls'] ?? [] as List<String>,
-      "createdAt": apiResponse.body?['createdAt'] ?? '',
-      "updatedAt": apiResponse.body?['updatedAt'] ?? '',
-      "name": apiResponse.body?['name'] ?? '',
-      "code": apiResponse.body?['code'] ?? -1,
-      "message": apiResponse.body?['message'] ?? '',
-      "error": apiResponse.body?['error'] ?? {},
+      "userId": apiResponse.data?['userId'] ?? '',
+      "keys": apiResponse.data?['keys'] ?? [] as List<String>,
+      "urls": apiResponse.data?['urls'] ?? [] as List<String>,
+      "createdAt": apiResponse.data?['createdAt'] ?? '',
+      "updatedAt": apiResponse.data?['updatedAt'] ?? '',
+      "name": apiResponse.data?['name'] ?? '',
+      "code": apiResponse.data?['code'] ?? -1,
+      "message": apiResponse.data?['message'] ?? '',
+      "error": apiResponse.data?['error'] ?? {},
     };
     return result;
   }

@@ -15,7 +15,7 @@ class _PageHealth extends State<PageHealth> {
     try {
       var res = await apiProvider.healthService.checkHealth();
       setState(() {
-        message = res?.body.message ?? 'OK';
+        message = res.data.message ?? 'OK: ${res.statusCode}';
       });
     } catch (error) {
       setState(() {
