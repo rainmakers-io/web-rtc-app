@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
@@ -12,6 +12,7 @@ import 'package:web_rtc_app/utils/ImageSelection.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
 import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
+import 'package:web_rtc_app/widgets/dialog/Default.dart';
 
 class Sex extends GetView<CtlSelectMyInfo> {
   const Sex({super.key});
@@ -41,14 +42,14 @@ class Sex extends GetView<CtlSelectMyInfo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Obx(() => AtomCardButton(
-                          borderColor: controller.sex.value == 'F'
+                          borderColor: controller.sex.value == 'FEMALE'
                               ? const Color(ColorBase.primary)
                               : const Color(ColorContent.content3),
-                          backgroundColor: controller.sex.value == 'F'
+                          backgroundColor: controller.sex.value == 'FEMALE'
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
                           onPressed: () {
-                            controller.sex.value = 'F';
+                            controller.sex.value = 'FEMALE';
                           },
                           child: const Column(
                             children: [
@@ -72,14 +73,14 @@ class Sex extends GetView<CtlSelectMyInfo> {
                         width: 16,
                       ),
                       Obx(() => AtomCardButton(
-                          borderColor: controller.sex.value == 'M'
+                          borderColor: controller.sex.value == 'MALE'
                               ? const Color(ColorBase.primary)
                               : const Color(ColorContent.content3),
-                          backgroundColor: controller.sex.value == 'M'
+                          backgroundColor: controller.sex.value == 'MALE'
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
                           onPressed: () {
-                            controller.sex.value = 'M';
+                            controller.sex.value = 'MALE';
                           },
                           child: const Column(children: [
                             Image(
@@ -190,7 +191,7 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
 class Location extends GetView<CtlSelectMyInfo> {
   Location({super.key});
 
-  final locations = ['seoul', 'gyeonggi'];
+  final locations = ['서울', '경기'];
 
   @override
   Widget build(BuildContext context) {
@@ -323,7 +324,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
     '카공',
     '맛집 탐방',
     '주식/투자',
-    '음악감상',
+    '음악 감상',
     '드라이브',
     '자기계발',
     '요리',
@@ -385,7 +386,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
                             fontSize: FontBodyBold01.size,
                             fontWeight: FontBodyBold01.weight)))),
                 SizedBox(
-                  // HACK: 남은 공감 스크롤
+                    // 남은 공간만 스크롤, 추후 좀 더 잘 구현해보기
                     height: MediaQuery.of(context).size.height / 2 + 80,
                     child: SingleChildScrollView(
                         child: Tags(
@@ -440,7 +441,12 @@ class Interests extends GetView<CtlSelectMyInfo> {
 class Purpose extends GetView<CtlSelectMyInfo> {
   Purpose({super.key});
 
-  final purposes = ['진지한 연애', '새로운 친구', '술 한잔', '캐쥬얼한 친구'];
+  final purposes = [
+    ['진지한 연애', '진지한연애'],
+    ['새로운 친구', '새로운친구'],
+    ['술 한잔', '술한잔'],
+    ['캐쥬얼한 친구', '캐쥬얼한친구'],
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -485,16 +491,16 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                             children: [
                               AtomCardButton(
                                   borderColor:
-                                      controller.purpose.value == purposes[0]
+                                      controller.purpose.value == purposes[0][1]
                                           ? const Color(ColorFeature.pink01)
                                           : const Color(ColorContent.content3),
                                   backgroundColor:
-                                      controller.purpose.value == purposes[0]
+                                      controller.purpose.value == purposes[0][1]
                                           ? const Color(ColorFeature.pink01)
                                               .withOpacity(0.33)
                                           : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[0];
+                                    controller.purpose.value = purposes[0][1];
                                   },
                                   child: Column(
                                     children: [
@@ -505,7 +511,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                               'assets/images/smiling-face-with-heart-eyes.png')),
                                       const SizedBox(height: 8),
                                       Text(
-                                        purposes[0],
+                                        purposes[0][0],
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                             color: Colors.white,
@@ -520,16 +526,16 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                               ),
                               AtomCardButton(
                                   borderColor:
-                                      controller.purpose.value == purposes[1]
+                                      controller.purpose.value == purposes[1][1]
                                           ? const Color(ColorFeature.green01)
                                           : const Color(ColorContent.content3),
                                   backgroundColor:
-                                      controller.purpose.value == purposes[1]
+                                      controller.purpose.value == purposes[1][1]
                                           ? const Color(ColorFeature.green01)
                                               .withOpacity(0.33)
                                           : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[1];
+                                    controller.purpose.value = purposes[1][1];
                                   },
                                   child: Column(children: [
                                     const Image(
@@ -539,7 +545,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                             'assets/images/waving-hand.png')),
                                     const SizedBox(height: 8),
                                     Text(
-                                      purposes[1],
+                                      purposes[1][0],
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Colors.white,
@@ -558,16 +564,16 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                             children: [
                               AtomCardButton(
                                   borderColor:
-                                      controller.purpose.value == purposes[2]
+                                      controller.purpose.value == purposes[2][1]
                                           ? const Color(ColorBase.secondary)
                                           : const Color(ColorContent.content3),
                                   backgroundColor:
-                                      controller.purpose.value == purposes[2]
+                                      controller.purpose.value == purposes[2][1]
                                           ? const Color(ColorBase.secondary)
                                               .withOpacity(0.33)
                                           : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[2];
+                                    controller.purpose.value = purposes[2][1];
                                   },
                                   child: Column(
                                     children: [
@@ -578,7 +584,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                               'assets/images/wine-glass.png')),
                                       const SizedBox(height: 8),
                                       Text(
-                                        purposes[2],
+                                        purposes[2][0],
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                             color: Colors.white,
@@ -593,16 +599,16 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                               ),
                               AtomCardButton(
                                   borderColor:
-                                      controller.purpose.value == purposes[3]
+                                      controller.purpose.value == purposes[3][1]
                                           ? const Color(ColorFeature.blue04)
                                           : const Color(ColorContent.content3),
                                   backgroundColor:
-                                      controller.purpose.value == purposes[3]
+                                      controller.purpose.value == purposes[3][1]
                                           ? const Color(ColorFeature.blue04)
                                               .withOpacity(0.33)
                                           : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[3];
+                                    controller.purpose.value = purposes[3][1];
                                   },
                                   child: Column(children: [
                                     const Image(
@@ -612,7 +618,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                             'assets/images/hot-beverage.png')),
                                     const SizedBox(height: 8),
                                     Text(
-                                      purposes[3],
+                                      purposes[3][0],
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Colors.white,
@@ -747,8 +753,16 @@ class Photo extends GetView<CtlSelectMyInfo> {
   myProfileImage() async {
     var file = await UtilImageSelection().getImage();
     if (file == null) return;
-    var fileString = await UtilImageSelection().toBase64(file);
-    controller.profileImageFile.value = fileString;
+    // 용량 제한 예외처리
+    const sizeLimit10Mb = 10 * 1024 * 1024;
+    if (File(file.path).lengthSync() >= sizeLimit10Mb) {
+      DialogDefault.alert(
+          title: '이미지 용량은 10MB를 넘을 수 없습니다.', content: '이미지 크기를 줄이거나 다른 이미지를 넣어주세요.');
+      return;
+    }
+    controller.profileImageFile = file;
+    controller.profileImageFileString.value =
+        await UtilImageSelection().toBase64(file);
   }
 
   @override
@@ -794,14 +808,15 @@ class Photo extends GetView<CtlSelectMyInfo> {
                           shape: BoxShape.circle,
                           border: Border.all(
                               width: 3,
-                              color: controller.profileImageFile.value.isEmpty
+                              color: controller
+                                      .profileImageFileString.value.isEmpty
                                   ? const Color(ColorContent.content3)
                                   : const Color(ColorBase.primary))),
                       child: Stack(
                         children: [
                           Visibility(
-                              visible:
-                                  controller.profileImageFile.value.isNotEmpty,
+                              visible: controller
+                                  .profileImageFileString.value.isNotEmpty,
                               child: LayoutBuilder(
                                   builder: (context, constraints) => Stack(
                                         children: [
@@ -813,7 +828,8 @@ class Photo extends GetView<CtlSelectMyInfo> {
                                                 height: 160,
                                                 width: 160,
                                                 base64Decode(controller
-                                                    .profileImageFile.value)),
+                                                    .profileImageFileString
+                                                    .value)),
                                           ),
                                           Positioned(
                                               top: 116,
@@ -831,8 +847,8 @@ class Photo extends GetView<CtlSelectMyInfo> {
                                         ],
                                       ))),
                           Visibility(
-                              visible:
-                                  controller.profileImageFile.value.isEmpty,
+                              visible: controller
+                                  .profileImageFileString.value.isEmpty,
                               child: Center(
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -873,7 +889,8 @@ class Photo extends GetView<CtlSelectMyInfo> {
                   child: Obx(() => AtomFillButton(
                       onPressed: controller.next,
                       text: '다음',
-                      isDisable: controller.profileImageFile.value.isEmpty)))
+                      isDisable:
+                          controller.profileImageFileString.value.isEmpty)))
             ]));
   }
 }

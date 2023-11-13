@@ -5,7 +5,7 @@ class DialogDefault {
   static alert({title = '', content = '', okLabel = '확인'}) {
     return Get.dialog(WillPopScope(
         child: (AlertDialog(
-          title: title,
+          title: Text(title),
           content: Text(content),
           backgroundColor: Colors.white,
           actions: [

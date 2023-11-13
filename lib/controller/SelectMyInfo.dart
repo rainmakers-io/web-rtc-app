@@ -1,34 +1,51 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
+import 'package:web_rtc_app/widgets/dialog/Default.dart';
 
 late CtlSelectMyInfo ctlSelectMyInfo;
+
+enum Steps {
+  sex,
+  birthday,
+  location,
+  myInterests,
+  purpose,
+  nickname,
+  profileImage,
+  welcome,
+  last,
+}
 
 class CtlSelectMyInfo extends GetxController {
   final RxInt _step = 0.obs;
   final Rx<DateTime> _birthDay = DateTime.now().obs;
-  final Rx<String> _sex = ''.obs; // F or M;
+
+  /// FEMALE or MALE;
+  final Rx<String> _sex = ''.obs;
   final Rx<String> _location = ''.obs;
   final RxList _myInterests = [].obs;
   final Rx<String> _purpose = ''.obs;
   final Rx<String> _nickname = ''.obs;
   final RxBool _isLoading = false.obs;
-  final Rx<String> _profileImageUrl = ''.obs;
-  final Rx<String> _profileImageFile = ''.obs;
+  final Rx<String> _profileImageFileString = ''.obs;
+  XFile? profileImageFile;
 
   @override
   void onReady() {
     super.onReady();
     _sex.value = localStorage.storage.getString('user.sex') ?? '';
-    _birthDay.value =
-        DateTime.parse(localStorage.storage.getString('user.birthDay') ?? '');
     _location.value = localStorage.storage.getString('user.location') ?? '';
     _myInterests.value =
         localStorage.storage.getStringList('user.myInterests') ?? [];
     _purpose.value = localStorage.storage.getString('user.purpose') ?? '';
     _nickname.value = localStorage.storage.getString('user.nickname') ?? '';
-    _profileImageUrl.value =
-        localStorage.storage.getString('user.profileImageUrl') ?? '';
+    try {
+      _birthDay.value =
+          DateTime.parse(localStorage.storage.getString('user.birthDay') ?? '');
+    } catch (e) {}
     _step.value = currentStep();
   }
 
@@ -79,12 +96,8 @@ class CtlSelectMyInfo extends GetxController {
     return _nickname;
   }
 
-  get profileImageUrl {
-    return _profileImageUrl;
-  }
-
-  get profileImageFile {
-    return _profileImageFile;
+  get profileImageFileString {
+    return _profileImageFileString;
   }
 
   // 입력해야될 step으로 이동한다.
@@ -96,7 +109,7 @@ class CtlSelectMyInfo extends GetxController {
       _myInterests.isEmpty,
       _purpose.value.isEmpty,
       _nickname.value.isEmpty,
-      _profileImageUrl.value.isEmpty
+      profileImageFile == null,
     ].indexed) {
       if (value) return index;
     }
@@ -114,19 +127,69 @@ class CtlSelectMyInfo extends GetxController {
     update();
   }
 
-  createNewUser() {
+  createNewUser() async {
+    // 회원가입
+    try {
+      var res = await apiProvider.authService.createAccount({
+        "gender": _sex.value,
+        "nickname": _nickname.value,
+        "birth": _birthDay.value.toIso8601String().split('T').first,
+        "location": [_location.value],
+        "interests": _myInterests.map((element) => element.toString()).toList(),
+        "purpose": _purpose.value,
+      });
+      switch (res["statusCode"]) {
+        case 400:
+        case 500:
+          {
+            // 데이터 포맷 에러
+            DialogDefault.alert(
+                title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+                content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+          }
+      }
+    } catch (error) {
+      DialogDefault.alert(
+          title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+          content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+      rethrow;
+    }
+    // 사진 저장
+    try {
+      if (profileImageFile == null) {
+        DialogDefault.alert(title: '프로파일 이미지가 존재하지 않습니다.');
+        _step.value = Steps.profileImage.index;
+      }
+      var res =
+          await apiProvider.imageService.addImages([profileImageFile!.path]);
+      switch (res.statusCode) {
+        case 400:
+        case 401:
+          {
+            DialogDefault.alert(
+                title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+                content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+          }
+        case 409:
+          {
+            DialogDefault.alert(
+                title: '중복된 이미지가 존재합니다.', content: '다른 프로필 사진으로 변경해주세요.');
+            _step.value = Steps.profileImage.index;
+          }
+      }
+    } catch (error) {
+      DialogDefault.alert(
+          title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+          content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+      rethrow;
+    }
+
     localStorage.setBool('enableSelectMyInfo', false);
     localStorage.setBool('enableGuide', false);
-    // 회원가입
-
-    // 사진 생성
-    // _profileImageFile
-    // setting
-    localStorage.setString('user.profileImageUrl', _profileImageUrl.value);
   }
 
   void prev() {
-    if (_step.value == 0) {
+    if (_step.value == Steps.sex.index) {
       Get.toNamed('/guide');
       return;
     }
@@ -134,23 +197,22 @@ class CtlSelectMyInfo extends GetxController {
   }
 
   void next() {
-    if (_step.value == 0) {
+    int prevStep = _step.value;
+    if (prevStep == Steps.sex.index) {
       localStorage.setString('user.sex', _sex.value);
-    } else if (_step.value == 1) {
+    } else if (prevStep == Steps.birthday.index) {
       localStorage.setString('user.birthDay', _birthDay.value.toString());
-    } else if (_step.value == 2) {
+    } else if (prevStep == Steps.location.index) {
       localStorage.setString('user.location', _location.value);
-    } else if (_step.value == 3) {
-      List<String> interests = [];
-      for (String interest in _myInterests) {
-        interests.add(interest);
-      }
-      localStorage.setStringList('user.myInterests', interests);
-    } else if (_step.value == 4) {
+    } else if (prevStep == Steps.myInterests.index) {
+      localStorage.setStringList('user.myInterests',
+          _myInterests.map((element) => element.toString()).toList());
+    } else if (prevStep == Steps.purpose.index) {
       localStorage.setString('user.purpose', _purpose.value);
-    } else if (_step.value == 5) {
+    } else if (prevStep == Steps.nickname.index) {
       localStorage.setString('user.nickname', _nickname.value);
-    } else if (_step.value == 6) {
+    } else if (prevStep == Steps.profileImage.index) {
+      // NOTE: 이미지는 용량 이슈로 인해 메모리에만 저장해둔다.
       createNewUser();
     }
 
