@@ -35,6 +35,7 @@ class UtilImageSelection {
           source: ImageSource.gallery, imageQuality: 30);
       return image;
     } on PlatformException catch (error) {
+      // HACK: 가상머신에서는 이미지 업로드 안되는 이슈가 있는듯함...
       DialogDefault.alert(
           title: '사진 접근 권한을 허용해주세요.', content: '사진 접근 권한을 허용해야 사진을 넣을 수 있어요.');
       AppSettings.openAppSettings();

@@ -31,6 +31,7 @@ class CtlSelectMyInfo extends GetxController {
   final Rx<String> _nickname = ''.obs;
   final RxBool _isLoading = false.obs;
   final Rx<String> _profileImageFileString = ''.obs;
+  late List<String> _profileImageUrls;
   XFile? profileImageFile;
 
   @override
@@ -42,6 +43,7 @@ class CtlSelectMyInfo extends GetxController {
         localStorage.storage.getStringList('user.myInterests') ?? [];
     _purpose.value = localStorage.storage.getString('user.purpose') ?? '';
     _nickname.value = localStorage.storage.getString('user.nickname') ?? '';
+    _profileImageUrls = localStorage.storage.getStringList('user.profileImageUrl') ?? [];
     try {
       _birthDay.value =
           DateTime.parse(localStorage.storage.getString('user.birthDay') ?? '');
@@ -109,7 +111,7 @@ class CtlSelectMyInfo extends GetxController {
       _myInterests.isEmpty,
       _purpose.value.isEmpty,
       _nickname.value.isEmpty,
-      profileImageFile == null,
+      _profileImageUrls.isEmpty,
     ].indexed) {
       if (value) return index;
     }
@@ -157,12 +159,12 @@ class CtlSelectMyInfo extends GetxController {
     // 사진 저장
     try {
       if (profileImageFile == null) {
-        DialogDefault.alert(title: '프로파일 이미지가 존재하지 않습니다.');
+        DialogDefault.alert(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
         _step.value = Steps.profileImage.index;
       }
       var res =
           await apiProvider.imageService.addImages([profileImageFile!.path]);
-      switch (res.statusCode) {
+      switch (res["statusCode"]) {
         case 400:
         case 401:
           {
@@ -177,15 +179,15 @@ class CtlSelectMyInfo extends GetxController {
             _step.value = Steps.profileImage.index;
           }
       }
+      localStorage.setStringList('user.profileImageUrl', List<String>.from(res["urls"]));
+      localStorage.setBool('enableSelectMyInfo', false);
+      localStorage.setBool('enableGuide', false);
     } catch (error) {
       DialogDefault.alert(
           title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
           content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
       rethrow;
     }
-
-    localStorage.setBool('enableSelectMyInfo', false);
-    localStorage.setBool('enableGuide', false);
   }
 
   void prev() {
@@ -212,7 +214,7 @@ class CtlSelectMyInfo extends GetxController {
     } else if (prevStep == Steps.nickname.index) {
       localStorage.setString('user.nickname', _nickname.value);
     } else if (prevStep == Steps.profileImage.index) {
-      // NOTE: 이미지는 용량 이슈로 인해 메모리에만 저장해둔다.
+      // NOTE: 이미지는 용량 이슈로 인해 유저 생성시 이미지 로컬스토리지에 저장.
       createNewUser();
     }
 

@@ -15,8 +15,7 @@ class ApiImageService {
       }).toList()
     });
 
-    var apiResponse =
-        await api.post<Map<String, dynamic>>('/images', data: data);
+    var apiResponse = await api.post('/images', data: data);
     Map<String, dynamic> result = {
       "statusCode": apiResponse.statusCode,
       "userId": apiResponse.data?['userId'] ?? '',
