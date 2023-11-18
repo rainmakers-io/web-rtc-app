@@ -757,7 +757,8 @@ class Photo extends GetView<CtlSelectMyInfo> {
     const sizeLimit10Mb = 10 * 1024 * 1024;
     if (File(file.path).lengthSync() >= sizeLimit10Mb) {
       DialogDefault.alert(
-          title: '이미지 용량은 10MB를 넘을 수 없습니다.', content: '이미지 크기를 줄이거나 다른 이미지를 넣어주세요.');
+          title: '이미지 용량은 10MB를 넘을 수 없습니다.',
+          content: '이미지 크기를 줄이거나 다른 이미지를 넣어주세요.');
       return;
     }
     controller.profileImageFile = file;
@@ -900,16 +901,77 @@ class Welcome extends GetView<CtlSelectMyInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         child: Column(
-      children: [
-        const Text('환영합니다.'),
-        FilledButton(
-            // TODO: 서버 전송이 완료되면 활성화되도록 수정
-            onPressed: () => Get.offAllNamed('/home'),
-            child: const Text('다음'))
-      ],
-    ));
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Image(
+                    height: 52,
+                    width: 47,
+                    image: AssetImage('assets/images/haze-logo-icon.png')),
+                const SizedBox(
+                  height: 16,
+                ),
+                Obx(() => Text("${controller.nickname.value}님",
+                    style: const TextStyle(
+                        color: Color(ColorGrayScale.d9),
+                        fontSize: FontTitleBold02.size,
+                        fontWeight: FontTitleBold02.weight))),
+                const SizedBox(
+                  height: 4,
+                ),
+                const Row(
+                  children: [
+                    Text("Haze에 오신것을 환영해요!",
+                        style: TextStyle(
+                            color: Color(ColorGrayScale.d9),
+                            fontSize: FontTitleBold02.size,
+                            fontWeight: FontTitleBold02.weight)),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Image(
+                        height: 24,
+                        width: 24,
+                        image: AssetImage('assets/images/party-popper.png')),
+                  ],
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                const Text("아래 4 가지만 약속해요.",
+                    style: TextStyle(
+                        color: Color(ColorGrayScale.d9),
+                        fontSize: FontCaptionMedium01.size,
+                        fontWeight: FontCaptionMedium01.weight)),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Image(
+                    height: 388,
+                    width: 342,
+                    image: AssetImage('assets/images/promise-content.png')),
+              ],
+            ),
+            Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  bottom: 28,
+                ),
+                child: AtomFillButton(
+                  onPressed: () {
+                    Get.offAllNamed('/home');
+                  },
+                  text: '동의합니다',
+                ))
+          ],
+        ));
   }
 }
 
