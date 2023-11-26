@@ -4,7 +4,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:web_rtc_app/widgets/dialog/Default.dart';
+import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 
 class UtilImageSelection {
   static final UtilImageSelection _instance = UtilImageSelection._();
@@ -36,7 +36,7 @@ class UtilImageSelection {
       return image;
     } on PlatformException catch (error) {
       // HACK: 가상머신에서는 이미지 업로드 안되는 이슈가 있는듯함...
-      DialogDefault.alert(
+      DialogAlertDefault.show(
           title: '사진 접근 권한을 허용해주세요.', content: '사진 접근 권한을 허용해야 사진을 넣을 수 있어요.');
       AppSettings.openAppSettings();
     }

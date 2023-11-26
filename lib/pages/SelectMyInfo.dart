@@ -12,7 +12,7 @@ import 'package:web_rtc_app/utils/ImageSelection.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
 import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
-import 'package:web_rtc_app/widgets/dialog/Default.dart';
+import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 
 class Sex extends GetView<CtlSelectMyInfo> {
   const Sex({super.key});
@@ -756,7 +756,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
     // 용량 제한 예외처리
     const sizeLimit10Mb = 10 * 1024 * 1024;
     if (File(file.path).lengthSync() >= sizeLimit10Mb) {
-      DialogDefault.alert(
+      DialogAlertDefault.show(
           title: '이미지 용량은 10MB를 넘을 수 없습니다.',
           content: '이미지 크기를 줄이거나 다른 이미지를 넣어주세요.');
       return;

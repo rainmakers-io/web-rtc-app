@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
-import 'package:web_rtc_app/widgets/dialog/Default.dart';
+import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 
 late CtlSelectMyInfo ctlSelectMyInfo;
 
@@ -148,13 +148,13 @@ class CtlSelectMyInfo extends GetxController {
         case 500:
           {
             // 데이터 포맷 에러
-            DialogDefault.alert(
+            DialogAlertDefault.show(
                 title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
                 content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
           }
       }
     } catch (error) {
-      DialogDefault.alert(
+      DialogAlertDefault.show(
           title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
           content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
       rethrow;
@@ -162,7 +162,7 @@ class CtlSelectMyInfo extends GetxController {
     // 사진 저장
     try {
       if (profileImageFile == null) {
-        DialogDefault.alert(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
+        DialogAlertDefault.show(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
         _step.value = Steps.profileImage.index;
       }
       var res =
@@ -171,13 +171,13 @@ class CtlSelectMyInfo extends GetxController {
         case 400:
         case 401:
           {
-            DialogDefault.alert(
+            DialogAlertDefault.show(
                 title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
                 content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
           }
         case 409:
           {
-            DialogDefault.alert(
+            DialogAlertDefault.show(
                 title: '중복된 이미지가 존재합니다.', content: '다른 프로필 사진으로 변경해주세요.');
             _step.value = Steps.profileImage.index;
           }
@@ -187,7 +187,7 @@ class CtlSelectMyInfo extends GetxController {
       localStorage.setBool('enableSelectMyInfo', false);
       localStorage.setBool('enableGuide', false);
     } catch (error) {
-      DialogDefault.alert(
+      DialogAlertDefault.show(
           title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
           content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
       rethrow;
