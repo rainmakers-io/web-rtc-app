@@ -43,11 +43,14 @@ class CtlSelectMyInfo extends GetxController {
         localStorage.storage.getStringList('user.myInterests') ?? [];
     _purpose.value = localStorage.storage.getString('user.purpose') ?? '';
     _nickname.value = localStorage.storage.getString('user.nickname') ?? '';
-    _profileImageUrls = localStorage.storage.getStringList('user.profileImageUrl') ?? [];
+    _profileImageUrls =
+        localStorage.storage.getStringList('user.profileImageUrl') ?? [];
     try {
       _birthDay.value =
           DateTime.parse(localStorage.storage.getString('user.birthDay') ?? '');
-    } catch (e) {}
+    } catch (e) {
+      rethrow;
+    }
     _step.value = currentStep();
   }
 
@@ -179,7 +182,8 @@ class CtlSelectMyInfo extends GetxController {
             _step.value = Steps.profileImage.index;
           }
       }
-      localStorage.setStringList('user.profileImageUrl', List<String>.from(res["urls"]));
+      localStorage.setStringList(
+          'user.profileImageUrl', List<String>.from(res["urls"]));
       localStorage.setBool('enableSelectMyInfo', false);
       localStorage.setBool('enableGuide', false);
     } catch (error) {

@@ -10,10 +10,16 @@ import 'package:permission_handler/permission_handler.dart';
 late CtlMatchingRoom ctlMatchingRoom;
 
 class CtlMatchingRoom extends SuperController {
+  final Rx<String> _sex = ''.obs;
+
   MatchingSignaling? _signaling;
   final RTCVideoRenderer localRenderer = RTCVideoRenderer();
   var inCalling = false.obs;
   var ableMatching = false.obs;
+
+  get sex {
+    return _sex;
+  }
 
   void initRenderer() async {
     await localRenderer.initialize();
@@ -43,11 +49,12 @@ class CtlMatchingRoom extends SuperController {
     if (await isGrantedAllPermissions()) {
       initRenderer();
       _signaling ??= MatchingSignaling()..connect();
-      _signaling?.init();
-      _signaling?.onLocalStream = ((stream) {
-        localRenderer.srcObject = stream;
-        ableMatching.value = true;
-      });
+      _signaling
+        ?..init()
+        ..onLocalStream = ((stream) {
+          localRenderer.srcObject = stream;
+          ableMatching.value = true;
+        });
       inCalling.value = true;
     }
   }

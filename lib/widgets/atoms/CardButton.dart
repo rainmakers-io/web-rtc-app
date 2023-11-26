@@ -6,6 +6,7 @@ class AtomCardButton extends StatelessWidget {
   final Widget child;
   final Color backgroundColor;
   final Color borderColor;
+  final EdgeInsets padding;
 
   const AtomCardButton({
     super.key,
@@ -13,6 +14,7 @@ class AtomCardButton extends StatelessWidget {
     required this.child,
     this.backgroundColor = Colors.transparent,
     this.borderColor = const Color(ColorContent.content3),
+    this.padding = const EdgeInsets.all(24.0),
   });
 
   @override
@@ -21,8 +23,7 @@ class AtomCardButton extends StatelessWidget {
         child: Container(
             decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
-              side: BorderSide(
-                  width: 1, color: borderColor),
+              side: BorderSide(width: 1, color: borderColor),
               borderRadius: BorderRadius.circular(8),
             )),
             child: TextButton(
@@ -30,12 +31,12 @@ class AtomCardButton extends StatelessWidget {
                     overlayColor: MaterialStateProperty.all(backgroundColor),
                     backgroundColor: MaterialStatePropertyAll(backgroundColor),
                     padding: const MaterialStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 20))),
+                        EdgeInsets.symmetric(vertical: 20.0))),
                 onPressed: () {
                   onPressed();
                 },
                 child: Padding(
-                    padding: const EdgeInsets.all(24),
+                    padding: padding,
                     child: Center(child: child)))));
   }
 }

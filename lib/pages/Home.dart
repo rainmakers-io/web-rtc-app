@@ -20,11 +20,9 @@ class PageHome extends GetView<CtlHome> {
             NavigationDestination(icon: Icon(Icons.abc_sharp), label: '')
           ],
         ),
-        body: SafeArea(
-          child: [
-            PageMatchingRoom(),
-            PageMyInfo()
-          ][controller.currentPageIndex.value],
-        )));
+        body: [
+          const PageMatchingRoom(),
+          const PageMyInfo()
+        ][controller.currentPageIndex.value]));
   }
 }
