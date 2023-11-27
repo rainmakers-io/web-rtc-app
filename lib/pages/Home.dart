@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/pages/MatchingRoom.dart';
 import 'package:web_rtc_app/pages/MyInfo.dart';
+import 'package:web_rtc_app/utils/Colors.dart';
 
 class PageHome extends GetView<CtlHome> {
   const PageHome({super.key});
@@ -10,18 +11,57 @@ class PageHome extends GetView<CtlHome> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (int index) {
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: const Color(ColorContent.content1),
+          onTap: (int index) {
             controller.currentPageIndex.value = index;
           },
-          selectedIndex: controller.currentPageIndex.value,
-          destinations: const <Widget>[
-            NavigationDestination(icon: Icon(Icons.home), label: ''),
-            NavigationDestination(icon: Icon(Icons.abc_sharp), label: '')
+          currentIndex: controller.currentPageIndex.value,
+          items: [
+            BottomNavigationBarItem(
+                activeIcon: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: const Color(ColorBase.primary)
+                                .withOpacity(0.49),
+                            spreadRadius: 2,
+                            blurRadius: 25)
+                      ],
+                    ),
+                    child: const Image(
+                        height: 25,
+                        width: 25,
+                        image: AssetImage('assets/images/my-home-fill.png'))),
+                icon: const Image(
+                    height: 25,
+                    width: 25,
+                    image: AssetImage('assets/images/my-home.png')),
+                label: ''),
+            BottomNavigationBarItem(
+                activeIcon: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: const Color(ColorBase.primary)
+                                .withOpacity(0.49),
+                            spreadRadius: 2,
+                            blurRadius: 25)
+                      ],
+                    ),
+                    child: const Image(
+                        height: 25,
+                        width: 25,
+                        image: AssetImage('assets/images/my-page-fill.png'))),
+                icon: const Image(
+                    height: 25,
+                    width: 25,
+                    image: AssetImage('assets/images/my-page.png')),
+                label: '')
           ],
         ),
         body: [
-          const PageMatchingRoom(),
+          PageMatchingRoom(),
           const PageMyInfo()
         ][controller.currentPageIndex.value]));
   }

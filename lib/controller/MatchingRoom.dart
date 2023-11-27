@@ -11,6 +11,7 @@ late CtlMatchingRoom ctlMatchingRoom;
 
 class CtlMatchingRoom extends SuperController {
   final Rx<String> _sex = ''.obs;
+  final _isStartAnimation = false.obs;
 
   MatchingSignaling? _signaling;
   final RTCVideoRenderer localRenderer = RTCVideoRenderer();
@@ -19,6 +20,10 @@ class CtlMatchingRoom extends SuperController {
 
   get sex {
     return _sex;
+  }
+
+  get isStartAnimation {
+    return _isStartAnimation;
   }
 
   void initRenderer() async {
