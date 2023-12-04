@@ -103,9 +103,35 @@ class PageMatchingRoom extends GetView<CtlMatchingRoom> {
                                 .RTCVideoViewObjectFitCover,
                           )),
                       Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.all(16),
+                                  width: 40,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      // TODO: 필터 열기
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12)),
+                                      padding: const EdgeInsets.all(8),
+                                      backgroundColor: const Color(0x8C18181B),
+                                    ),
+                                    child: const Image(
+                                        image: AssetImage(
+                                            'assets/images/filter.png')),
+                                  ),
+                                ),
+                              ],
+                            ),
                             Padding(
                                 padding: const EdgeInsets.all(24),
                                 child: AtomFillButton(
