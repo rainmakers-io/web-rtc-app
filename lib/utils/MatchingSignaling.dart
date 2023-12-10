@@ -40,7 +40,7 @@ class MatchingSignaling {
       localStream = stream;
       onLocalStream?.call(stream);
     } catch (error) {
-      print(error);
+      rethrow;
     }
   }
 

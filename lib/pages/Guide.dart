@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:web_rtc_app/controller/Guide.dart';
-import 'package:web_rtc_app/utils/Fonts.dart';
+import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
-import 'package:web_rtc_app/utils/Colors.dart';
+import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 
 class Guide1 extends StatelessWidget {

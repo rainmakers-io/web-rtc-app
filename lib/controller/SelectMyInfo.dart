@@ -159,6 +159,10 @@ class CtlSelectMyInfo extends GetxController {
           content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
       rethrow;
     }
+    
+    // TODO: 로그인
+
+
     // 사진 저장
     try {
       if (profileImageFile == null) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:web_rtc_app/utils/Colors.dart';
-import 'package:web_rtc_app/utils/Fonts.dart';
+import 'package:web_rtc_app/constants/Colors.dart';
+import 'package:web_rtc_app/constants/Fonts.dart';
 
 class AtomFillButton extends StatelessWidget {
   final Function onPressed;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_rtc_app/utils/Colors.dart';
+import 'package:web_rtc_app/constants/Colors.dart';
 
 class AtomCardButton extends StatelessWidget {
   final Function onPressed;

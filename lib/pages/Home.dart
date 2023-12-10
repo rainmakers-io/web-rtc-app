@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/pages/MatchingRoom.dart';
 import 'package:web_rtc_app/pages/MyInfo.dart';
-import 'package:web_rtc_app/utils/Colors.dart';
+import 'package:web_rtc_app/constants/Colors.dart';
 
 class PageHome extends GetView<CtlHome> {
   const PageHome({super.key});
