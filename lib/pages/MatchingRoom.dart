@@ -5,10 +5,11 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:web_rtc_app/controller/MatchingRoom.dart';
-import 'package:web_rtc_app/utils/Colors.dart';
-import 'package:web_rtc_app/utils/Fonts.dart';
+import 'package:web_rtc_app/constants/Colors.dart';
+import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetChooseTarget.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
+import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingFilter.dart';
 
 class SlideAnimation extends StatefulWidget {
   Widget child;
@@ -56,7 +57,7 @@ class _SlideAnimation extends State<SlideAnimation>
 }
 
 class PageMatchingRoom extends GetView<CtlMatchingRoom> {
-  late AnimationController _controller;
+  late AnimationController _animationController;
 
   PageMatchingRoom({super.key});
 
@@ -84,8 +85,9 @@ class PageMatchingRoom extends GetView<CtlMatchingRoom> {
                 onVisibilityChanged: (info) {
                   controller.isStartAnimation.value = false;
                   DialogBottomSheetChooseTarget.show(context,
-                      onPressedNext: (targetSex) {
-                    _controller.forward();
+                      sex: controller.sex.value, onPressedNext: (targetSex) {
+                    controller.saveMatchingFilters(sex: targetSex);
+                    _animationController.forward();
                     controller.isStartAnimation.value = true;
                   });
                   controller.onVisible(info);
@@ -116,7 +118,17 @@ class PageMatchingRoom extends GetView<CtlMatchingRoom> {
                                   height: 40,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // TODO: 필터 열기
+                                      DialogBottomSheetMatchingFilter.show(
+                                          context,
+                                          next: (sex, location, ageRange) {
+                                        controller.saveMatchingFilters(
+                                            sex: sex,
+                                            location: location,
+                                            ageRange: ageRange);
+                                      },
+                                          sex: controller.sex.value,
+                                          location: controller.location.value,
+                                          ageRange: controller.ageRange.value);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
@@ -139,7 +151,7 @@ class PageMatchingRoom extends GetView<CtlMatchingRoom> {
                                     text: '지금 만나기!'))
                           ]),
                       SlideAnimation(
-                          onInit: (ctl) => _controller = ctl,
+                          onInit: (ctl) => _animationController = ctl,
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Column(

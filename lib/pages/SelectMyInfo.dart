@@ -5,9 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:get/get.dart';
+import 'package:web_rtc_app/constants/User.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
-import 'package:web_rtc_app/utils/Colors.dart';
-import 'package:web_rtc_app/utils/Fonts.dart';
+import 'package:web_rtc_app/constants/Colors.dart';
+import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/utils/ImageSelection.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
@@ -189,9 +190,7 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
 }
 
 class Location extends GetView<CtlSelectMyInfo> {
-  Location({super.key});
-
-  final locations = ['서울', '경기'];
+  const Location({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -233,15 +232,17 @@ class Location extends GetView<CtlSelectMyInfo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Obx(() => AtomCardButton(
-                          borderColor: controller.location.value == locations[0]
+                          borderColor: controller.location.value ==
+                                  ConstantUser.locations[0].$2
                               ? const Color(ColorBase.primary)
                               : const Color(ColorContent.content3),
                           backgroundColor: controller.location.value ==
-                                  locations[0]
+                                  ConstantUser.locations[0].$2
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
                           onPressed: () {
-                            controller.location.value = locations[0];
+                            controller.location.value =
+                                ConstantUser.locations[0].$2;
                           },
                           child: const Text(
                             '서울',
@@ -255,15 +256,17 @@ class Location extends GetView<CtlSelectMyInfo> {
                         width: 16,
                       ),
                       Obx(() => AtomCardButton(
-                          borderColor: controller.location.value == locations[1]
+                          borderColor: controller.location.value ==
+                                  ConstantUser.locations[1].$2
                               ? const Color(ColorBase.primary)
                               : const Color(ColorContent.content3),
                           backgroundColor: controller.location.value ==
-                                  locations[1]
+                                  ConstantUser.locations[1].$2
                               ? const Color(ColorBase.primary).withOpacity(0.33)
                               : Colors.transparent,
                           onPressed: () {
-                            controller.location.value = locations[1];
+                            controller.location.value =
+                                ConstantUser.locations[1].$2;
                           },
                           child: const Column(children: [
                             Text(
@@ -379,7 +382,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
                 Obx(() => Container(
                     margin: const EdgeInsets.only(bottom: 24, top: 8),
                     child: Text(
-                        '${controller.myInterests.length}/${interestLimit}',
+                        '${controller.myInterests.length}/$interestLimit',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             color: Color(ColorGrayScale.bf),

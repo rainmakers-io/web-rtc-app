@@ -4,6 +4,8 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wakelock/wakelock.dart';
+import 'package:web_rtc_app/constants/User.dart';
+import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/utils/MatchingSignaling.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -11,6 +13,8 @@ late CtlMatchingRoom ctlMatchingRoom;
 
 class CtlMatchingRoom extends SuperController {
   final Rx<String> _sex = ''.obs;
+  final Rx<String> _location = ''.obs;
+  final RxList<String> _ageRange = ['14', '99'].obs;
   final _isStartAnimation = false.obs;
 
   MatchingSignaling? _signaling;
@@ -20,6 +24,14 @@ class CtlMatchingRoom extends SuperController {
 
   get sex {
     return _sex;
+  }
+
+  get location {
+    return _location;
+  }
+
+  get ageRange {
+    return _ageRange;
   }
 
   get isStartAnimation {
@@ -47,6 +59,32 @@ class CtlMatchingRoom extends SuperController {
     return true;
   }
 
+  void initMatchingFilters() {
+    _location.value = localStorage.storage.getString('matching.location') ??
+        localStorage.storage.getString('user.location') ??
+        ConstantUser.locations[0].$2;
+    _ageRange.value =
+        localStorage.storage.getStringList('matching.ageRange') ?? ['14', '99'];
+    _sex.value = localStorage.storage.getString('matching.sex') ??
+        ConstantUser.sexOptions[0].$1;
+  }
+
+  void saveMatchingFilters(
+      {String? sex, String? location, List<String>? ageRange}) {
+    if (sex != null) {
+      localStorage.storage.setString('matching.sex', sex);
+      _sex.value = sex;
+    }
+    if (location != null) {
+      localStorage.storage.setString('matching.location', location);
+      _location.value = location;
+    }
+    if (ageRange != null) {
+      localStorage.storage.setStringList('matching.ageRange', ageRange);
+      _ageRange.value = ageRange;
+    }
+  }
+
   void onVisible(VisibilityInfo info) async {
     if (GetPlatform.isMobile) {
       Wakelock.enable();
@@ -67,13 +105,12 @@ class CtlMatchingRoom extends SuperController {
   @override
   void onInit() {
     super.onInit();
-    print("init");
+    initMatchingFilters();
   }
 
   @override
   void onReady() async {
     super.onReady();
-    print("ready");
   }
 
   @override
@@ -97,7 +134,7 @@ class CtlMatchingRoom extends SuperController {
       localRenderer.dispose();
       localRenderer.srcObject = null;
     } catch (e) {
-      print(e.toString());
+      rethrow;
     }
   }
 

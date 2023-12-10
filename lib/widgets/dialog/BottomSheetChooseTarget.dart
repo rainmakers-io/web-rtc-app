@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:web_rtc_app/utils/Colors.dart';
-import 'package:web_rtc_app/utils/Fonts.dart';
+import 'package:web_rtc_app/constants/Colors.dart';
+import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 
-List<(String, String)> targets = [
-  ('ALL', '모두'),
-  ('FEMALE', '여자'),
-  ('MAIL', '남자')
-];
+List<String> targets = ['ALL', 'FEMALE', 'MAIL'];
+List<String> targetValues = ['모두', '여자', '남자'];
 
 class DialogBottomSheetChooseTarget {
   static show(BuildContext context,
-      {required Function(String targetSex) onPressedNext}) {
-    String sex = targets[0].$1;
+      {required Function(String targetSex) onPressedNext, required sex}) {
+    String targetSex = sex;
 
     return showModalBottomSheet(
         enableDrag: false,
@@ -22,30 +19,27 @@ class DialogBottomSheetChooseTarget {
           return StatefulBuilder(builder: (context, setState) {
             onChange(String value) {
               setState(() {
-                sex = value;
+                targetSex = value;
               });
             }
 
             return BottomSheet(
-              sex: sex,
+              sex: targetSex,
               onChange: onChange,
-              onPressedNext: onPressedNext,
             );
           });
-        }).whenComplete(() => onPressedNext(sex));
+        }).whenComplete(() => onPressedNext(targetSex));
   }
 }
 
 class BottomSheet extends StatelessWidget {
   final String sex;
   final Function(String targetSex) onChange;
-  final Function(String targetSex) onPressedNext;
 
   const BottomSheet({
     super.key,
     required this.sex,
     required this.onChange,
-    required this.onPressedNext,
   });
 
   @override
@@ -74,15 +68,15 @@ class BottomSheet extends StatelessWidget {
                       children: [
                         AtomCardButton(
                             padding: const EdgeInsets.symmetric(vertical: 24),
-                            borderColor: sex == targets[0].$1
+                            borderColor: sex == targets[0]
                                 ? const Color(ColorBase.primary)
                                 : const Color(ColorContent.content3),
-                            backgroundColor: sex == targets[0].$1
+                            backgroundColor: sex == targets[0]
                                 ? const Color(ColorBase.primary)
                                     .withOpacity(0.33)
                                 : Colors.transparent,
                             onPressed: () {
-                              onChange(targets[0].$1);
+                              onChange(targets[0]);
                             },
                             child: Column(
                               children: [
@@ -103,7 +97,7 @@ class BottomSheet extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  targets[0].$2,
+                                  targetValues[0],
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                       color: Colors.white,
@@ -116,15 +110,15 @@ class BottomSheet extends StatelessWidget {
                           width: 12,
                         ),
                         AtomCardButton(
-                            borderColor: sex == targets[1].$1
+                            borderColor: sex == targets[1]
                                 ? const Color(ColorBase.primary)
                                 : const Color(ColorContent.content3),
-                            backgroundColor: sex == targets[1].$1
+                            backgroundColor: sex == targets[1]
                                 ? const Color(ColorBase.primary)
                                     .withOpacity(0.33)
                                 : Colors.transparent,
                             onPressed: () {
-                              onChange(targets[1].$1);
+                              onChange(targets[1]);
                             },
                             child: Column(
                               children: [
@@ -135,7 +129,7 @@ class BottomSheet extends StatelessWidget {
                                         'assets/images/woman-red-hair.png')),
                                 const SizedBox(height: 8),
                                 Text(
-                                  targets[1].$2,
+                                  targetValues[1],
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                       color: Colors.white,
@@ -148,15 +142,15 @@ class BottomSheet extends StatelessWidget {
                           width: 12,
                         ),
                         AtomCardButton(
-                            borderColor: sex == targets[2].$1
+                            borderColor: sex == targets[2]
                                 ? const Color(ColorBase.primary)
                                 : const Color(ColorContent.content3),
-                            backgroundColor: sex == targets[2].$1
+                            backgroundColor: sex == targets[2]
                                 ? const Color(ColorBase.primary)
                                     .withOpacity(0.33)
                                 : Colors.transparent,
                             onPressed: () {
-                              onChange(targets[2].$1);
+                              onChange(targets[2]);
                             },
                             child: Column(
                               children: [
@@ -167,7 +161,7 @@ class BottomSheet extends StatelessWidget {
                                         'assets/images/man-blond-hair.png')),
                                 const SizedBox(height: 8),
                                 Text(
-                                  targets[2].$2,
+                                  targetValues[2],
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                       color: Colors.white,
@@ -189,7 +183,6 @@ class BottomSheet extends StatelessWidget {
                         ),
                         child: AtomFillButton(
                           onPressed: () {
-                            onPressedNext(sex);
                             Navigator.of(context).pop();
                           },
                           text: '선택하기',
