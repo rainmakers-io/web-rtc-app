@@ -26,17 +26,19 @@ class AtomCardButton extends StatelessWidget {
               side: BorderSide(width: 1, color: borderColor),
               borderRadius: BorderRadius.circular(8),
             )),
-            child: TextButton(
-                style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all(backgroundColor),
-                    backgroundColor: MaterialStatePropertyAll(backgroundColor),
-                    padding: const MaterialStatePropertyAll(
-                        EdgeInsets.symmetric(vertical: 20.0))),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: backgroundColor,
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1, color: borderColor),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
                 onPressed: () {
                   onPressed();
                 },
-                child: Padding(
-                    padding: padding,
-                    child: Center(child: child)))));
+                child:
+                    Padding(padding: padding, child: Center(child: child)))));
   }
 }
