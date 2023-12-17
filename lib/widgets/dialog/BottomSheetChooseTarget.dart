@@ -5,7 +5,7 @@ import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 
 List<String> targets = ['ALL', 'FEMALE', 'MAIL'];
-List<String> targetValues = ['모두', '여자', '남자'];
+List<String> targetValues = ['모두', '여성', '남성'];
 
 class DialogBottomSheetChooseTarget {
   static show(BuildContext context,
