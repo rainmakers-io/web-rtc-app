@@ -277,7 +277,6 @@ class BottomSheet extends StatelessWidget {
                             ageRange[0],
                             ageRange[1],
                           ),
-                          divisions: 10,
                           min: 14,
                           max: 99,
                         ))
