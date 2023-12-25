@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/Home.dart';
-import 'package:web_rtc_app/pages/MatchingRoom.dart';
+import 'package:web_rtc_app/pages/MatchingBegin.dart';
 import 'package:web_rtc_app/pages/MyInfo.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 
@@ -61,7 +61,7 @@ class PageHome extends GetView<CtlHome> {
           ],
         ),
         body: [
-          PageMatchingRoom(),
+          PageMatchingBegin(),
           const PageMyInfo()
         ][controller.currentPageIndex.value]));
   }

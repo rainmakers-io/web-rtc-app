@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:web_rtc_app/constants/User.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
@@ -8,13 +9,14 @@ import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
 
 class DialogBottomSheetMatchingFilter {
   static show(BuildContext context,
-      {required Function(String sex, String location, List<String> ageRange)
+      {required Function(
+              String sex, List<String> locations, List<String> ageRange)
           next,
       required sex,
-      required location,
+      required locations,
       required ageRange}) {
     String _sex = sex;
-    String _location = location;
+    List _locations = locations;
     List<String> _ageRange = ageRange;
 
     return showModalBottomSheet(
@@ -29,25 +31,17 @@ class DialogBottomSheetMatchingFilter {
               });
             }
 
-            onChangeLocation(String location) {
-              setState(() {
-                _location = location;
-              });
-            }
-
             onChangeAgeRange(List<String> ageRange) {
               setState(() {
                 _ageRange = ageRange;
               });
             }
 
-            // TODO: 파라메터 줄 일수있는 방법 없을까...
             return BottomSheet(
               sex: _sex,
-              location: _location,
+              locations: _locations,
               ageRange: _ageRange,
               onChangeSex: onChangeSex,
-              onChangeLocation: onChangeLocation,
               onChangeAgeRange: onChangeAgeRange,
               onPressedNext: next,
             );
@@ -58,24 +52,36 @@ class DialogBottomSheetMatchingFilter {
 
 class BottomSheet extends StatelessWidget {
   final String sex;
-  final String location;
+  final List locations;
   final List<String> ageRange;
   final Function(String sex) onChangeSex;
-  final Function(String location) onChangeLocation;
   final Function(List<String> ageRange) onChangeAgeRange;
-  final Function(String sex, String location, List<String> ageRange)
+  final Function(String sex, List<String> locations, List<String> ageRange)
       onPressedNext;
+  List<String> dropdownRes = [];
 
-  const BottomSheet({
+  BottomSheet({
     super.key,
     required this.sex,
-    required this.location,
+    required this.locations,
     required this.ageRange,
     required this.onChangeSex,
-    required this.onChangeLocation,
     required this.onChangeAgeRange,
     required this.onPressedNext,
   });
+
+  selectedOptions() {
+    var selected = ConstantUser.locations
+        .map((item) => ValueItem(value: item.$1, label: item.$2))
+        .where((valueItem) => locations.contains(valueItem.label))
+        .toList();
+    if (selected.isEmpty) {
+      return ValueItem(
+          value: ConstantUser.locations[0].$1,
+          label: ConstantUser.locations[0].$2);
+    }
+    return selected;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,27 +131,45 @@ class BottomSheet extends StatelessWidget {
                     const SizedBox(
                       height: 16,
                     ),
-                    DropdownButton(
-                      value: location,
-                      items: ConstantUser.locations
-                          .map((item) => DropdownMenuItem(
-                              value: item.$1, child: Text(item.$2)))
-                          .toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          onChangeLocation(value);
-                        }
+                    MultiSelectDropDown(
+                      showClearIcon: false,
+                      selectedOptions: selectedOptions(),
+                      onOptionSelected: (options) {
+                        dropdownRes = options
+                            .map<String>((item) => item.value as String)
+                            .toList();
                       },
-                      underline: Container(
-                        height: 2,
-                        color: const Color(ColorContent.content3),
-                      ),
-                      dropdownColor: const Color(ColorContent.content3),
-                      isExpanded: true,
-                      style: const TextStyle(
+                      hint: '지역 선택',
+                      hintFontSize: FontBodyBold01.size,
+                      hintStyle: const TextStyle(
                           color: Colors.white,
                           fontSize: FontBodyBold01.size,
                           fontWeight: FontBodyBold01.weight),
+                      borderRadius: 12,
+                      borderColor: const Color(ColorContent.content3),
+                      borderWidth: 1,
+                      options: ConstantUser.locations
+                          .map((item) =>
+                              ValueItem(value: item.$1, label: item.$2))
+                          .toList(),
+                      maxItems: 3,
+                      selectionType: SelectionType.multi,
+                      backgroundColor: const Color(ColorContent.content2),
+                      optionsBackgroundColor:
+                          const Color(ColorContent.content2),
+                      selectedOptionBackgroundColor:
+                          const Color(ColorContent.content2),
+                      chipConfig: const ChipConfig(
+                          backgroundColor: Color(ColorContent.content2)),
+                      selectedOptionTextColor: Colors.white,
+                      dropdownMargin: 5,
+                      dropdownBorderRadius: 12,
+                      dropdownHeight: 95,
+                      optionTextStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: FontBodyBold01.size,
+                          fontWeight: FontBodyBold01.weight),
+                      selectedOptionIcon: const Icon(Icons.check_circle),
                     ),
                     const SizedBox(height: 48),
                     const Text('친구 성별',
@@ -292,7 +316,12 @@ class BottomSheet extends StatelessWidget {
                       ),
                       child: AtomFillButton(
                         onPressed: () {
-                          onPressedNext(sex, location, ageRange);
+                          onPressedNext(
+                              sex,
+                              dropdownRes.isEmpty
+                                  ? [ConstantUser.locations[0].$2]
+                                  : dropdownRes,
+                              ageRange);
                           Navigator.of(context).pop();
                         },
                         text: '적용하기',

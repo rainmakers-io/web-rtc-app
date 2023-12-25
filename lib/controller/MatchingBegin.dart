@@ -9,25 +9,25 @@ import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/utils/MatchingSignaling.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-late CtlMatchingRoom ctlMatchingRoom;
+late CtlMatchingBegin ctlMatchingBegin;
 
-class CtlMatchingRoom extends SuperController {
+class CtlMatchingBegin extends SuperController {
   final Rx<String> _sex = ''.obs;
-  final Rx<String> _location = ''.obs;
+  final _locations = [].obs;
   final RxList<String> _ageRange = ['14', '99'].obs;
   final _isStartAnimation = false.obs;
 
   MatchingSignaling? _signaling;
   final RTCVideoRenderer localRenderer = RTCVideoRenderer();
-  var inCalling = false.obs;
-  var ableMatching = false.obs;
+  final inCalling = false.obs;
+  final ableMatching = false.obs;
 
   get sex {
     return _sex;
   }
 
-  get location {
-    return _location;
+  get locations {
+    return _locations;
   }
 
   get ageRange {
@@ -44,6 +44,12 @@ class CtlMatchingRoom extends SuperController {
 
   startMatching() {
     if (!ableMatching.value) return;
+    // TODO: 에러 어떻게 없앨까?
+    Get.offAndToNamed('/matching', arguments: {
+      'sex': _sex.value,
+      'locations': _locations.value,
+      'ageRange': _ageRange.value
+    });
   }
 
   Future<bool> isGrantedAllPermissions() async {
@@ -60,9 +66,9 @@ class CtlMatchingRoom extends SuperController {
   }
 
   void initMatchingFilters() {
-    _location.value = localStorage.storage.getString('matching.location') ??
-        localStorage.storage.getString('user.location') ??
-        ConstantUser.locations[0].$2;
+    _locations.value =
+        localStorage.storage.getStringList('matching.locations') ??
+            [ConstantUser.locations[0].$2];
     _ageRange.value =
         localStorage.storage.getStringList('matching.ageRange') ?? ['14', '99'];
     _sex.value = localStorage.storage.getString('matching.sex') ??
@@ -70,14 +76,14 @@ class CtlMatchingRoom extends SuperController {
   }
 
   void saveMatchingFilters(
-      {String? sex, String? location, List<String>? ageRange}) {
+      {String? sex, List<String>? locations, List<String>? ageRange}) {
     if (sex != null) {
       localStorage.storage.setString('matching.sex', sex);
       _sex.value = sex;
     }
-    if (location != null) {
-      localStorage.storage.setString('matching.location', location);
-      _location.value = location;
+    if (locations != null) {
+      localStorage.storage.setStringList('matching.locations', locations);
+      _locations.value = locations;
     }
     if (ageRange != null) {
       localStorage.storage.setStringList('matching.ageRange', ageRange);

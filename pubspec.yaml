@@ -48,6 +48,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   flutter_tags: ^1.0.0-nullsafety.1
   dio: ^5.3.3
+  multi_dropdown: ^2.1.2
 
 dev_dependencies:
   flutter_test:
