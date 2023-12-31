@@ -3,22 +3,36 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 import 'package:web_rtc_app/controller/MatchingBegin.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
-import 'package:web_rtc_app/widgets/dialog/BottomSheetChooseTarget.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
+import 'package:web_rtc_app/widgets/dialog/BottomSheetChooseTarget.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingFilter.dart';
 import 'package:web_rtc_app/widgets/molecules/matching-room/SlideAnimation.dart';
 
 class PageMatchingBegin extends GetView<CtlMatchingBegin> {
   late AnimationController _animationController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  PageMatchingBegin({super.key});
+
+  PageMatchingBegin({super.key}) {
+    controller.inCalling.listen((value) {
+      var ctx = _scaffoldKey.currentContext;
+      if (value && ctx != null) {
+        DialogBottomSheetChooseTarget.show(ctx, sex: controller.sex.value,
+            onPressedNext: (targetSex) {
+          controller.saveMatchingFilters(sex: targetSex);
+          _animationController.forward();
+          controller.isStartAnimation.value = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    controller.onVisible();
+
     return Obx(() => Scaffold(
         key: _scaffoldKey,
         backgroundColor: const Color(ColorContent.content1),
@@ -37,29 +51,20 @@ class PageMatchingBegin extends GetView<CtlMatchingBegin> {
           ),
         ),
         body: SafeArea(
-            child: VisibilityDetector(
-          key: const Key('page-matching-begin'),
-          onVisibilityChanged: (info) {
-            controller.isStartAnimation.value = false;
-            DialogBottomSheetChooseTarget.show(_scaffoldKey.currentContext!,
-                sex: controller.sex.value, onPressedNext: (targetSex) {
-              controller.saveMatchingFilters(sex: targetSex);
-              _animationController.forward();
-              controller.isStartAnimation.value = true;
-            });
-            controller.onVisible(info);
-          },
           child: Container(
               padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
               child: Stack(
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: RTCVideoView(
-                        controller.localRenderer,
-                        objectFit:
-                            RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                      )),
+                      child: controller.inCalling.value
+                          ? RTCVideoView(
+                              controller.localRenderer,
+                              mirror: true,
+                              objectFit: RTCVideoViewObjectFit
+                                  .RTCVideoViewObjectFitCover,
+                            )
+                          : const SizedBox()),
                   Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -101,11 +106,16 @@ class PageMatchingBegin extends GetView<CtlMatchingBegin> {
                         Padding(
                             padding: const EdgeInsets.all(24),
                             child: AtomFillButton(
-                                onPressed: controller.startMatching,
+                                onPressed: () {
+                                  _animationController.dispose();
+                                  controller.startMatching();
+                                },
                                 text: '지금 만나기!'))
                       ]),
                   SlideAnimation(
-                      onInit: (ctl) => _animationController = ctl,
+                      onInit: (ctl) {
+                        _animationController = ctl;
+                      },
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Column(
@@ -134,6 +144,6 @@ class PageMatchingBegin extends GetView<CtlMatchingBegin> {
                           ))),
                 ],
               )),
-        ))));
+        )));
   }
 }

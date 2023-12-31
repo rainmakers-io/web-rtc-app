@@ -2,9 +2,9 @@ import 'dart:core';
 
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:web_rtc_app/constants/User.dart';
+import 'package:web_rtc_app/pages/Matching.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/utils/MatchingSignaling.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,9 +18,8 @@ class CtlMatchingBegin extends SuperController {
   final _isStartAnimation = false.obs;
 
   MatchingSignaling? _signaling;
-  final RTCVideoRenderer localRenderer = RTCVideoRenderer();
-  final inCalling = false.obs;
-  final ableMatching = false.obs;
+  late RTCVideoRenderer localRenderer;
+  final _inCalling = false.obs;
 
   get sex {
     return _sex;
@@ -38,14 +37,18 @@ class CtlMatchingBegin extends SuperController {
     return _isStartAnimation;
   }
 
+  get inCalling {
+    return _inCalling;
+  }
+
   void initRenderer() async {
+    localRenderer = RTCVideoRenderer();
     await localRenderer.initialize();
   }
 
   startMatching() {
-    if (!ableMatching.value) return;
-    // TODO: 에러 어떻게 없앨까?
-    Get.offAndToNamed('/matching', arguments: {
+    off();
+    Get.off(const PageMatching(), arguments: {
       'sex': _sex.value,
       'locations': _locations.value,
       'ageRange': _ageRange.value
@@ -91,20 +94,19 @@ class CtlMatchingBegin extends SuperController {
     }
   }
 
-  void onVisible(VisibilityInfo info) async {
+  void onVisible() async {
     if (GetPlatform.isMobile) {
       Wakelock.enable();
     }
     if (await isGrantedAllPermissions()) {
       initRenderer();
-      _signaling ??= MatchingSignaling()..connect();
-      _signaling
-        ?..init()
+      _signaling = MatchingSignaling()
+        ..connect()
+        ..init()
         ..onLocalStream = ((stream) {
           localRenderer.srcObject = stream;
-          ableMatching.value = true;
         });
-      inCalling.value = true;
+      _inCalling.value = true;
     }
   }
 
@@ -126,19 +128,17 @@ class CtlMatchingBegin extends SuperController {
     if (GetPlatform.isMobile) {
       Wakelock.disable();
     }
-    if (inCalling.value) {
-      off();
-    }
+    off();
   }
 
   void off() async {
     try {
-      if (inCalling.value) {
-        _signaling?.dispose();
-        inCalling.value = false;
-      }
+      _signaling?.dispose();
+      _signaling = null;
+      _inCalling.value = false;
       localRenderer.dispose();
       localRenderer.srcObject = null;
+      _isStartAnimation.value = false;
     } catch (e) {
       rethrow;
     }

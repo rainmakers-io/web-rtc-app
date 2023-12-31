@@ -27,12 +27,13 @@ class MatchingSignaling {
       var stream = await navigator.mediaDevices.getUserMedia({
         'audio': true,
         'video': {
+          'facingMode': 'user',
           'mandatory': {
             'minWidth':
                 '640', // Provide your own width, height and frame rate here
             'minHeight': '480',
             'minFrameRate': '30',
-          },
+          }
         }
       });
 
@@ -42,6 +43,14 @@ class MatchingSignaling {
     } catch (error) {
       rethrow;
     }
+  }
+
+  Future<bool?> switchCamera() async {
+    var stream = localStream;
+    if (stream != null) {
+      return await Helper.switchCamera(stream.getTracks()[0]);
+    }
+    return null;
   }
 
   dispose() {

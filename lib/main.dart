@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/controller/Guide.dart';
 import 'package:web_rtc_app/controller/Home.dart';
+import 'package:web_rtc_app/controller/Matching.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
-import 'package:web_rtc_app/controller/MatchingBeginRoom.dart';
+import 'package:web_rtc_app/controller/MatchingBegin.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Health.dart';
 import 'package:web_rtc_app/pages/Home.dart';
@@ -80,7 +81,8 @@ class RootApp extends StatelessWidget {
       ],
       initialBinding: BindingsBuilder(() {
         ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
-        ctlMatchingBeginRoom = Get.put<CtlMatchingBeginRoom>(CtlMatchingBeginRoom());
+        ctlMatchingBegin = Get.put<CtlMatchingBegin>(CtlMatchingBegin());
+        ctlMatching = Get.put<CtlMatching>(CtlMatching());
         ctlHome = Get.put<CtlHome>(CtlHome());
         ctlGuide = Get.put<CtlGuide>(CtlGuide());
       }),
