@@ -57,7 +57,7 @@ class RootApp extends StatelessWidget {
     bool enableGuide = localStorage.storage.getBool('enableGuide') ?? true;
     bool enableSelectMyInfo =
         localStorage.storage.getBool('enableSelectMyInfo') ?? true;
-
+    // localStorage.storage.clear();
     if (enableForceUpdate) {
       // TODO: 강제 업데이트 되도록 유도한다.
     } else if (enableGuide) {

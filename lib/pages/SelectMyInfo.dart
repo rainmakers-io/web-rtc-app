@@ -755,15 +755,19 @@ class Photo extends GetView<CtlSelectMyInfo> {
 
   myProfileImage() async {
     var file = await UtilImageSelection().getImage();
-    if (file == null) return;
+    if (file == null) {
+      DialogAlertDefault.show(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
+      return;
+    }
     // 용량 제한 예외처리
-    const sizeLimit10Mb = 10 * 1024 * 1024;
-    if (File(file.path).lengthSync() >= sizeLimit10Mb) {
+    const sizeLimit = 5 * 1024 * 1024;
+    if (File(file.path).lengthSync() >= sizeLimit) {
       DialogAlertDefault.show(
-          title: '이미지 용량은 10MB를 넘을 수 없습니다.',
+          title: '이미지 용량은 5MB를 넘을 수 없습니다.',
           content: '이미지 크기를 줄이거나 다른 이미지를 넣어주세요.');
       return;
     }
+    // NOTE: 이미지는 용량 이슈로 인해 유저 생성시 이미지 로컬스토리지에 저장.
     controller.profileImageFile = file;
     controller.profileImageFileString.value =
         await UtilImageSelection().toBase64(file);
@@ -891,7 +895,19 @@ class Photo extends GetView<CtlSelectMyInfo> {
                     bottom: 28,
                   ),
                   child: Obx(() => AtomFillButton(
-                      onPressed: controller.next,
+                      onPressed: () async {
+                        try {
+                          await controller.createNewUser();
+                          controller.next();
+                        } catch (error) {
+                          DialogAlertDefault.show(
+                              title:
+                                  '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+                              content:
+                                  '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+                          rethrow;
+                        }
+                      },
                       text: '다음',
                       isDisable:
                           controller.profileImageFileString.value.isEmpty)))

@@ -134,68 +134,63 @@ class CtlSelectMyInfo extends GetxController {
 
   createNewUser() async {
     // 회원가입
-    try {
-      var res = await apiProvider.authService.createAccount({
-        "gender": _sex.value,
-        "nickname": _nickname.value,
-        "birth": _birthDay.value.toIso8601String().split('T').first,
-        "location": [_location.value],
-        "interests": _myInterests.map((element) => element.toString()).toList(),
-        "purpose": _purpose.value,
-      });
-      switch (res["statusCode"]) {
-        case 400:
-        case 500:
-          {
-            // 데이터 포맷 에러
-            DialogAlertDefault.show(
-                title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-                content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
-          }
-      }
-    } catch (error) {
-      DialogAlertDefault.show(
-          title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-          content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
-      rethrow;
+    var accountRes = await apiProvider.authService.createAccount({
+      "gender": _sex.value,
+      "nickname": _nickname.value,
+      "birth": _birthDay.value.toIso8601String().split('T').first,
+      "location": [_location.value],
+      "interests": _myInterests.map((element) => element.toString()).toList(),
+      "purpose": _purpose.value,
+    });
+    switch (accountRes["statusCode"]) {
+      case 400:
+      case 500:
+        {
+          // 데이터 포맷 에러
+          DialogAlertDefault.show(
+              title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+              content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+        }
     }
-    
-    // TODO: 로그인
 
+    // 로그인
+    var renewRes = await apiProvider.authService.renew();
+    switch (renewRes["statusCode"]) {
+      case 400:
+      case 401:
+        {
+          // 데이터 포맷 에러
+          DialogAlertDefault.show(
+              title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+              content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+        }
+    }
 
     // 사진 저장
-    try {
-      if (profileImageFile == null) {
-        DialogAlertDefault.show(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
-        _step.value = Steps.profileImage.index;
-      }
-      var res =
-          await apiProvider.imageService.addImages([profileImageFile!.path]);
-      switch (res["statusCode"]) {
-        case 400:
-        case 401:
-          {
-            DialogAlertDefault.show(
-                title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-                content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
-          }
-        case 409:
-          {
-            DialogAlertDefault.show(
-                title: '중복된 이미지가 존재합니다.', content: '다른 프로필 사진으로 변경해주세요.');
-            _step.value = Steps.profileImage.index;
-          }
-      }
-      localStorage.setStringList(
-          'user.profileImageUrl', List<String>.from(res["urls"]));
-      localStorage.setBool('enableSelectMyInfo', false);
-      localStorage.setBool('enableGuide', false);
-    } catch (error) {
-      DialogAlertDefault.show(
-          title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-          content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
-      rethrow;
+    if (profileImageFile == null) {
+      DialogAlertDefault.show(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
+      return;
     }
+    var addImageRes =
+        await apiProvider.imageService.addImages([profileImageFile!.path]);
+    switch (addImageRes["statusCode"]) {
+      case 400:
+      case 401:
+        {
+          DialogAlertDefault.show(
+              title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+              content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+        }
+      case 409:
+        {
+          DialogAlertDefault.show(
+              title: '중복된 이미지가 존재합니다.', content: '다른 프로필 사진으로 변경해주세요.');
+        }
+    }
+    localStorage.setStringList(
+        'user.profileImageUrl', List<String>.from(addImageRes["urls"]));
+    localStorage.setBool('enableSelectMyInfo', false);
+    localStorage.setBool('enableGuide', false);
   }
 
   void prev() {
@@ -221,9 +216,6 @@ class CtlSelectMyInfo extends GetxController {
       localStorage.setString('user.purpose', _purpose.value);
     } else if (prevStep == Steps.nickname.index) {
       localStorage.setString('user.nickname', _nickname.value);
-    } else if (prevStep == Steps.profileImage.index) {
-      // NOTE: 이미지는 용량 이슈로 인해 유저 생성시 이미지 로컬스토리지에 저장.
-      createNewUser();
     }
 
     _step.value++;
