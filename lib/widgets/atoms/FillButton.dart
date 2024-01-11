@@ -5,12 +5,14 @@ import 'package:web_rtc_app/constants/Fonts.dart';
 class AtomFillButton extends StatelessWidget {
   final Function onPressed;
   final String text;
+  final Color backgroundColor;
   final bool isDisable;
 
   const AtomFillButton(
       {super.key,
       required this.onPressed,
       required this.text,
+      this.backgroundColor = const Color(ColorBase.primary),
       this.isDisable = false});
 
   @override
@@ -19,7 +21,7 @@ class AtomFillButton extends StatelessWidget {
         style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(isDisable
                 ? const Color(ColorGrayScale.h59)
-                : const Color(ColorBase.primary)),
+                : backgroundColor),
             padding: const MaterialStatePropertyAll(
                 EdgeInsets.symmetric(vertical: 16))),
         onPressed: () {

@@ -22,6 +22,8 @@ class DialogBottomSheetMatchingFilter {
     return showModalBottomSheet(
         isScrollControlled: true,
         enableDrag: false,
+        useSafeArea: true,
+        barrierColor: const Color(ColorContent.content1),
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
@@ -87,12 +89,13 @@ class BottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         color: const Color(ColorContent.content1),
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        padding: const EdgeInsets.only(bottom: 16, left: 20, right: 20),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Column(crossAxisAlignment: CrossAxisAlignment.start, 
+              children: [
                 SizedBox(
                     height: 62,
                     child: SizedBox(
