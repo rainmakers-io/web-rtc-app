@@ -442,14 +442,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
 }
 
 class Purpose extends GetView<CtlSelectMyInfo> {
-  Purpose({super.key});
-
-  final purposes = [
-    ['진지한 연애', '진지한연애'],
-    ['새로운 친구', '새로운친구'],
-    ['술 한잔', '술한잔'],
-    ['캐쥬얼한 친구', '캐쥬얼한친구'],
-  ];
+  const Purpose({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -493,17 +486,18 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               AtomCardButton(
-                                  borderColor:
-                                      controller.purpose.value == purposes[0][1]
-                                          ? const Color(ColorFeature.pink01)
-                                          : const Color(ColorContent.content3),
-                                  backgroundColor:
-                                      controller.purpose.value == purposes[0][1]
-                                          ? const Color(ColorFeature.pink01)
-                                              .withOpacity(0.33)
-                                          : Colors.transparent,
+                                  borderColor: controller.purpose.value ==
+                                          ConstantUser.purposes[0][1]
+                                      ? const Color(ColorFeature.pink01)
+                                      : const Color(ColorContent.content3),
+                                  backgroundColor: controller.purpose.value ==
+                                          ConstantUser.purposes[0][1]
+                                      ? const Color(ColorFeature.pink01)
+                                          .withOpacity(0.33)
+                                      : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[0][1];
+                                    controller.purpose.value =
+                                        ConstantUser.purposes[0][1];
                                   },
                                   child: Column(
                                     children: [
@@ -514,7 +508,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                               'assets/images/smiling-face-with-heart-eyes.png')),
                                       const SizedBox(height: 8),
                                       Text(
-                                        purposes[0][0],
+                                        ConstantUser.purposes[0][0],
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                             color: Colors.white,
@@ -528,17 +522,18 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                 width: 16,
                               ),
                               AtomCardButton(
-                                  borderColor:
-                                      controller.purpose.value == purposes[1][1]
-                                          ? const Color(ColorFeature.green01)
-                                          : const Color(ColorContent.content3),
-                                  backgroundColor:
-                                      controller.purpose.value == purposes[1][1]
-                                          ? const Color(ColorFeature.green01)
-                                              .withOpacity(0.33)
-                                          : Colors.transparent,
+                                  borderColor: controller.purpose.value ==
+                                          ConstantUser.purposes[1][1]
+                                      ? const Color(ColorFeature.green01)
+                                      : const Color(ColorContent.content3),
+                                  backgroundColor: controller.purpose.value ==
+                                          ConstantUser.purposes[1][1]
+                                      ? const Color(ColorFeature.green01)
+                                          .withOpacity(0.33)
+                                      : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[1][1];
+                                    controller.purpose.value =
+                                        ConstantUser.purposes[1][1];
                                   },
                                   child: Column(children: [
                                     const Image(
@@ -548,7 +543,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                             'assets/images/waving-hand.png')),
                                     const SizedBox(height: 8),
                                     Text(
-                                      purposes[1][0],
+                                      ConstantUser.purposes[1][0],
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Colors.white,
@@ -566,17 +561,18 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               AtomCardButton(
-                                  borderColor:
-                                      controller.purpose.value == purposes[2][1]
-                                          ? const Color(ColorBase.secondary)
-                                          : const Color(ColorContent.content3),
-                                  backgroundColor:
-                                      controller.purpose.value == purposes[2][1]
-                                          ? const Color(ColorBase.secondary)
-                                              .withOpacity(0.33)
-                                          : Colors.transparent,
+                                  borderColor: controller.purpose.value ==
+                                          ConstantUser.purposes[2][1]
+                                      ? const Color(ColorBase.secondary)
+                                      : const Color(ColorContent.content3),
+                                  backgroundColor: controller.purpose.value ==
+                                          ConstantUser.purposes[2][1]
+                                      ? const Color(ColorBase.secondary)
+                                          .withOpacity(0.33)
+                                      : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[2][1];
+                                    controller.purpose.value =
+                                        ConstantUser.purposes[2][1];
                                   },
                                   child: Column(
                                     children: [
@@ -587,7 +583,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                               'assets/images/wine-glass.png')),
                                       const SizedBox(height: 8),
                                       Text(
-                                        purposes[2][0],
+                                        ConstantUser.purposes[2][0],
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
                                             color: Colors.white,
@@ -601,17 +597,18 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                 width: 16,
                               ),
                               AtomCardButton(
-                                  borderColor:
-                                      controller.purpose.value == purposes[3][1]
-                                          ? const Color(ColorFeature.blue04)
-                                          : const Color(ColorContent.content3),
-                                  backgroundColor:
-                                      controller.purpose.value == purposes[3][1]
-                                          ? const Color(ColorFeature.blue04)
-                                              .withOpacity(0.33)
-                                          : Colors.transparent,
+                                  borderColor: controller.purpose.value ==
+                                          ConstantUser.purposes[3][1]
+                                      ? const Color(ColorFeature.blue04)
+                                      : const Color(ColorContent.content3),
+                                  backgroundColor: controller.purpose.value ==
+                                          ConstantUser.purposes[3][1]
+                                      ? const Color(ColorFeature.blue04)
+                                          .withOpacity(0.33)
+                                      : Colors.transparent,
                                   onPressed: () {
-                                    controller.purpose.value = purposes[3][1];
+                                    controller.purpose.value =
+                                        ConstantUser.purposes[3][1];
                                   },
                                   child: Column(children: [
                                     const Image(
@@ -621,7 +618,7 @@ class Purpose extends GetView<CtlSelectMyInfo> {
                                             'assets/images/hot-beverage.png')),
                                     const SizedBox(height: 8),
                                     Text(
-                                      purposes[3][0],
+                                      ConstantUser.purposes[3][0],
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Colors.white,

@@ -11,4 +11,33 @@ class ConstantUser {
     'FEMALE': '여성',
     'MAIL': '남성',
   };
+
+  static const matchingEvents = {
+    'CONNECT': "connect",
+    'DISCONNECT': "disconnect",
+    'INTRODUCE_EACH_USER': "introduce_each_user",
+    'MATCH_RESULT': "match_result",
+    'EXCEPTION': "exception",
+    'RESTART_MATCHING_REQUEST': "restart_matching_request",
+    'NOT_IDLE': "not_idle",
+    'NOT_WAITING': "not_waiting",
+    'PARTNER_DISCONNECTED': "partner_disconnected",
+    'START_MATCHING': "start_matching",
+    'CANCEL_MATCHING': "cancel_matching",
+    'RESPOND_TO_INTRODUCE': "respond_to_introduce",
+  };
+
+  static const webrtcEvents = {
+    'START_WEBRTC_SIGNALING': "start_webrtc_signaling",
+    'OFFER': "offer",
+    'ANSWER': "answer",
+    'ICE': "ice",
+  };
+
+  static const purposes = [
+    ['진지한 연애', '진지한연애'],
+    ['새로운 친구', '새로운친구'],
+    ['술 한잔', '술한잔'],
+    ['커피 한잔', '커피한잔'],
+  ];
 }
