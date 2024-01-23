@@ -4,15 +4,15 @@ class ConstantUser {
   static const List<(String, String)> sexOptions = [
     ('ALL', '모든 성별'),
     ('FEMALE', '여성'),
-    ('MAIL', '남성')
+    ('MALE', '남성')
   ];
   static const sexOptionsJson = {
     'ALL': '모든 성별',
     'FEMALE': '여성',
-    'MAIL': '남성',
+    'MALE': '남성',
   };
 
-  static const matchingEvents = {
+  static const matchingEventsJson = {
     'CONNECT': "connect",
     'DISCONNECT': "disconnect",
     'INTRODUCE_EACH_USER': "introduce_each_user",

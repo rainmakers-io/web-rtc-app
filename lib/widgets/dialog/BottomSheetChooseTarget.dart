@@ -4,7 +4,7 @@ import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 
-List<String> targets = ['ALL', 'FEMALE', 'MAIL'];
+List<String> targets = ['ALL', 'FEMALE', 'MALE'];
 List<String> targetValues = ['모두', '여성', '남성'];
 
 class DialogBottomSheetChooseTarget {
