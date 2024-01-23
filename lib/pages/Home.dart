@@ -10,6 +10,8 @@ class PageHome extends GetView<CtlHome> {
 
   @override
   Widget build(BuildContext context) {
+    controller.checkLoggedIn();
+
     return Obx(() => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color(ColorContent.content1),
