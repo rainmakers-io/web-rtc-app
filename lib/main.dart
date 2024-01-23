@@ -31,7 +31,7 @@ void main() async {
       systemNavigationBarColor: Colors.transparent,
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.light));
-  runApp(RootApp());
+  runApp(const RootApp());
 
   // 스플레쉬 스크린 종료
   Future.delayed(const Duration(seconds: 1), () {
@@ -58,6 +58,7 @@ class RootApp extends StatelessWidget {
     bool enableSelectMyInfo =
         localStorage.storage.getBool('enableSelectMyInfo') ?? true;
     // localStorage.storage.clear();
+
     if (enableForceUpdate) {
       // TODO: 강제 업데이트 되도록 유도한다.
     } else if (enableGuide) {

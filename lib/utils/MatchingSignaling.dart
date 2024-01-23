@@ -22,7 +22,6 @@ class MatchingSignaling {
   }
 
   connect() async {
-    // TODO: id를 가져와서 방 연결
     try {
       var stream = await navigator.mediaDevices.getUserMedia({
         'audio': true,
