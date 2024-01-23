@@ -7,6 +7,7 @@ import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
 import 'package:web_rtc_app/widgets/atoms/Spinner.dart';
 import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
+import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingSuccess.dart';
 
 class PageMatching extends GetView<CtlMatching> {
   const PageMatching({super.key});
@@ -16,6 +17,27 @@ class PageMatching extends GetView<CtlMatching> {
     var locations = Get.arguments['locations'];
     var ageRange = Get.arguments["ageRange"];
     var sex = Get.arguments['sex'];
+
+    controller.initSocket();
+    controller.partnerInfo.listen((info) {
+      if (info.isNotEmpty) {
+        DialogBottomSheetMatchingSuccess.close();
+        DialogBottomSheetMatchingSuccess.show(
+          context,
+          age: info['age'] ?? 0,
+          imgSrc: info['profileUrl'],
+          interests: info['interests'],
+          location: info['location']?[0],
+          nickname: info['nickname'],
+          purpose: info['purpose'],
+          sex: ConstantUser.sexOptionsJson[info['gender']] ,
+          next: controller.acceptMatch,
+          pass: controller.declineMatch,
+        );
+      } else {
+        DialogBottomSheetMatchingSuccess.close();
+      }
+    });
 
     return Scaffold(
         backgroundColor: const Color(ColorContent.content1),
@@ -29,31 +51,32 @@ class PageMatching extends GetView<CtlMatching> {
                     children: [
                       SizedBox(
                           height: 62,
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                AtomIconButton(
-                                    child: const Image(
-                                        height: 24,
-                                        width: 24,
-                                        image: AssetImage(
-                                            'assets/images/logout.png')),
-                                    onPressed: () async {
-                                      var result =
-                                          await DialogAlertDefault.show(
-                                        title: '정말 나가시겠습니까?',
-                                        content: '지금 나가면 다시는\n못만날 수도 있어요.',
-                                        okLabel: '나가기',
-                                      );
-                                      if (result == 'ok') {
-                                        controller.back();
-                                      }
-                                    })
-                              ])),
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: SizedBox(
+                                  height: 36,
+                                  width: 36,
+                                  child: AtomIconButton(
+                                      child: const Image(
+                                          height: 24,
+                                          width: 24,
+                                          image: AssetImage(
+                                              'assets/images/logout.png')),
+                                      onPressed: () async {
+                                        var result =
+                                            await DialogAlertDefault.show(
+                                          title: '정말 나가시겠습니까?',
+                                          content: '지금 나가면 다시는\n못만날 수도 있어요.',
+                                          okLabel: '나가기',
+                                        );
+                                        if (result == 'ok') {
+                                          controller.back();
+                                        }
+                                      })))),
                       Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 48, horizontal: 26),
+                              vertical: 48, horizontal: 20),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,

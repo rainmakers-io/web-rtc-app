@@ -8,9 +8,19 @@ import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
 
 class DialogBottomSheetMatchingSuccess {
+  static BuildContext? ctx;
+
+  static close() {
+    if (ctx != null) {
+      Navigator.of(ctx!).pop();
+      ctx = null;
+    }
+  }
+
   static show(
     BuildContext context, {
     required Function() next,
+    required Function() pass,
     required imgSrc,
     required nickname,
     required age,
@@ -19,6 +29,7 @@ class DialogBottomSheetMatchingSuccess {
     required interests,
     required purpose,
   }) {
+    ctx = context;
     return showModalBottomSheet(
         isScrollControlled: true,
         enableDrag: false,
@@ -35,6 +46,7 @@ class DialogBottomSheetMatchingSuccess {
             interests: interests,
             purpose: purpose,
             next: next,
+            pass: pass,
           );
         });
   }
@@ -45,13 +57,16 @@ class BottomSheet extends StatelessWidget {
   final int age;
   final String sex;
   final String location;
-  final List<String> interests;
+  final List<dynamic> interests;
   final String purpose;
   final String imgSrc;
+  final Function() next;
+  final Function() pass;
 
   const BottomSheet({
     super.key,
-    required Function() next,
+    required this.next,
+    required this.pass,
     required this.imgSrc,
     required this.nickname,
     required this.age,
@@ -121,7 +136,7 @@ class BottomSheet extends StatelessWidget {
                                           image: AssetImage(
                                               'assets/images/logout.png')),
                                       onPressed: () {
-                                        Navigator.of(context).pop();
+                                        pass();
                                       }))
                             ])),
                     const SizedBox(
@@ -271,7 +286,7 @@ class BottomSheet extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: AtomFillButton(
                       onPressed: () {
-                        // TODO: 화상채팅 페이지로 넘기기
+                        next();
                       },
                       text: '이야기시작!',
                     ),
@@ -284,7 +299,7 @@ class BottomSheet extends StatelessWidget {
                     child: AtomFillButton(
                       backgroundColor: const Color(ColorContent.content1),
                       onPressed: () {
-                        // TODO: 화상채팅 페이지로 넘기기
+                        pass();
                       },
                       text: '넘기기',
                     ),
