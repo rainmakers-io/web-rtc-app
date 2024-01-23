@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
@@ -9,6 +10,7 @@ import 'package:web_rtc_app/constants/User.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
+import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/ImageSelection.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
@@ -319,7 +321,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
     '사진',
     '만화',
     '영화',
-    '에니메이션',
+    '애니메이션',
     'PC방',
     '치맥',
     '한강',
@@ -756,13 +758,15 @@ class Photo extends GetView<CtlSelectMyInfo> {
       DialogAlertDefault.show(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
       return;
     }
-    // 용량 제한 예외처리
-    const sizeLimit = 5 * 1024 * 1024;
-    if (File(file.path).lengthSync() >= sizeLimit) {
-      DialogAlertDefault.show(
-          title: '이미지 용량은 5MB를 넘을 수 없습니다.',
-          content: '이미지 크기를 줄이거나 다른 이미지를 넣어주세요.');
-      return;
+    if (!config.isWebDevMode()) {
+      // 용량 제한 예외처리
+      const sizeLimit = 5 * 1024 * 1024;
+      if (File(file.path).lengthSync() >= sizeLimit) {
+        DialogAlertDefault.show(
+            title: '이미지 용량은 5MB를 넘을 수 없습니다.',
+            content: '이미지 크기를 줄이거나 다른 이미지를 넣어주세요.');
+        return;
+      }
     }
     // NOTE: 이미지는 용량 이슈로 인해 유저 생성시 이미지 로컬스토리지에 저장.
     controller.profileImageFile = file;
@@ -896,7 +900,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
                         try {
                           await controller.createNewUser();
                           controller.next();
-                        } catch (error) {
+                        } on DioException catch (error) {
                           DialogAlertDefault.show(
                               title:
                                   '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',

@@ -17,6 +17,10 @@ class UtilConfig {
     await dotenv.load(fileName: cliEnvName);
   }
 
+  isWebDevMode() {
+    return const String.fromEnvironment('web') == 'true';
+  }
+
   String get(String envName) {
     String value = dotenv.env[envName] ?? '';
     if (value.isEmpty) {

@@ -1,7 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 
@@ -150,6 +152,7 @@ class CtlSelectMyInfo extends GetxController {
           DialogAlertDefault.show(
               title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
               content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+          break;
         }
     }
 
@@ -171,26 +174,42 @@ class CtlSelectMyInfo extends GetxController {
       DialogAlertDefault.show(title: '프로파일 이미지가 존재하지 않습니다. 새로운 이미지를 추가해주세요.');
       return;
     }
-    var addImageRes =
-        await apiProvider.imageService.addImages([profileImageFile!.path]);
-    switch (addImageRes["statusCode"]) {
-      case 400:
-      case 401:
-        {
-          DialogAlertDefault.show(
-              title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-              content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+    // 테스트용 이미지를 넣어준다.
+    if (config.isWebDevMode()) {
+      localStorage.setStringList(
+          'user.profileImageUrl',
+          List<String>.from([
+            'https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_272x92dp.png'
+          ]));
+      localStorage.setBool('enableSelectMyInfo', false);
+      localStorage.setBool('enableGuide', false);
+    } else {
+      var addImageRes;
+      try {
+        addImageRes =
+            await apiProvider.imageService.addImages([profileImageFile!.path]);
+        switch (addImageRes["statusCode"]) {
+          case 400:
+          case 401:
+            {
+              DialogAlertDefault.show(
+                  title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
+                  content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+              break;
+            }
         }
-      case 409:
-        {
-          DialogAlertDefault.show(
-              title: '중복된 이미지가 존재합니다.', content: '다른 프로필 사진으로 변경해주세요.');
+      } on DioException catch (error) {
+        // HACK: 왜 뜰까...?
+        if (error.response?.statusCode == 409) {
+          addImageRes = await apiProvider.imageService
+              .updateImages([profileImageFile!.path]);
         }
+      }
+      localStorage.setStringList(
+          'user.profileImageUrl', List<String>.from(addImageRes["urls"]));
+      localStorage.setBool('enableSelectMyInfo', false);
+      localStorage.setBool('enableGuide', false);
     }
-    localStorage.setStringList(
-        'user.profileImageUrl', List<String>.from(addImageRes["urls"]));
-    localStorage.setBool('enableSelectMyInfo', false);
-    localStorage.setBool('enableGuide', false);
   }
 
   void prev() {

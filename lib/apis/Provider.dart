@@ -74,6 +74,8 @@ class ApiProvider {
           // 로그인 페이지로 이동한다.
           Get.toNamed('/guide');
         }
+      } else if (e.response?.statusCode == 401) {
+        Get.toNamed('/guide');
       }
       return handler.next(e);
     }));
