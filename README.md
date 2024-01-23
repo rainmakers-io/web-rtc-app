@@ -1,6 +1,10 @@
 # 시작하기
 1. flutter run --dart-define="env=.env.stag"
 
+## 웹으로 시작하기(디버깅 모드)
+flutter run -d chrome --dart-define="env=.env.stag" --dart-define="web=true" 
+
+
 # 개발 가이드
 1. 모바일(ios, ans), 웹을 지원하도록 개발한다.
 
