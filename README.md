@@ -2,7 +2,7 @@
 1. flutter run --dart-define="env=.env.stag"
 
 ## 웹으로 시작하기(디버깅 모드)
-flutter run -d chrome --dart-define="env=.env.stag" --dart-define="web=true" 
+flutter run -d chrome --dart-define="env=.env.stag" --dart-define="web=true" --web-renderer html 
 
 
 # 개발 가이드

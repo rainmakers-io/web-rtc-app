@@ -57,7 +57,7 @@ class CtlMatchingBegin extends SuperController {
 
   Future<bool> isGrantedAllPermissions() async {
     // web은 실제로 사용할 때 권한 허용을 받을 수 있다.
-    if (GetPlatform.isDesktop) true;
+    if (GetPlatform.isDesktop) return true;
     // TODO: 권한 허용 요청 다이얼로그 띄우기
     late PermissionStatus cameraStatus;
     late PermissionStatus microphoneStatus;
@@ -105,8 +105,9 @@ class CtlMatchingBegin extends SuperController {
         ..init()
         ..onLocalStream = ((stream) {
           localRenderer.srcObject = stream;
+          localRenderer.muted = true;
+          _inCalling.value = true;
         });
-      _inCalling.value = true;
     }
   }
 
@@ -136,7 +137,7 @@ class CtlMatchingBegin extends SuperController {
       _signaling?.dispose();
       _signaling = null;
       _inCalling.value = false;
-      localRenderer.dispose();
+      await localRenderer.dispose();
       localRenderer.srcObject = null;
       _isStartAnimation.value = false;
     } catch (e) {

@@ -8,10 +8,12 @@ import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/controller/Matching.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/controller/MatchingBegin.dart';
+import 'package:web_rtc_app/controller/VideoChat.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Health.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+import 'package:web_rtc_app/pages/VideoChat.dart';
 import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 
@@ -51,6 +53,7 @@ class RootApp extends StatelessWidget {
 
   String initialRoute() {
     String route = '/home';
+    // String route = '/test';
 
     bool enableForceUpdate = false;
     String version = '0.0.1';
@@ -78,12 +81,14 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/home', page: () => const PageHome()),
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
-        GetPage(name: '/health', page: () => const PageHealth())
+        GetPage(name: '/health', page: () => const PageHealth()),
+        // GetPage(name: '/test', page: () => PageVideoChat())
       ],
       initialBinding: BindingsBuilder(() {
         ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
         ctlMatchingBegin = Get.put<CtlMatchingBegin>(CtlMatchingBegin());
         ctlMatching = Get.put<CtlMatching>(CtlMatching());
+        ctlVideoChat = Get.put<CtlVideoChat>(CtlVideoChat());
         ctlHome = Get.put<CtlHome>(CtlHome());
         ctlGuide = Get.put<CtlGuide>(CtlGuide());
       }),

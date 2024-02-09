@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 
@@ -7,21 +8,25 @@ class AtomFillButton extends StatelessWidget {
   final String text;
   final Color backgroundColor;
   final bool isDisable;
+  final MaterialStateProperty<BorderSide?>? side;
+  final EdgeInsetsGeometry padding;
 
   const AtomFillButton(
       {super.key,
       required this.onPressed,
       required this.text,
       this.backgroundColor = const Color(ColorBase.primary),
+      this.side,
+      this.padding = const EdgeInsets.all(0),
       this.isDisable = false});
 
   @override
   Widget build(BuildContext context) {
     return FilledButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(isDisable
-                ? const Color(ColorGrayScale.h59)
-                : backgroundColor),
+            side: side,
+            backgroundColor: MaterialStatePropertyAll(
+                isDisable ? const Color(ColorGrayScale.h59) : backgroundColor),
             padding: const MaterialStatePropertyAll(
                 EdgeInsets.symmetric(vertical: 16))),
         onPressed: () {
@@ -29,14 +34,16 @@ class AtomFillButton extends StatelessWidget {
             onPressed();
           }
         },
-        child: Text(
-          text,
-          style: TextStyle(
-              fontSize: FontBodyBold01.size,
-              fontWeight: FontBodyBold01.weight,
-              color: isDisable
-                  ? const Color(ColorGrayScale.h8c)
-                  : const Color(ColorGrayScale.fa)),
-        ));
+        child: Padding(
+            padding: padding,
+            child: Text(
+              text,
+              style: TextStyle(
+                  fontSize: FontBodyBold01.size,
+                  fontWeight: FontBodyBold01.weight,
+                  color: isDisable
+                      ? const Color(ColorGrayScale.h8c)
+                      : const Color(ColorGrayScale.fa)),
+            )));
   }
 }

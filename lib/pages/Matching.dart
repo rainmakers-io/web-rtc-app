@@ -30,7 +30,7 @@ class PageMatching extends GetView<CtlMatching> {
           location: info['location']?[0],
           nickname: info['nickname'],
           purpose: info['purpose'],
-          sex: ConstantUser.sexOptionsJson[info['gender']] ,
+          sex: ConstantUser.sexOptionsJson[info['gender']],
           next: controller.acceptMatch,
           pass: controller.declineMatch,
         );
@@ -66,10 +66,10 @@ class PageMatching extends GetView<CtlMatching> {
                                       onPressed: () async {
                                         var result =
                                             await DialogAlertDefault.show(
-                                          title: '정말 나가시겠습니까?',
-                                          content: '지금 나가면 다시는\n못만날 수도 있어요.',
-                                          okLabel: '나가기',
-                                        );
+                                                title: '정말 나가시겠습니까?',
+                                                content:
+                                                    '지금 나가면 다시는\n못만날 수도 있어요.',
+                                                okLabel: '나가기');
                                         if (result == 'ok') {
                                           controller.back();
                                         }
