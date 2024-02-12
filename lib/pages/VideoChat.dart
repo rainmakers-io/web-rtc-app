@@ -3,10 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:get/get.dart';
+import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/constants/User.dart';
 import 'package:web_rtc_app/controller/VideoChat.dart';
+import 'package:web_rtc_app/widgets/atoms/VideoCallTimer.dart';
+import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
+import 'package:web_rtc_app/widgets/dialog/BottomSheetEndVideoCall.dart';
 
 class PageVideoChat extends GetView<CtlVideoChat> {
   const PageVideoChat({super.key});
@@ -80,10 +84,23 @@ class PageVideoChat extends GetView<CtlVideoChat> {
                                 width: 44,
                                 height: 44,
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    // TODO:
-                                    // 나갈건지 묻는 알럿상자
-                                    // 나가면 종료 바텀시트 띄어주기
+                                  onPressed: () async {
+                                    var result = await DialogAlertDefault.show(
+                                      title: '통화를 종료하시겠어요?',
+                                      content:
+                                          '상대방을 다시는 만날 수 없을 수도 있어요\n통화를 종료할까요?',
+                                      okLabel: '나가기',
+                                      okBtnColor: ColorBase.danger,
+                                      cancelLabel: '취소하기',
+                                    );
+                                    if (result == 'ok' && context.mounted) {
+                                      controller.off();
+                                      DialogBottomSheetEndVideoCall.show(
+                                          context,
+                                          message: '통화가 종료됐어요.',
+                                          img: controller
+                                              .partnerInfo.value['images'][0]);
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -98,39 +115,56 @@ class PageVideoChat extends GetView<CtlVideoChat> {
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: const BoxDecoration(
-                                    color: Color(ColorGrayScale.fa),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(99))),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Image(
-                                        width: 16,
-                                        height: 16,
-                                        image: AssetImage(
-                                            'assets/images/clock.png')),
-                                    const SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text('05:00',
-                                        style: TextStyle(
-                                            color: Color(ColorGrayScale.h26),
-                                            fontSize: FontBodyBold01.size,
-                                            fontWeight: FontBodyBold01.weight))
-                                  ],
-                                ),
-                              ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: const BoxDecoration(
+                                      color: Color(ColorGrayScale.fa),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(99))),
+                                  child: AtomVideoCallTimer(
+                                      onStop: () {
+                                        controller.off();
+                                        DialogBottomSheetEndVideoCall.show(
+                                            context,
+                                            message: '정해진 시간이 다 되어 통화가 종료됐어요.',
+                                            img: controller.partnerInfo
+                                                .value['images'][0]);
+                                      },
+                                      seconds: 60 * 7)),
                               SizedBox(
                                 width: 44,
                                 height: 44,
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    // TODO:
+                                  onPressed: () async {
                                     // 유저 차단 확인 및 차단하기, 방 나가기 모달 띄우기
+                                    var result = await DialogAlertDefault.show(
+                                        title:
+                                            '${controller.partnerInfo.value['nickname']}님을 차단할까요?',
+                                        content: '차단 후에는 취소할 수 없어요.',
+                                        okLabel: '차단하기',
+                                        okBtnColor: ColorBase.danger,
+                                        cancelLabel: '취소하기',
+                                        imageFileName: 'ban.png');
+                                    if (result == 'ok') {
+                                      await apiProvider.blockLogService
+                                          .blockUser({
+                                        'userId': controller
+                                            .partnerInfo.value['userId']
+                                      });
+
+                                      await DialogAlertDefault.show(
+                                          title: '차단 완료 됐습니다.',
+                                          content: '앞으로 절대 마주치지 않을거에요.',
+                                          okLabel: '확인',
+                                          imageFileName: 'success-circle.png');
+                                      if (!context.mounted) return;
+                                      controller.off();
+                                      DialogBottomSheetEndVideoCall.show(
+                                          context,
+                                          message: '통화가 종료됐어요.',
+                                          img: controller
+                                              .partnerInfo.value['images'][0]);
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(

@@ -24,7 +24,8 @@ class CtlVideoChat extends SuperController {
     'gender': 'ALL',
     'location': [''],
     'interests': [''],
-    'purpose': ''
+    'purpose': '',
+    'images': [''],
   }.obs;
   var roomName = '';
 
@@ -47,6 +48,7 @@ class CtlVideoChat extends SuperController {
     await remoteRenderer.initialize();
   }
 
+// TODO: 상대방 종료시 예외처리 구현하기
   void initSocket() {
     if (socket.socketIo.connected) {
       // webrtc 이벤트
@@ -68,37 +70,43 @@ class CtlVideoChat extends SuperController {
     if (await isGrantedAllPermissions()) {
       initRenderer();
       initSocket();
-      _signaling = VideoChatSignaling()
-        ..connect()
-        ..init()
-        ..onIceCandidate = ((candidate) {
-          print("EMIT ICE");
-          socket.socketIo.emit(ConstantUser.matchingEventsJson['ICE']!,
-              {'ice': candidate, 'roomName': roomName});
-        })
-        ..onLocalStream = ((stream) {
-          localRenderer.srcObject = stream;
-          localRenderer.muted = true;
-          _isOnLocalRenderer.value = true;
-        })
-        ..onRemoteStream = ((stream) {
-          remoteRenderer.srcObject = stream;
-          _isOnRemoteRenderer.value = true;
-        });
+      _signaling = VideoChatSignaling();
+      _signaling?.onIceCandidate = ((candidate) {
+        print("EMIT ICE");
+        socket.socketIo.emit(ConstantUser.matchingEventsJson['ICE']!,
+            {'ice': candidate, 'roomName': roomName});
+      });
+      _signaling?.onLocalStream = ((stream) {
+        localRenderer.srcObject = stream;
+        localRenderer.muted = true;
+        _isOnLocalRenderer.value = true;
+      });
+      _signaling?.onRemoteStream = ((stream) {
+        remoteRenderer.srcObject = stream;
+        _isOnRemoteRenderer.value = true;
+      });
+      await _signaling?.connect();
+      await _signaling?.init();
+
       var initiator = Get.arguments['initiator'];
       var partnerId = Get.arguments['partnerId'];
       if (partnerId != null) {
         var data = await apiProvider.userService.getUserById(partnerId);
+        var images = await apiProvider.imageService.getImagesById(partnerId);
+        _partnerInfo.value['userId'] = partnerId;
         _partnerInfo.value['nickname'] = data['nickname'];
-        // _partnerInfo.value['age'] = data['age'];
+        _partnerInfo.value['age'] = data['age'];
         _partnerInfo.value['gender'] = data['gender'];
         _partnerInfo.value['location'] = data['location'];
         _partnerInfo.value['purpose'] = data['purpose'];
+        _partnerInfo.value['interests'] = data['interests'];
+        _partnerInfo.value['images'] = images['urls'];
       }
 
       if (initiator) {
         // 상대방이 렌더링 되기까지 잠깐 기다린다.
-        Timer(const Duration(seconds: 1), () {
+        // 추후 방 입장 완료되었다는 이벤트 추가되면 좋을듯
+        Timer(const Duration(seconds: 3), () {
           print('initiator $initiator');
           socket.socketIo
               .emit(ConstantUser.matchingEventsJson['START_WEBRTC_SIGNALING']!);
