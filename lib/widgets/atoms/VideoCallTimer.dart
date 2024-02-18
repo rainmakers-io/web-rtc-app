@@ -4,9 +4,8 @@ import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 
 class AtomVideoCallTimer extends StatefulWidget {
-  final int seconds = 60 * 5;
-  final Function onStop;
-  const AtomVideoCallTimer({super.key, seconds, required this.onStop});
+  final int seconds;
+  const AtomVideoCallTimer({super.key, required this.seconds});
 
   @override
   State<AtomVideoCallTimer> createState() => _AtomVideoCallTimerState();
@@ -17,8 +16,12 @@ class _AtomVideoCallTimerState extends State<AtomVideoCallTimer> {
   bool _isRunning = false;
   late Timer _timer;
 
-  _AtomVideoCallTimerState() {
+  @override
+  void initState() {
+    super.initState();
+    print(widget.seconds);
     _seconds = widget.seconds;
+    start();
   }
 
   void start() {
@@ -33,10 +36,10 @@ class _AtomVideoCallTimerState extends State<AtomVideoCallTimer> {
   void stop() {
     _isRunning = false;
     _timer.cancel();
-    widget.onStop();
   }
 
   void reset() {
+    _isRunning = false;
     setState(() {
       _seconds = widget.seconds;
     });
@@ -50,10 +53,6 @@ class _AtomVideoCallTimerState extends State<AtomVideoCallTimer> {
 
   @override
   Widget build(BuildContext context) {
-    if (_seconds <= 0) {
-      stop();
-    }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

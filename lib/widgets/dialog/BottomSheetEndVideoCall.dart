@@ -71,7 +71,7 @@ class BottomSheet extends StatelessWidget {
                                 width: 24,
                                 image: AssetImage('assets/images/close.png')),
                             onPressed: () {
-                              Get.off('/home');
+                              Get.offNamed('/home');
                             }))),
                 const SizedBox(
                   height: 16,
@@ -99,12 +99,14 @@ class BottomSheet extends StatelessWidget {
                 const SizedBox(
                   height: 8,
                 ),
-                Text(message,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: FontTitleSemibold02.size,
-                        fontWeight: FontTitleSemibold02.weight)),
+                Center(
+                  child: Text(message,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: FontTitleSemibold02.size,
+                          fontWeight: FontTitleSemibold02.weight)),
+                )
               ]),
               Column(
                 children: [
@@ -138,7 +140,7 @@ class BottomSheet extends StatelessWidget {
                     child: AtomFillButton(
                       backgroundColor: const Color(ColorContent.content1),
                       onPressed: () {
-                        Get.off('/home');
+                        Get.offNamed('/home');
                       },
                       text: '나중에 할게요',
                     ),

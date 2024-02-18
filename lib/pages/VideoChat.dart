@@ -8,11 +8,14 @@ import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/constants/User.dart';
 import 'package:web_rtc_app/controller/VideoChat.dart';
+import 'package:web_rtc_app/utils/Timer.dart';
 import 'package:web_rtc_app/widgets/atoms/VideoCallTimer.dart';
 import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetEndVideoCall.dart';
 
+// TODO: 영상통화 예외처리 및 마이페이지
 class PageVideoChat extends GetView<CtlVideoChat> {
+  final int time = 60 * 5;
   const PageVideoChat({super.key});
 
   relationCardData(String purpose) {
@@ -42,6 +45,12 @@ class PageVideoChat extends GetView<CtlVideoChat> {
   @override
   Widget build(BuildContext context) {
     controller.onVisible();
+    timer.start(time, () {
+      controller.off();
+      DialogBottomSheetEndVideoCall.show(context,
+          message: '정해진 시간이 다 되어 통화가 종료됐어요.',
+          img: controller.partnerInfo.value['images'][0]);
+    });
 
     return Obx(
       () => Scaffold(
@@ -121,16 +130,7 @@ class PageVideoChat extends GetView<CtlVideoChat> {
                                       color: Color(ColorGrayScale.fa),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(99))),
-                                  child: AtomVideoCallTimer(
-                                      onStop: () {
-                                        controller.off();
-                                        DialogBottomSheetEndVideoCall.show(
-                                            context,
-                                            message: '정해진 시간이 다 되어 통화가 종료됐어요.',
-                                            img: controller.partnerInfo
-                                                .value['images'][0]);
-                                      },
-                                      seconds: 60 * 7)),
+                                  child: AtomVideoCallTimer(seconds: time)),
                               SizedBox(
                                 width: 44,
                                 height: 44,
@@ -268,9 +268,8 @@ class PageVideoChat extends GetView<CtlVideoChat> {
                             height: 8,
                           ),
                           Row(
-                            children: (controller.partnerInfo.value['interests']
-                                    as List<String>)
-                                .map((item) => Row(children: [
+                            children: controller.partnerInfo.value['interests']
+                                .map<Widget>((item) => Row(children: [
                                       Chip(
                                         label: Text(item,
                                             style: const TextStyle(

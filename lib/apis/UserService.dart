@@ -12,6 +12,7 @@ class ApiUserService {
     Map<String, dynamic> result = {
       "id": apiResponse.data?['id'] ?? '',
       "socketId": apiResponse.data?['socketId'] ?? '',
+      "age": apiResponse.data?['age'] ?? 0,
       "gender": apiResponse.data?['gender'] ?? '',
       "nickname": apiResponse.data?['nickname'] ?? '',
       "location": apiResponse.data?['location'] ?? '',
@@ -35,6 +36,7 @@ class ApiUserService {
       "id": apiResponse.data?['id'] ?? '',
       "socketId": apiResponse.data?['socketId'] ?? '',
       "gender": apiResponse.data?['gender'] ?? '',
+      "age": apiResponse.data?['age'] ?? 0,
       "nickname": apiResponse.data?['nickname'] ?? '',
       "location": apiResponse.data?['location'] ?? '',
       "purpose": apiResponse.data?['purpose'] ?? '',
