@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/controller/Guide.dart';
 import 'package:web_rtc_app/controller/Home.dart';
-import 'package:web_rtc_app/controller/Matching.dart';
 import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/controller/MatchingBegin.dart';
 import 'package:web_rtc_app/controller/VideoChat.dart';
@@ -13,7 +12,6 @@ import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Health.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
-import 'package:web_rtc_app/pages/VideoChat.dart';
 import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 
@@ -46,14 +44,11 @@ void main() async {
   });
 }
 
-// 바텀 네비게이션 구현
-// 딥링크
 class RootApp extends StatelessWidget {
   const RootApp({super.key});
 
   String initialRoute() {
     String route = '/home';
-    // String route = '/test';
 
     bool enableForceUpdate = false;
     String version = '0.0.1';
@@ -78,19 +73,18 @@ class RootApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'PretendardVariable'),
       getPages: [
-        GetPage(name: '/home', page: () => const PageHome()),
         GetPage(name: '/guide', page: () => PageGuide()),
+        GetPage(name: '/home', page: () => PageHome()),
         GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
         GetPage(name: '/health', page: () => const PageHealth()),
-        // GetPage(name: '/test', page: () => PageVideoChat())
       ],
       initialBinding: BindingsBuilder(() {
-        ctlSelectMyInfo = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
-        ctlMatchingBegin = Get.put<CtlMatchingBegin>(CtlMatchingBegin());
-        ctlMatching = Get.put<CtlMatching>(CtlMatching());
-        ctlVideoChat = Get.put<CtlVideoChat>(CtlVideoChat());
-        ctlHome = Get.put<CtlHome>(CtlHome());
-        ctlGuide = Get.put<CtlGuide>(CtlGuide());
+        // TODO: 페이지 내에서 put 하는 형식으로 바꾸기, 라이프사이클이 전역에 붙어서 컨트롤하기 까다로움
+        Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
+        Get.put<CtlMatchingBegin>(CtlMatchingBegin());
+        Get.put<CtlVideoChat>(CtlVideoChat());
+        Get.put<CtlHome>(CtlHome());
+        Get.put<CtlGuide>(CtlGuide());
       }),
       initialRoute: initialRoute(),
     );

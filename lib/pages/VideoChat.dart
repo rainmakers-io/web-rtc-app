@@ -13,10 +13,10 @@ import 'package:web_rtc_app/widgets/atoms/VideoCallTimer.dart';
 import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetEndVideoCall.dart';
 
-// TODO: 영상통화 예외처리 및 마이페이지
-class PageVideoChat extends GetView<CtlVideoChat> {
+class PageVideoChat extends StatelessWidget {
+  final controller = Get.find<CtlVideoChat>();
   final int time = 60 * 5;
-  const PageVideoChat({super.key});
+  PageVideoChat({super.key});
 
   relationCardData(String purpose) {
     if (purpose == ConstantUser.purposes[0][1]) {
@@ -44,6 +44,14 @@ class PageVideoChat extends GetView<CtlVideoChat> {
 
   @override
   Widget build(BuildContext context) {
+    controller.partnerDisconnected = (data) {
+      controller.off();
+      if (context.mounted) {
+        DialogBottomSheetEndVideoCall.show(context,
+            message: '통화가 종료됐어요.',
+            img: controller.partnerInfo.value['images'][0]);
+      }
+    };
     controller.onVisible();
     timer.start(time, () {
       controller.off();

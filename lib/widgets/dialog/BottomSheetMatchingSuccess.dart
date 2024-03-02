@@ -8,13 +8,10 @@ import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
 
 class DialogBottomSheetMatchingSuccess {
-  static BuildContext? ctx;
+  static late BuildContext ctx;
 
   static close() {
-    if (ctx != null) {
-      Navigator.of(ctx!).pop();
-      ctx = null;
-    }
+    Navigator.of(ctx).pop();
   }
 
   static show(
@@ -63,7 +60,7 @@ class BottomSheet extends StatefulWidget {
   final Function() next;
   final Function() pass;
 
-  BottomSheet({
+  const BottomSheet({
     super.key,
     required this.next,
     required this.pass,
@@ -302,7 +299,7 @@ class _BottomSheetState extends State<BottomSheet> {
                           isAccept = true;
                         });
                       },
-                      text: isAccept ? '상대방이 수락하기를 기다리는 중...': '이야기시작!',
+                      text: isAccept ? '상대방이 수락하기를 기다리는 중...' : '이야기시작!',
                     ),
                   ),
                   const SizedBox(

@@ -48,7 +48,7 @@ class CtlMatchingBegin extends SuperController {
 
   startMatching() {
     off();
-    Get.off(const PageMatching(), arguments: {
+    Get.off(PageMatching(), arguments: {
       'sex': _sex.value,
       'locations': _locations.value,
       'ageRange': _ageRange.value

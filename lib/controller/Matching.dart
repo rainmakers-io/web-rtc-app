@@ -10,17 +10,14 @@ import 'package:web_rtc_app/utils/Socket.dart';
 
 late CtlMatching ctlMatching;
 
-// webrtc쪽 데이터 뿌리기 및 시간제한 기능, 뿌연 필터효과
+// TODO
+// 매칭 중 나갈시 다시 매칭 안됨
 // 신고하기 기능
-// 채팅 완료 표시
-// 프로세스 다듬기
-// 버그 수정
 
-//모바일, 모바일 테스트
 //mypage - 권한 필요 설명
 //서비스 정책 설명
 //개인정보 수정(재가입)
-
+//모바일, 모바일 테스트
 // 디자인 체크
 // 리팩토링 및 버그 수정
 class CtlMatching extends SuperController {
@@ -28,6 +25,8 @@ class CtlMatching extends SuperController {
   var isMatching = false.obs;
   var me = {};
   Timer? timer;
+  Function(dynamic info)? openBottomSheet;
+  Function? closeBottomSheet;
 
   get partnerInfo {
     return _partnerInfo;
@@ -40,6 +39,7 @@ class CtlMatching extends SuperController {
 
   closeMatchingResultModal() {
     _partnerInfo.value = {};
+    closeBottomSheet?.call();
   }
 
   initSocket() async {
@@ -63,16 +63,14 @@ class CtlMatching extends SuperController {
     // TODO: 시간제한 30초
     print('PARTNER $partnerUserInfo');
     _partnerInfo.value = partnerUserInfo;
+    openBottomSheet?.call(partnerUserInfo);
   }
 
   startMatching() async {
-    // 이미 매칭이 진행중이라면 시작하지 않는다.
-    if (isMatching.value) return;
+    isMatching.value = true;
     var locations = Get.arguments['locations'];
     var ageRange = Get.arguments["ageRange"];
     var sex = Get.arguments['sex'];
-    isMatching.value = true;
-    closeMatchingResultModal();
     me = await apiProvider.userService.me();
     socket.socketIo.emit(ConstantUser.matchingEventsJson['START_MATCHING']!, {
       'userId': me['id'],
@@ -94,7 +92,6 @@ class CtlMatching extends SuperController {
   }
 
   declineMatch() async {
-    closeMatchingResultModal();
     isMatching.value = false;
     socket.socketIo.emit(
         ConstantUser.matchingEventsJson['RESPOND_TO_INTRODUCE']!,
@@ -105,18 +102,18 @@ class CtlMatching extends SuperController {
   matchResult(data) async {
     isMatching.value = false;
     var partnerId = _partnerInfo.value['id'];
-    closeMatchingResultModal();
     if (data["result"]) {
       // 매칭이 성사된 경우
-      Get.off(const PageVideoChat(), arguments: {
+      Get.offAll(PageVideoChat(), arguments: {
         'initiator': data["initiator"],
         'partnerId': partnerId,
       });
+    } else {
+      closeMatchingResultModal();
     }
   }
 
   restartMatchingRequest(data) {
-    closeMatchingResultModal();
     isMatching.value = false;
     if (timer != null && timer!.isActive) {
       timer!.cancel();
@@ -151,19 +148,18 @@ class CtlMatching extends SuperController {
   @override
   void onClose() {
     super.onClose();
-    closeSocket();
     print("onClose");
   }
 
   @override
   void onHidden() {
     print("onHidden");
+    closeSocket();
   }
 
   @override
   void onInactive() {
     print("onInactive");
-    closeSocket();
   }
 
   @override
@@ -174,6 +170,6 @@ class CtlMatching extends SuperController {
   @override
   void onResumed() {
     print("onResumed");
-    initSocket();
+    Get.offAllNamed('/home');
   }
 }

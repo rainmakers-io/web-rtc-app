@@ -52,6 +52,12 @@ class _AtomVideoCallTimerState extends State<AtomVideoCallTimer> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    stop();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

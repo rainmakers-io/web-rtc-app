@@ -12,9 +12,6 @@ import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
 
 class DialogBottomSheetEndVideoCall {
   static show(BuildContext context, {required img, required message}) {
-    String _img = img;
-    String _message = message;
-
     return showModalBottomSheet(
         isScrollControlled: true,
         enableDrag: false,
@@ -24,8 +21,8 @@ class DialogBottomSheetEndVideoCall {
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
             return BottomSheet(
-              img: _img,
-              message: _message,
+              img: img,
+              message: message,
             );
           });
         });
@@ -123,7 +120,7 @@ class BottomSheet extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: AtomFillButton(
                       onPressed: () {
-                        Get.off(const PageMatching(), arguments: {
+                        Get.offAll(PageMatching(), arguments: {
                           'sex': sex,
                           'locations': locations,
                           'ageRange': ageRange

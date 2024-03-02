@@ -32,7 +32,6 @@ class VideoChatSignaling {
   StreamStateCallback? onLocalStream;
   Function(SignalingStatus state)? onSignalingStateChange;
   Function(Map<String, dynamic> candidate)? onIceCandidate;
-  var test = false;
 
   init() async {
     navigator.mediaDevices.ondevicechange = (event) async {

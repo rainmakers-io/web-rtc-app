@@ -18,6 +18,7 @@ class CtlVideoChat extends SuperController {
   late VideoChatSignaling? _signaling;
   final _isOnLocalRenderer = false.obs;
   final _isOnRemoteRenderer = false.obs;
+  Null Function(dynamic)? partnerDisconnected;
   final _partnerInfo = {
     'nickname': '',
     'age': 0,
@@ -59,6 +60,11 @@ class CtlVideoChat extends SuperController {
       socket.socketIo.on(
           ConstantUser.matchingEventsJson['ANSWER']!, someoneTryingJoinRoom);
       socket.socketIo.on(ConstantUser.matchingEventsJson['ICE']!, roomUpdated);
+      socket.socketIo
+          .off(ConstantUser.matchingEventsJson['PARTNER_DISCONNECTED']!);
+      socket.socketIo.on(
+          ConstantUser.matchingEventsJson['PARTNER_DISCONNECTED']!,
+          partnerDisconnected!.call);
     }
     // 이전 페이지에서 소켓이 초기화되지 않고 접근됨 매칭 페이지로 보내기
   }
@@ -69,7 +75,6 @@ class CtlVideoChat extends SuperController {
     }
     if (await isGrantedAllPermissions()) {
       initRenderer();
-      initSocket();
       _signaling = VideoChatSignaling();
       _signaling?.onIceCandidate = ((candidate) {
         print("EMIT ICE");
@@ -87,6 +92,7 @@ class CtlVideoChat extends SuperController {
       });
       await _signaling?.connect();
       await _signaling?.init();
+      initSocket();
 
       var initiator = Get.arguments['initiator'];
       var partnerId = Get.arguments['partnerId'];
@@ -157,6 +163,11 @@ class CtlVideoChat extends SuperController {
     return true;
   }
 
+  closeSocket() {
+    socket.socketIo.close();
+    socket.socketIo.disconnect();
+  }
+
   void off() {
     try {
       print("OFF");
@@ -168,6 +179,7 @@ class CtlVideoChat extends SuperController {
       remoteRenderer.dispose();
       localRenderer.srcObject = null;
       remoteRenderer.srcObject = null;
+      closeSocket();
     } catch (e) {
       rethrow;
     }

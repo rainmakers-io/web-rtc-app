@@ -6,11 +6,12 @@ import 'package:web_rtc_app/pages/MyInfo.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 
 class PageHome extends GetView<CtlHome> {
-  const PageHome({super.key});
+  PageHome({super.key}) {
+    controller.checkLoggedIn();
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller.checkLoggedIn();
 
     return Obx(() => Scaffold(
         bottomNavigationBar: BottomNavigationBar(

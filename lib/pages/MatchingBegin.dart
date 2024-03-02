@@ -11,7 +11,8 @@ import 'package:web_rtc_app/widgets/dialog/BottomSheetChooseTarget.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingFilter.dart';
 import 'package:web_rtc_app/widgets/molecules/matching-room/SlideAnimation.dart';
 
-class PageMatchingBegin extends GetView<CtlMatchingBegin> {
+class PageMatchingBegin extends StatelessWidget {
+  final controller = Get.find<CtlMatchingBegin>();
   late AnimationController _animationController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
