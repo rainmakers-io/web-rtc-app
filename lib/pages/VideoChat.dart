@@ -56,7 +56,7 @@ class PageVideoChat extends StatelessWidget {
     timer.start(time, () {
       controller.off();
       DialogBottomSheetEndVideoCall.show(context,
-          message: '정해진 시간이 다 되어 통화가 종료됐어요.',
+          message: '시간이 다 되어 통화가 종료됐어요.',
           img: controller.partnerInfo.value['images'][0]);
     });
 

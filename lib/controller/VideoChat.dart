@@ -83,7 +83,6 @@ class CtlVideoChat extends SuperController {
       });
       _signaling?.onLocalStream = ((stream) {
         localRenderer.srcObject = stream;
-        localRenderer.muted = true;
         _isOnLocalRenderer.value = true;
       });
       _signaling?.onRemoteStream = ((stream) {

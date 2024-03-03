@@ -392,7 +392,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
                             fontWeight: FontBodyBold01.weight)))),
                 SizedBox(
                     // 남은 공간만 스크롤, 추후 좀 더 잘 구현해보기
-                    height: MediaQuery.of(context).size.height / 2 + 80,
+                    height: MediaQuery.of(context).size.height / 2 + 70,
                     child: SingleChildScrollView(
                         child: Tags(
                       itemCount: interests.length,
@@ -416,6 +416,7 @@ class Interests extends GetView<CtlSelectMyInfo> {
                                   fontWeight: FontCaptionSemibold02.weight),
                               selected: isSelectedLabel(itemLabel),
                               selectedColor: const Color(0xFF103561),
+                              showCheckmark: false,
                               onSelected: (value) {
                                 if (value &&
                                     controller.myInterests.length <

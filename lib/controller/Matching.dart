@@ -11,9 +11,8 @@ import 'package:web_rtc_app/utils/Socket.dart';
 late CtlMatching ctlMatching;
 
 // TODO
-// 매칭 중 나갈시 다시 매칭 안됨
-// 신고하기 기능
-
+// dispose 에러 수정
+// 아이폰 가림막 덜 뿌연느낌 수정
 //mypage - 권한 필요 설명
 //서비스 정책 설명
 //개인정보 수정(재가입)
@@ -128,6 +127,7 @@ class CtlMatching extends SuperController {
   partnerDisconnected(data) {
     closeMatchingResultModal();
     isMatching.value = false;
+    startMatching();
   }
 
   closeSocket() {
@@ -148,6 +148,9 @@ class CtlMatching extends SuperController {
   @override
   void onClose() {
     super.onClose();
+    if (timer != null && timer!.isActive) {
+      timer!.cancel();
+    }
     print("onClose");
   }
 

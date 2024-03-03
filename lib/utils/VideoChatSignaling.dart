@@ -115,7 +115,7 @@ class VideoChatSignaling {
   }
 
   setIce(Map<String, dynamic> data) {
-        print("ICE");
+    print("ICE");
     print(data);
     peerConnection?.addCandidate(
       RTCIceCandidate(
@@ -124,7 +124,6 @@ class VideoChatSignaling {
         data['ice']['sdpMLineIndex'],
       ),
     );
-
   }
 
   void registerStatusListeners() {
@@ -158,6 +157,12 @@ class VideoChatSignaling {
     }
   }
 
+  void enableSpeakerphone() {
+    if (localStream != null) {
+      localStream!.getAudioTracks()[0].enableSpeakerphone(true);
+    }
+  }
+
   void toggleVideoTrack() {
     isEnabledVideo = !isEnabledVideo;
     if (localStream != null) {
@@ -170,6 +175,7 @@ class VideoChatSignaling {
       localStream?.getTracks().forEach((track) => track.stop());
       remoteStream?.getTracks().forEach((track) => track.stop());
     }
+    peerConnection?.dispose();
     localStream?.dispose();
     localStream = null;
     remoteStream?.dispose();

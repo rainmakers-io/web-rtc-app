@@ -238,14 +238,15 @@ class _BottomSheetState extends State<BottomSheet> {
                     ),
                     const SizedBox(height: 24),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      FittedBox(
+                      SizedBox(
+                          width: 195,
                           child: AtomCardButton(
                               borderColor: relationCardData()['borderColor'],
                               backgroundColor:
                                   relationCardData()['backgroundColor'],
                               onPressed: () {},
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 0),
+                                  horizontal: 15, vertical: 0),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
