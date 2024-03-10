@@ -11,31 +11,22 @@ import 'package:web_rtc_app/widgets/dialog/BottomSheetChooseTarget.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingFilter.dart';
 import 'package:web_rtc_app/widgets/molecules/matching-room/SlideAnimation.dart';
 
-class PageMatchingBegin extends StatelessWidget {
-  final controller = Get.find<CtlMatchingBegin>();
-  late AnimationController _animationController;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  PageMatchingBegin({super.key}) {
-    controller.inCalling.listen((value) {
-      var ctx = _scaffoldKey.currentContext;
-      if (value && ctx != null) {
-        DialogBottomSheetChooseTarget.show(ctx, sex: controller.sex.value,
-            onPressedNext: (targetSex) {
-          controller.saveMatchingFilters(sex: targetSex);
-          _animationController.forward();
-          controller.isStartAnimation.value = true;
-        });
-      }
-    });
-  }
+class PageMatchingBegin extends GetView<CtlMatchingBegin> {
+  const PageMatchingBegin({super.key});
 
   @override
   Widget build(BuildContext context) {
     controller.onVisible();
+    controller.openBottomSheet = () {
+      DialogBottomSheetChooseTarget.show(context, sex: controller.sex.value,
+          onPressedNext: (targetSex) {
+        controller.saveMatchingFilters(sex: targetSex);
+        controller.animationController?.forward();
+        controller.isStartAnimation.value = true;
+      });
+    };
 
     return Obx(() => Scaffold(
-        key: _scaffoldKey,
         backgroundColor: const Color(ColorContent.content1),
         appBar: AppBar(
           backgroundColor: const Color(ColorContent.content1),
@@ -108,14 +99,13 @@ class PageMatchingBegin extends StatelessWidget {
                             padding: const EdgeInsets.all(24),
                             child: AtomFillButton(
                                 onPressed: () {
-                                  _animationController.dispose();
                                   controller.startMatching();
                                 },
                                 text: '지금 만나기!'))
                       ]),
                   SlideAnimation(
                       onInit: (ctl) {
-                        _animationController = ctl;
+                        controller.setAnimationController(ctl);
                       },
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),

@@ -8,18 +8,22 @@ import 'package:web_rtc_app/pages/Matching.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/utils/MatchingSignaling.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/material.dart';
 
 late CtlMatchingBegin ctlMatchingBegin;
 
+// TODO: 홈 버튼 클릭하여 나갔다가 재접속시 화면/애니메이션 실행안되는 이슈 수정
 class CtlMatchingBegin extends SuperController {
   final Rx<String> _sex = ''.obs;
   final _locations = [].obs;
   final RxList<String> _ageRange = ['14', '99'].obs;
   final _isStartAnimation = false.obs;
+  AnimationController? _animationController;
 
   MatchingSignaling? _signaling;
   late RTCVideoRenderer localRenderer;
   final _inCalling = false.obs;
+  Function()? openBottomSheet;
 
   get sex {
     return _sex;
@@ -39,6 +43,14 @@ class CtlMatchingBegin extends SuperController {
 
   get inCalling {
     return _inCalling;
+  }
+
+  get animationController {
+    return _animationController;
+  }
+
+  void setAnimationController(AnimationController ctl) {
+    _animationController = ctl;
   }
 
   void initRenderer() async {
@@ -106,7 +118,10 @@ class CtlMatchingBegin extends SuperController {
         ..onLocalStream = ((stream) {
           localRenderer.srcObject = stream;
           localRenderer.muted = true;
-          _inCalling.value = true;
+          if (!_inCalling.value) {
+            _inCalling.value = true;
+            openBottomSheet?.call();
+          }
         });
     }
   }
@@ -126,23 +141,32 @@ class CtlMatchingBegin extends SuperController {
   void onClose() {
     print("close");
     super.onClose();
-    if (GetPlatform.isMobile) {
-      Wakelock.disable();
-    }
     off();
   }
 
-  void off() async {
+  Future<void> off() async {
     try {
+      if (GetPlatform.isMobile) {
+        Wakelock.disable();
+      }
       _signaling?.dispose();
       _signaling = null;
       _inCalling.value = false;
-      await localRenderer.dispose();
-      localRenderer.srcObject = null;
       _isStartAnimation.value = false;
+      // localRenderer.srcObject = null;
+      _animationController?.dispose();
+      _animationController = null;
+      return await localRenderer.dispose();
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  void dispose() {
+    print("dispose2");
+    super.dispose();
+    off();
   }
 
   @override
@@ -152,21 +176,22 @@ class CtlMatchingBegin extends SuperController {
 
   @override
   void onInactive() {
-    print("inactive");
+    print("inactive2");
   }
 
   @override
   void onPaused() {
-    print("paused");
+    off();
+    print("paused2");
   }
 
   @override
   void onResumed() async {
-    print("resume");
+    print("resume2");
   }
 
   @override
   void onHidden() {
-    print("hidden");
+    print("hidden2");
   }
 }

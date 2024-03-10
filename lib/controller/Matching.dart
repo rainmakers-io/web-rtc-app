@@ -11,8 +11,6 @@ import 'package:web_rtc_app/utils/Socket.dart';
 late CtlMatching ctlMatching;
 
 // TODO
-// dispose 에러 수정
-// 아이폰 가림막 덜 뿌연느낌 수정
 //mypage - 권한 필요 설명
 //서비스 정책 설명
 //개인정보 수정(재가입)
@@ -33,7 +31,7 @@ class CtlMatching extends SuperController {
 
   back() {
     closeSocket();
-    Get.toNamed('/home');
+    Get.offAndToNamed('/home');
   }
 
   closeMatchingResultModal() {

@@ -202,26 +202,26 @@ class CtlVideoChat extends SuperController {
 
   @override
   void onDetached() {
-    print("detached");
+    print("detached3");
   }
 
   @override
   void onInactive() {
-    print("inactive");
+    print("inactive3");
   }
 
   @override
   void onPaused() {
-    print("paused");
+    print("paused3");
   }
 
   @override
   void onResumed() async {
-    print("resume");
+    print("resume3");
   }
 
   @override
   void onHidden() {
-    print("hidden");
+    print("hidden3");
   }
 }

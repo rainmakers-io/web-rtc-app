@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/Home.dart';
-import 'package:web_rtc_app/pages/MatchingBegin.dart';
-import 'package:web_rtc_app/pages/MyInfo.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 
 class PageHome extends GetView<CtlHome> {
@@ -12,7 +10,6 @@ class PageHome extends GetView<CtlHome> {
 
   @override
   Widget build(BuildContext context) {
-
     return Obx(() => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color(ColorContent.content1),
@@ -63,9 +60,9 @@ class PageHome extends GetView<CtlHome> {
                 label: '')
           ],
         ),
-        body: [
-          PageMatchingBegin(),
-          const PageMyInfo()
-        ][controller.currentPageIndex.value]));
+        body: IndexedStack(
+          children: controller.items,
+          index: controller.currentPageIndex.value,
+        )));
   }
 }
