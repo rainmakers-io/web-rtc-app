@@ -9,35 +9,37 @@ import 'package:web_rtc_app/widgets/atoms/Spinner.dart';
 import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingSuccess.dart';
 
-class PageMatching extends GetView<CtlMatching> {
-  const PageMatching({super.key});
+class PageMatching extends StatelessWidget {
+  PageMatching({super.key}) {}
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CtlMatching());
+
+    controller.initSocket();
+    controller.openBottomSheet = null;
+    controller.closeBottomSheet = null;
+
     var locations = Get.arguments['locations'];
     var ageRange = Get.arguments["ageRange"];
     var sex = Get.arguments['sex'];
-
-    controller.initSocket();
-    controller.partnerInfo.listen((info) {
-      if (info.isNotEmpty) {
-        DialogBottomSheetMatchingSuccess.close();
-        DialogBottomSheetMatchingSuccess.show(
-          context,
-          age: info['age'] ?? 0,
-          imgSrc: info['profileUrl'],
-          interests: info['interests'],
-          location: info['location']?[0],
-          nickname: info['nickname'],
-          purpose: info['purpose'],
-          sex: ConstantUser.sexOptionsJson[info['gender']] ,
-          next: controller.acceptMatch,
-          pass: controller.declineMatch,
-        );
-      } else {
-        DialogBottomSheetMatchingSuccess.close();
-      }
-    });
+    controller.openBottomSheet = (info) {
+      DialogBottomSheetMatchingSuccess.show(
+        context,
+        age: info['age'] ?? 0,
+        imgSrc: info['profileUrl'],
+        interests: info['interests'],
+        location: info['location']?[0],
+        nickname: info['nickname'],
+        purpose: info['purpose'],
+        sex: ConstantUser.sexOptionsJson[info['gender']],
+        next: controller.acceptMatch,
+        pass: controller.declineMatch,
+      );
+    };
+    controller.closeBottomSheet = () {
+      DialogBottomSheetMatchingSuccess.close();
+    };
 
     return Scaffold(
         backgroundColor: const Color(ColorContent.content1),
@@ -66,10 +68,10 @@ class PageMatching extends GetView<CtlMatching> {
                                       onPressed: () async {
                                         var result =
                                             await DialogAlertDefault.show(
-                                          title: '정말 나가시겠습니까?',
-                                          content: '지금 나가면 다시는\n못만날 수도 있어요.',
-                                          okLabel: '나가기',
-                                        );
+                                                title: '정말 나가시겠습니까?',
+                                                content:
+                                                    '지금 나가면 다시는\n못만날 수도 있어요.',
+                                                okLabel: '나가기');
                                         if (result == 'ok') {
                                           controller.back();
                                         }

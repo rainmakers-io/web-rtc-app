@@ -25,9 +25,6 @@ class ConstantUser {
     'START_MATCHING': "start_matching",
     'CANCEL_MATCHING': "cancel_matching",
     'RESPOND_TO_INTRODUCE': "respond_to_introduce",
-  };
-
-  static const webrtcEvents = {
     'START_WEBRTC_SIGNALING': "start_webrtc_signaling",
     'OFFER': "offer",
     'ANSWER': "answer",

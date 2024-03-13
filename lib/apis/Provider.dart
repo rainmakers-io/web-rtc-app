@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/apis/AuthService.dart';
+import 'package:web_rtc_app/apis/BlockLogService.dart';
 import 'package:web_rtc_app/apis/HealthService.dart';
 import 'package:web_rtc_app/apis/ImageService.dart';
 import 'package:web_rtc_app/apis/UserService.dart';
@@ -15,12 +16,14 @@ class ApiProvider {
   late ApiAuthService _authService;
   late ApiUserService _userService;
   late ApiImageService _imageService;
+  late ApiBlockLogService _blockLogService;
 
   void initServices() {
     _healthService = ApiHealthService(dio);
     _authService = ApiAuthService(dio);
     _userService = ApiUserService(dio);
     _imageService = ApiImageService(dio);
+    _blockLogService = ApiBlockLogService(dio);
   }
 
   ApiHealthService get healthService {
@@ -37,6 +40,10 @@ class ApiProvider {
 
   ApiImageService get imageService {
     return _imageService;
+  }
+
+  ApiBlockLogService get blockLogService {
+    return _blockLogService;
   }
 
   void init() {
@@ -72,10 +79,10 @@ class ApiProvider {
           localStorage.setString('accessToken', res['accessToken']);
         } catch (error) {
           // 로그인 페이지로 이동한다.
-          Get.toNamed('/guide');
+          Get.offAllNamed('/guide');
         }
       } else if (e.response?.statusCode == 401) {
-        Get.toNamed('/guide');
+        Get.offAllNamed('/guide');
       }
       return handler.next(e);
     }));
