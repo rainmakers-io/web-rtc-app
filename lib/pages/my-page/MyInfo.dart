@@ -20,7 +20,7 @@ class PageMyInfo extends StatelessWidget {
           Get.offAllNamed('/guide');
         }),
     Item(
-        title: "헤이즈 이용약관",
+        title: "Haze 이용약관",
         onClick: () {
           Get.to(PageTerms());
         })
