@@ -8,13 +8,10 @@ import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
 import 'package:web_rtc_app/widgets/atoms/IconButton.dart';
 
 class DialogBottomSheetMatchingSuccess {
-  static BuildContext? ctx;
+  static late BuildContext ctx;
 
   static close() {
-    if (ctx != null) {
-      Navigator.of(ctx!).pop();
-      ctx = null;
-    }
+    Navigator.of(ctx).pop();
   }
 
   static show(
@@ -52,7 +49,7 @@ class DialogBottomSheetMatchingSuccess {
   }
 }
 
-class BottomSheet extends StatelessWidget {
+class BottomSheet extends StatefulWidget {
   final String nickname;
   final int age;
   final String sex;
@@ -76,22 +73,29 @@ class BottomSheet extends StatelessWidget {
     required this.purpose,
   });
 
+  @override
+  State<StatefulWidget> createState() => _BottomSheetState();
+}
+
+class _BottomSheetState extends State<BottomSheet> {
+  bool isAccept = false;
+
   relationCardData() {
-    if (purpose == ConstantUser.purposes[0][1]) {
+    if (widget.purpose == ConstantUser.purposes[0][1]) {
       return {
         'src': 'assets/images/smiling-face-with-heart-eyes.png',
         'label': ConstantUser.purposes[0][0],
         'borderColor': const Color(ColorFeature.pink01),
         'backgroundColor': const Color(ColorFeature.pink01).withOpacity(0.33),
       };
-    } else if (purpose == ConstantUser.purposes[1][1]) {
+    } else if (widget.purpose == ConstantUser.purposes[1][1]) {
       return {
         'src': 'assets/images/waving-hand.png',
         'label': ConstantUser.purposes[1][0],
         'borderColor': const Color(ColorFeature.green01),
         'backgroundColor': const Color(ColorFeature.green01).withOpacity(0.33),
       };
-    } else if (purpose == ConstantUser.purposes[2][1]) {
+    } else if (widget.purpose == ConstantUser.purposes[2][1]) {
       return {
         'src': 'assets/images/wine-glass.png',
         'label': ConstantUser.purposes[2][0],
@@ -136,7 +140,7 @@ class BottomSheet extends StatelessWidget {
                                           image: AssetImage(
                                               'assets/images/logout.png')),
                                       onPressed: () {
-                                        pass();
+                                        widget.pass();
                                       }))
                             ])),
                     const SizedBox(
@@ -148,10 +152,13 @@ class BottomSheet extends StatelessWidget {
                         ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Stack(children: [
-                              Image.network(
-                                imgSrc,
+                              SizedBox(
                                 width: 120,
                                 height: 120,
+                                child: Image.network(
+                                  widget.imgSrc,
+                                  semanticLabel: '프로필 이미지',
+                                ),
                               ),
                               BackdropFilter(
                                   filter:
@@ -166,13 +173,13 @@ class BottomSheet extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(nickname,
+                        Text(widget.nickname,
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: FontTitleBold02.size,
                                 fontWeight: FontTitleBold02.weight)),
                         const SizedBox(width: 4),
-                        Text('$age',
+                        Text('${widget.age}',
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: FontTitleMedium03.size,
@@ -185,7 +192,7 @@ class BottomSheet extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(sex,
+                        Text(widget.sex,
                             style: const TextStyle(
                                 color: Color(ColorGrayScale.d9),
                                 fontSize: FontCaptionMedium03.size,
@@ -195,7 +202,7 @@ class BottomSheet extends StatelessWidget {
                             height: 20,
                             width: 20,
                             image: AssetImage('assets/images/location.png')),
-                        Text(location,
+                        Text(widget.location,
                             style: const TextStyle(
                                 color: Color(ColorGrayScale.d9),
                                 fontSize: FontCaptionMedium03.size,
@@ -207,7 +214,7 @@ class BottomSheet extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: interests
+                      children: widget.interests
                           .map((item) => Row(children: [
                                 Chip(
                                   label: Text(item,
@@ -231,14 +238,15 @@ class BottomSheet extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      FittedBox(
+                      SizedBox(
+                          width: 195,
                           child: AtomCardButton(
                               borderColor: relationCardData()['borderColor'],
                               backgroundColor:
                                   relationCardData()['backgroundColor'],
                               onPressed: () {},
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 0),
+                                  horizontal: 15, vertical: 0),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -285,10 +293,14 @@ class BottomSheet extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: AtomFillButton(
+                      isDisable: isAccept,
                       onPressed: () {
-                        next();
+                        widget.next();
+                        setState(() {
+                          isAccept = true;
+                        });
                       },
-                      text: '이야기시작!',
+                      text: isAccept ? '상대방이 수락하기를 기다리는 중...' : '이야기시작!',
                     ),
                   ),
                   const SizedBox(
@@ -299,7 +311,7 @@ class BottomSheet extends StatelessWidget {
                     child: AtomFillButton(
                       backgroundColor: const Color(ColorContent.content1),
                       onPressed: () {
-                        pass();
+                        widget.pass();
                       },
                       text: '넘기기',
                     ),
