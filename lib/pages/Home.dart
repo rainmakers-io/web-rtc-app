@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/Home.dart';
-import 'package:web_rtc_app/pages/MatchingBegin.dart';
-import 'package:web_rtc_app/pages/MyInfo.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 
-class PageHome extends GetView<CtlHome> {
-  const PageHome({super.key});
+class PageHome extends StatelessWidget {
+  var controller = Get.put<CtlHome>(CtlHome());
+  PageHome({super.key}) {
+    controller.checkLoggedIn();
+  }
 
   @override
   Widget build(BuildContext context) {
-    controller.checkLoggedIn();
-
     return Obx(() => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color(ColorContent.content1),
@@ -62,9 +61,9 @@ class PageHome extends GetView<CtlHome> {
                 label: '')
           ],
         ),
-        body: [
-          PageMatchingBegin(),
-          const PageMyInfo()
-        ][controller.currentPageIndex.value]));
+        body: IndexedStack(
+          children: controller.items,
+          index: controller.currentPageIndex.value,
+        )));
   }
 }

@@ -28,7 +28,7 @@ class Guide1 extends StatelessWidget {
                     child: const Image(
                       image: AssetImage('assets/images/guide01.png'),
                       width: 330,
-                      height: 426,
+                      height: 356,
                     ),
                   ),
                   const Text('불안한 화상채팅 이제그만.',
@@ -77,7 +77,7 @@ class Guide2 extends GetView<CtlGuide> {
                         child: const Image(
                           image: AssetImage('assets/images/guide02.png'),
                           width: 330,
-                          height: 426,
+                          height: 356,
                         ),
                       ),
                       const Text('불안한 화상채팅 이제그만.',
@@ -126,7 +126,7 @@ class Guide3 extends GetView<CtlGuide> {
                         child: const Image(
                           image: AssetImage('assets/images/guide03.png'),
                           width: 330,
-                          height: 426,
+                          height: 356,
                         ),
                       ),
                       const Text('서로 꽤 잘 맞는 것 같나요?',

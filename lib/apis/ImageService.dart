@@ -68,4 +68,20 @@ class ApiImageService {
     };
     return result;
   }
+
+  getImagesById(String userId) async {
+    var apiResponse = await api.get<Map<String, dynamic>>('/images/$userId');
+    Map<String, dynamic> result = {
+      "userId": apiResponse.data?['userId'] ?? '',
+      "keys": apiResponse.data?['keys'] ?? [] as List<String>,
+      "urls": apiResponse.data?['urls'] ?? [] as List<String>,
+      "createdAt": apiResponse.data?['createdAt'] ?? '',
+      "updatedAt": apiResponse.data?['updatedAt'] ?? '',
+      "name": apiResponse.data?['name'] ?? '',
+      "code": apiResponse.data?['code'] ?? -1,
+      "message": apiResponse.data?['message'] ?? '',
+      "error": apiResponse.data?['error'] ?? {},
+    };
+    return result;
+  }
 }
