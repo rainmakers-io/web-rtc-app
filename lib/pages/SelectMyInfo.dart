@@ -842,18 +842,20 @@ class Photo extends GetView<CtlSelectMyInfo> {
                                                     .value)),
                                           ),
                                           Positioned(
-                                              top: 116,
-                                              right: -7,
-                                              child: AtomIconButton(
-                                                  paddingAll: 18,
-                                                  child: const Image(
-                                                      height: 18,
-                                                      width: 18,
-                                                      image: AssetImage(
-                                                          'assets/images/edit.png')),
-                                                  onPressed: () {
-                                                    myProfileImage();
-                                                  })),
+                                              top: 114,
+                                              right: 0,
+                                              child: SizedBox(
+                                                  width: 40,
+                                                  height: 40,
+                                                  child: AtomIconButton(
+                                                      child: const Image(
+                                                          height: 18,
+                                                          width: 18,
+                                                          image: AssetImage(
+                                                              'assets/images/edit.png')),
+                                                      onPressed: () {
+                                                        myProfileImage();
+                                                      }))),
                                         ],
                                       ))),
                           Visibility(
@@ -883,7 +885,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
                   const SizedBox(
                     height: 24,
                   ),
-                  const Text('내가 공개하기 전까지\n상대방에게는 블러 처리돼요.',
+                  const Text('얼굴이 아니여도 돼요.\n매력적인 사진을 보여주세요.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Color(ColorGrayScale.d9),
@@ -996,8 +998,9 @@ class Welcome extends GetView<CtlSelectMyInfo> {
   }
 }
 
-class PageSelectMyInfo extends GetView<CtlSelectMyInfo> {
-  const PageSelectMyInfo({super.key});
+class PageSelectMyInfo extends StatelessWidget {
+  final controller = Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
+  PageSelectMyInfo({super.key});
 
   @override
   Widget build(BuildContext context) {

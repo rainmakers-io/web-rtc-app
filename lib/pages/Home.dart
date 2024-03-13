@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 
-class PageHome extends GetView<CtlHome> {
+class PageHome extends StatelessWidget {
+  var controller = Get.put<CtlHome>(CtlHome());
   PageHome({super.key}) {
     controller.checkLoggedIn();
   }

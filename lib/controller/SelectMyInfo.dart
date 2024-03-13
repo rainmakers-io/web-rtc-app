@@ -59,9 +59,9 @@ class CtlSelectMyInfo extends GetxController {
   final _steps = [
     const Sex(),
     const BirthDay(),
-    Location(),
+    const Location(),
     Interests(),
-    Purpose(),
+    const Purpose(),
     Nickname(),
     const Photo(),
     const Welcome(),
@@ -214,7 +214,7 @@ class CtlSelectMyInfo extends GetxController {
 
   void prev() {
     if (_step.value == Steps.sex.index) {
-      Get.toNamed('/guide');
+      Get.back();
       return;
     }
     _step.value--;
@@ -237,6 +237,6 @@ class CtlSelectMyInfo extends GetxController {
       localStorage.setString('user.nickname', _nickname.value);
     }
 
-    _step.value++;
+    _step.value = (_step.value + 1) % _steps.length;
   }
 }

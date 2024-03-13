@@ -4,8 +4,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/controller/Guide.dart';
-import 'package:web_rtc_app/controller/Home.dart';
-import 'package:web_rtc_app/controller/SelectMyInfo.dart';
 import 'package:web_rtc_app/controller/MatchingBegin.dart';
 import 'package:web_rtc_app/controller/VideoChat.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
@@ -55,7 +53,6 @@ class RootApp extends StatelessWidget {
     bool enableGuide = localStorage.storage.getBool('enableGuide') ?? true;
     bool enableSelectMyInfo =
         localStorage.storage.getBool('enableSelectMyInfo') ?? true;
-    // localStorage.storage.clear();
 
     if (enableForceUpdate) {
       // TODO: 강제 업데이트 되도록 유도한다.
@@ -75,15 +72,12 @@ class RootApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/home', page: () => PageHome()),
-        GetPage(name: '/select-my-info', page: () => const PageSelectMyInfo()),
+        GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
         GetPage(name: '/health', page: () => const PageHealth()),
       ],
       initialBinding: BindingsBuilder(() {
-        // TODO: 페이지 내에서 put 하는 형식으로 바꾸기, 라이프사이클이 전역에 붙어서 컨트롤하기 까다로움
-        Get.put<CtlSelectMyInfo>(CtlSelectMyInfo());
         Get.put<CtlMatchingBegin>(CtlMatchingBegin());
         Get.put<CtlVideoChat>(CtlVideoChat());
-        Get.put<CtlHome>(CtlHome());
         Get.put<CtlGuide>(CtlGuide());
       }),
       initialRoute: initialRoute(),
