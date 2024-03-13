@@ -33,4 +33,8 @@ class UtilSocket {
     });
     socketIo.onAny((event, data) => print('ANY: $event, $data'));
   }
+
+  dispose() {
+    socketIo.dispose();
+  }
 }
