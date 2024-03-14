@@ -19,8 +19,7 @@ class AtomCardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-        fit: FlexFit.tight,
+    return Expanded(
         child: Container(
             decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(

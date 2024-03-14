@@ -237,55 +237,56 @@ class _BottomSheetState extends State<BottomSheet> {
                           .toList(),
                     ),
                     const SizedBox(height: 24),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      SizedBox(
-                          width: 195,
-                          child: AtomCardButton(
-                              borderColor: relationCardData()['borderColor'],
-                              backgroundColor:
-                                  relationCardData()['backgroundColor'],
-                              onPressed: () {},
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 0),
-                              child: Row(
+                    Row(children: [
+                      const SizedBox(
+                        width: 75,
+                      ),
+                      AtomCardButton(
+                          borderColor: relationCardData()['borderColor'],
+                          backgroundColor:
+                              relationCardData()['backgroundColor'],
+                          onPressed: () {},
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image(
+                                    height: 36,
+                                    width: 36,
+                                    image:
+                                        AssetImage(relationCardData()['src'])),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Image(
-                                        height: 36,
-                                        width: 36,
-                                        image: AssetImage(
-                                            relationCardData()['src'])),
-                                    const SizedBox(
-                                      width: 8,
+                                    const Text(
+                                      '친구가 찾는 관계',
+                                      style: TextStyle(
+                                          color: Color(ColorGrayScale.d9),
+                                          fontSize: FontCaptionMedium02.size,
+                                          fontWeight:
+                                              FontCaptionMedium02.weight),
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          '친구가 찾는 관계',
-                                          style: TextStyle(
-                                              color: Color(ColorGrayScale.d9),
-                                              fontSize:
-                                                  FontCaptionMedium02.size,
-                                              fontWeight:
-                                                  FontCaptionMedium02.weight),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          relationCardData()['label'],
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: FontBodySemibold02.size,
-                                              fontWeight:
-                                                  FontBodySemibold02.weight),
-                                        ),
-                                      ],
-                                    )
-                                  ])))
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      relationCardData()['label'],
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: FontBodySemibold02.size,
+                                          fontWeight:
+                                              FontBodySemibold02.weight),
+                                    ),
+                                  ],
+                                )
+                              ])),
+                      const SizedBox(
+                        width: 75,
+                      ),
                     ]),
                   ]),
               Column(
