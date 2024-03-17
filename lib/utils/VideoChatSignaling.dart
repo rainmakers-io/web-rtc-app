@@ -32,12 +32,19 @@ class VideoChatSignaling {
   StreamStateCallback? onLocalStream;
   Function(SignalingStatus state)? onSignalingStateChange;
   Function(Map<String, dynamic> candidate)? onIceCandidate;
+  final Map<String, dynamic> peerConnectionConfig = {
+    'mandatory': {},
+    'optional': [
+      {'DtlsSrtpKeyAgreement': true},
+    ]
+  };
 
   init() async {
     navigator.mediaDevices.ondevicechange = (event) async {
       _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
     };
-    peerConnection = await createPeerConnection(configuration);
+    peerConnection =
+        await createPeerConnection(configuration, peerConnectionConfig);
     registerStatusListeners();
     // 1. media 정보 peerConnection에 셋팅
     localStream?.getTracks().forEach((track) {
@@ -64,7 +71,12 @@ class VideoChatSignaling {
   connect() async {
     try {
       var stream = await navigator.mediaDevices.getUserMedia({
-        'audio': true,
+        'audio': {
+          'sampleSize': '16',
+          'channelCount': '2',
+          'sampleRate': '48000',
+          'volume': '1.0',
+        },
         'video': {
           'facingMode': 'user',
           'mandatory': {

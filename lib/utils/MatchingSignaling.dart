@@ -24,7 +24,7 @@ class MatchingSignaling {
   connect() async {
     try {
       var stream = await navigator.mediaDevices.getUserMedia({
-        'audio': true,
+        'audio': false,
         'video': {
           'facingMode': 'user',
           'mandatory': {
@@ -35,7 +35,6 @@ class MatchingSignaling {
           }
         }
       });
-
       _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
       localStream = stream;
       onLocalStream?.call(stream);

@@ -15,6 +15,7 @@ class UtilTimer {
     _seconds = seconds;
     _initialSeconds = seconds;
     _onStop = onStop;
+    if (_isRunning) return;
     _isRunning = true;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_seconds <= 0) {

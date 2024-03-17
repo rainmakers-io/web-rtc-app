@@ -117,7 +117,6 @@ class CtlMatchingBegin extends SuperController {
         ..init()
         ..onLocalStream = ((stream) {
           localRenderer.srcObject = stream;
-          localRenderer.muted = true;
           if (!_inCalling.value) {
             _inCalling.value = true;
             openBottomSheet?.call();

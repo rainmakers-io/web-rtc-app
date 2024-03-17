@@ -85,9 +85,11 @@ class CtlVideoChat extends SuperController {
         localRenderer.srcObject = stream;
         _isOnLocalRenderer.value = true;
       });
-      _signaling?.onRemoteStream = ((stream) {
+      _signaling?.onRemoteStream = ((stream) async {
         remoteRenderer.srcObject = stream;
         _isOnRemoteRenderer.value = true;
+          // Helper.selectAudioOutput(audios[0].deviceId);
+          Helper.setSpeakerphoneOn(true);
       });
       await _signaling?.connect();
       await _signaling?.init();
@@ -176,8 +178,6 @@ class CtlVideoChat extends SuperController {
       _isOnRemoteRenderer.value = false;
       localRenderer.dispose();
       remoteRenderer.dispose();
-      localRenderer.srcObject = null;
-      remoteRenderer.srcObject = null;
       closeSocket();
     } catch (e) {
       rethrow;
