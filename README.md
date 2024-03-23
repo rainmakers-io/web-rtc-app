@@ -4,9 +4,12 @@
 ## 웹으로 시작하기(디버깅 모드)
 flutter run -d chrome --dart-define="env=.env.stag" --dart-define="web=true" --web-renderer html 
 
-- android build
- - flutter build apk --split-per-abi
+# android build
  - flutter build apk --release --target-platform=android-arm64
+
+# 배포 
+- 빌드 버전 변경 (추후 자동화 하기)
+- flutter build appbundle
 
 
 # 개발 가이드
