@@ -6,28 +6,22 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class PageTerms extends StatelessWidget {
   late final WebViewController controller;
-
+  String url = "https://quixotic-polo-572.notion.site";
   PageTerms({super.key}) {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (!request.url.startsWith('https://flutter.dev')) {
+            if (!request.url.startsWith(url)) {
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://flutter.dev'));
+      ..loadRequest(Uri.parse('$url/Haze-046beba603434d54b0969d872d651e93'));
   }
 
   @override
@@ -45,7 +39,7 @@ class PageTerms extends StatelessWidget {
                   height: 36,
                   width: 36,
                   child: AtomIconButton(
-                    backgroundColor: const Color(ColorContent.content1),
+                      backgroundColor: const Color(ColorContent.content1),
                       child: const Image(
                           height: 24,
                           width: 24,

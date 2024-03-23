@@ -159,7 +159,9 @@ class BirthDay extends GetView<CtlSelectMyInfo> {
                     height: 24,
                   ),
                   Obx(() => DatePickerWidget(
-                        lastDate: DateTime.now(),
+                        // 14살부터 시작할 수 있도록
+                        lastDate: DateTime.now()
+                            .subtract(const Duration(days: 365 * 14 + 30)),
                         initialDate: controller.birthDay.value,
                         dateFormat: 'yyyy/MM/dd',
                         locale: DatePicker.localeFromString('ko'),
