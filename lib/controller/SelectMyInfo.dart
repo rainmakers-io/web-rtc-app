@@ -36,9 +36,7 @@ class CtlSelectMyInfo extends GetxController {
   late List<String> _profileImageUrls;
   XFile? profileImageFile;
 
-  @override
-  void onReady() {
-    super.onReady();
+  savedStep() {
     _sex.value = localStorage.storage.getString('user.sex') ?? '';
     _location.value = localStorage.storage.getString('user.location') ?? '';
     _myInterests.value =
@@ -51,7 +49,7 @@ class CtlSelectMyInfo extends GetxController {
       _birthDay.value =
           DateTime.parse(localStorage.storage.getString('user.birthDay') ?? '');
     } catch (e) {
-      rethrow;
+      _birthDay.value = DateTime.now();
     }
     _step.value = currentStep();
   }

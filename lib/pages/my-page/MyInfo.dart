@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
+import 'package:web_rtc_app/controller/MatchingBegin.dart';
 import 'package:web_rtc_app/pages/my-page/Terms.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 
@@ -17,6 +18,7 @@ class PageMyInfo extends StatelessWidget {
         title: "로그아웃",
         onClick: () {
           localStorage.storage.clear();
+          Get.delete<CtlMatchingBegin>(); 
           Get.offAllNamed('/guide');
         }),
     Item(

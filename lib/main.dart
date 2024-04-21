@@ -4,8 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/controller/Guide.dart';
-import 'package:web_rtc_app/controller/MatchingBegin.dart';
-import 'package:web_rtc_app/controller/VideoChat.dart';
+import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Health.dart';
 import 'package:web_rtc_app/pages/Home.dart';
@@ -71,14 +70,13 @@ class RootApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'PretendardVariable'),
       getPages: [
         GetPage(name: '/guide', page: () => PageGuide()),
-        GetPage(name: '/home', page: () => PageHome()),
+        GetPage(name: '/home', page: () => const PageHome()),
         GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
         GetPage(name: '/health', page: () => const PageHealth()),
       ],
       initialBinding: BindingsBuilder(() {
-        Get.put<CtlMatchingBegin>(CtlMatchingBegin());
-        Get.put<CtlVideoChat>(CtlVideoChat());
         Get.put<CtlGuide>(CtlGuide());
+        Get.put<CtlHome>(CtlHome());
       }),
       initialRoute: initialRoute(),
     );

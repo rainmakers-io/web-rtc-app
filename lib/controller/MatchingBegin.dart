@@ -9,10 +9,10 @@ import 'package:web_rtc_app/utils/LocalStorage.dart';
 import 'package:web_rtc_app/utils/MatchingSignaling.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:web_rtc_app/widgets/dialog/BottomSheetChooseTarget.dart';
 
 late CtlMatchingBegin ctlMatchingBegin;
 
-// TODO: 홈 버튼 클릭하여 나갔다가 재접속시 화면/애니메이션 실행안되는 이슈 수정
 class CtlMatchingBegin extends SuperController {
   final Rx<String> _sex = ''.obs;
   final _locations = [].obs;
@@ -20,10 +20,9 @@ class CtlMatchingBegin extends SuperController {
   final _isStartAnimation = false.obs;
   AnimationController? _animationController;
 
-  MatchingSignaling? _signaling;
-  late RTCVideoRenderer localRenderer;
+  final MatchingSignaling _signaling = MatchingSignaling();
+  RTCVideoRenderer? localRenderer;
   final _inCalling = false.obs;
-  Function()? openBottomSheet;
 
   get sex {
     return _sex;
@@ -53,14 +52,14 @@ class CtlMatchingBegin extends SuperController {
     _animationController = ctl;
   }
 
-  void initRenderer() async {
+  initRenderer() {
     localRenderer = RTCVideoRenderer();
-    await localRenderer.initialize();
+    localRenderer?.initialize();
   }
 
   startMatching() {
     off();
-    Get.off(PageMatching(), arguments: {
+    Get.to(PageMatching(), arguments: {
       'sex': _sex.value,
       'locations': _locations.value,
       'ageRange': _ageRange.value
@@ -70,13 +69,16 @@ class CtlMatchingBegin extends SuperController {
   Future<bool> isGrantedAllPermissions() async {
     // web은 실제로 사용할 때 권한 허용을 받을 수 있다.
     if (GetPlatform.isDesktop) return true;
-    // TODO: 권한 허용 요청 다이얼로그 띄우기
-    late PermissionStatus cameraStatus;
-    late PermissionStatus microphoneStatus;
+    bool isGranted = true;
     do {
-      cameraStatus = await Permission.camera.request();
-      microphoneStatus = await Permission.microphone.request();
-    } while (!(cameraStatus.isGranted && microphoneStatus.isGranted));
+      Map<Permission, PermissionStatus> statuses =
+          await [Permission.camera, Permission.microphone].request();
+      statuses.forEach((key, permission) {
+        if (permission.isDenied) {
+          isGranted = false;
+        }
+      });
+    } while (!isGranted);
     return true;
   }
 
@@ -106,56 +108,70 @@ class CtlMatchingBegin extends SuperController {
     }
   }
 
+  openBottomSheet() {
+    DialogBottomSheetChooseTarget.show(
+        sex: _sex.value,
+        onPressedNext: (targetSex) {
+          saveMatchingFilters(sex: targetSex);
+        });
+  }
+
+  closeBottomSheet() {
+    DialogBottomSheetChooseTarget.close();
+  }
+
   void onVisible() async {
     if (GetPlatform.isMobile) {
-      Wakelock.enable();
+      await Wakelock.enable();
     }
+
     if (await isGrantedAllPermissions()) {
       initRenderer();
-      _signaling = MatchingSignaling()
-        ..connect()
-        ..init()
-        ..onLocalStream = ((stream) {
-          localRenderer.srcObject = stream;
-          if (!_inCalling.value) {
-            _inCalling.value = true;
-            openBottomSheet?.call();
-          }
-        });
+      _signaling.init();
+      _signaling.connect();
+      animationController?.forward();
+      if (!isStartAnimation.value) {
+        openBottomSheet();
+      }
+      isStartAnimation.value = true;
     }
   }
 
   @override
   void onInit() {
     super.onInit();
+    _signaling.onLocalStream = ((stream) {
+      localRenderer?.srcObject = stream;
+      _inCalling.value = true;
+    });
     initMatchingFilters();
+    print("INIT2");
   }
 
   @override
-  void onReady() async {
+  void onReady() {
     super.onReady();
+    print("READY");
   }
 
   @override
   void onClose() {
-    print("close");
     super.onClose();
     off();
+    print("close");
   }
 
   Future<void> off() async {
     try {
+      closeBottomSheet();
       if (GetPlatform.isMobile) {
-        Wakelock.disable();
+        await Wakelock.disable();
       }
-      _signaling?.dispose();
-      _signaling = null;
       _inCalling.value = false;
       _isStartAnimation.value = false;
-      // localRenderer.srcObject = null;
-      _animationController?.dispose();
-      _animationController = null;
-      return await localRenderer.dispose();
+      _animationController?.stop();
+      await localRenderer?.dispose();
+      _signaling.dispose();
     } catch (e) {
       rethrow;
     }
@@ -164,8 +180,9 @@ class CtlMatchingBegin extends SuperController {
   @override
   void dispose() {
     print("dispose2");
-    super.dispose();
     off();
+    _animationController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -175,17 +192,18 @@ class CtlMatchingBegin extends SuperController {
 
   @override
   void onInactive() {
+    off();
     print("inactive2");
   }
 
   @override
   void onPaused() {
-    off();
     print("paused2");
   }
 
   @override
-  void onResumed() async {
+  void onResumed() {
+    onVisible();
     print("resume2");
   }
 

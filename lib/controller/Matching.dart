@@ -94,7 +94,7 @@ class CtlMatching extends SuperController {
     var partnerId = _partnerInfo.value['id'];
     if (data["result"]) {
       // 매칭이 성사된 경우
-      Get.offAll(PageVideoChat(), arguments: {
+      Get.offAll(const PageVideoChat(), arguments: {
         'initiator': data["initiator"],
         'partnerId': partnerId,
       });
@@ -164,6 +164,7 @@ class CtlMatching extends SuperController {
   @override
   void onResumed() {
     print("onResumed");
+    // 이 페이지에서 밖으로 나갈 때 아이폰 이슈 수정하기
     Get.offAllNamed('/home');
   }
 }

@@ -3,14 +3,13 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/controller/Home.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 
-class PageHome extends StatelessWidget {
-  var controller = Get.put<CtlHome>(CtlHome());
-  PageHome({super.key}) {
-    controller.checkLoggedIn();
-  }
+class PageHome extends GetView<CtlHome> {
+  const PageHome({super.key});
 
   @override
   Widget build(BuildContext context) {
+    controller.checkLoggedIn();
+    
     return Obx(() => Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color(ColorContent.content1),

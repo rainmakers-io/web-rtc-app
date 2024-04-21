@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/widgets/atoms/CardButton.dart';
@@ -8,27 +9,29 @@ List<String> targets = ['ALL', 'FEMALE', 'MALE'];
 List<String> targetValues = ['모두', '여성', '남성'];
 
 class DialogBottomSheetChooseTarget {
-  static show(BuildContext context,
+  static close() {
+    Get.back();
+  }
+
+  static show(
       {required Function(String targetSex) onPressedNext, required sex}) {
     String targetSex = sex;
 
-    return showModalBottomSheet(
-        enableDrag: false,
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(builder: (context, setState) {
-            onChange(String value) {
-              setState(() {
-                targetSex = value;
-              });
-            }
-
-            return BottomSheet(
-              sex: targetSex,
-              onChange: onChange,
-            );
+    Get.bottomSheet(
+      StatefulBuilder(builder: (context, setState) {
+        onChange(String value) {
+          setState(() {
+            targetSex = value;
           });
-        }).whenComplete(() => onPressedNext(targetSex));
+        }
+
+        return BottomSheet(
+          sex: targetSex,
+          onChange: onChange,
+        );
+      }),
+      enableDrag: false,
+    ).whenComplete(() => onPressedNext(targetSex));
   }
 }
 

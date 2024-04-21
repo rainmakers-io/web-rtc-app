@@ -1006,6 +1006,8 @@ class PageSelectMyInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.savedStep();
+
     return Obx(() => Scaffold(
         backgroundColor: const Color(ColorContent.content1),
         body: SafeArea(

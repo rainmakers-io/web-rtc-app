@@ -7,24 +7,16 @@ import 'package:web_rtc_app/controller/MatchingBegin.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/widgets/atoms/FillButton.dart';
-import 'package:web_rtc_app/widgets/dialog/BottomSheetChooseTarget.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingFilter.dart';
 import 'package:web_rtc_app/widgets/molecules/matching-room/SlideAnimation.dart';
 
-class PageMatchingBegin extends GetView<CtlMatchingBegin> {
+class PageMatchingBegin extends StatelessWidget {
   const PageMatchingBegin({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put<CtlMatchingBegin>(CtlMatchingBegin());
     controller.onVisible();
-    controller.openBottomSheet = () {
-      DialogBottomSheetChooseTarget.show(context, sex: controller.sex.value,
-          onPressedNext: (targetSex) {
-        controller.saveMatchingFilters(sex: targetSex);
-        controller.animationController?.forward();
-        controller.isStartAnimation.value = true;
-      });
-    };
 
     return Obx(() => Scaffold(
         backgroundColor: const Color(ColorContent.content1),
@@ -49,9 +41,9 @@ class PageMatchingBegin extends GetView<CtlMatchingBegin> {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: controller.inCalling.value
+                      child: controller.inCalling.value && controller.localRenderer != null
                           ? RTCVideoView(
-                              controller.localRenderer,
+                              controller.localRenderer!,
                               mirror: true,
                               objectFit: RTCVideoViewObjectFit
                                   .RTCVideoViewObjectFitCover,

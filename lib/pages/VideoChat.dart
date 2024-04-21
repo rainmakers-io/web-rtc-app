@@ -14,9 +14,8 @@ import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetEndVideoCall.dart';
 
 class PageVideoChat extends StatelessWidget {
-  final controller = Get.find<CtlVideoChat>();
   final int time = 60 * 5;
-  PageVideoChat({super.key});
+  const PageVideoChat({super.key});
 
   relationCardData(String purpose) {
     if (purpose == ConstantUser.purposes[0][1]) {
@@ -44,6 +43,7 @@ class PageVideoChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CtlVideoChat());
     controller.partnerDisconnected = (data) {
       controller.off();
       if (context.mounted) {

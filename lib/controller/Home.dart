@@ -7,9 +7,10 @@ late CtlHome ctlHome;
 
 class CtlHome extends GetxController {
   final RxInt _currentPageIndex = 0.obs;
-  static final List<Widget> _items = [const PageMatchingBegin(), PageMyInfo()];
+  final List<Widget> _items = [const PageMatchingBegin(), PageMyInfo()];
 
   checkLoggedIn() async {
+    _currentPageIndex.value = 0;
     await apiProvider.userService.me();
   }
 

@@ -154,13 +154,15 @@ class CtlVideoChat extends SuperController {
   Future<bool> isGrantedAllPermissions() async {
     // web은 실제로 사용할 때 권한 허용을 받을 수 있다.
     if (GetPlatform.isDesktop) return true;
-    // TODO: 권한 허용 요청 다이얼로그 띄우기
-    late PermissionStatus cameraStatus;
-    late PermissionStatus microphoneStatus;
+    bool isGranted = true;
     do {
-      cameraStatus = await Permission.camera.request();
-      microphoneStatus = await Permission.microphone.request();
-    } while (!(cameraStatus.isGranted && microphoneStatus.isGranted));
+      Map<Permission, PermissionStatus> statuses = await [Permission.camera, Permission.microphone].request();
+      statuses.forEach((key, permission) {
+      if(permission.isDenied){
+        isGranted = false;
+      }
+    });
+    } while (!isGranted);
     return true;
   }
 

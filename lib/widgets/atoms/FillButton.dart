@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 
@@ -10,8 +11,10 @@ class AtomFillButton extends StatelessWidget {
   final bool isDisable;
   final MaterialStateProperty<BorderSide?>? side;
   final EdgeInsetsGeometry padding;
+  Timer? timer;
+  bool isPressed = false;
 
-  const AtomFillButton(
+  AtomFillButton(
       {super.key,
       required this.onPressed,
       required this.text,
@@ -30,7 +33,12 @@ class AtomFillButton extends StatelessWidget {
             padding: const MaterialStatePropertyAll(
                 EdgeInsets.symmetric(vertical: 16))),
         onPressed: () {
-          if (!isDisable) {
+          if (!isDisable && !isPressed) {
+            // 여러번 클릭 방지
+            timer = Timer(const Duration(seconds: 5), () {
+              isPressed = false;
+            });
+            isPressed = true;
             onPressed();
           }
         },
