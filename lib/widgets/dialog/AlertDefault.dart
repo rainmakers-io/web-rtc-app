@@ -12,8 +12,8 @@ class DialogAlertDefault {
       okLabel = '확인',
       okBtnColor = ColorBase.primary,
       cancelLabel = ''}) {
-    return Get.dialog(PopScope(
-      child: (AlertDialog(
+    return Get.dialog(
+      AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +84,7 @@ class DialogAlertDefault {
                 ])
               : const SizedBox(),
         ],
-      )),
-    ));
+      ),
+    );
   }
 }

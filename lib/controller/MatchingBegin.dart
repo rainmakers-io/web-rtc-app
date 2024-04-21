@@ -53,13 +53,15 @@ class CtlMatchingBegin extends SuperController {
   }
 
   initRenderer() {
-    localRenderer = RTCVideoRenderer();
-    localRenderer?.initialize();
+    if (localRenderer == null) {
+      localRenderer = RTCVideoRenderer();
+      localRenderer?.initialize();
+    }
   }
 
   startMatching() {
     off();
-    Get.to(PageMatching(), arguments: {
+    Get.to(const PageMatching(), arguments: {
       'sex': _sex.value,
       'locations': _locations.value,
       'ageRange': _ageRange.value
@@ -167,10 +169,11 @@ class CtlMatchingBegin extends SuperController {
       if (GetPlatform.isMobile) {
         await Wakelock.disable();
       }
-      _inCalling.value = false;
       _isStartAnimation.value = false;
       _animationController?.stop();
       await localRenderer?.dispose();
+      localRenderer = null;
+      _inCalling.value = false;
       _signaling.dispose();
     } catch (e) {
       rethrow;

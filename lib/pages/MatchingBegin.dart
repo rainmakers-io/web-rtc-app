@@ -17,6 +17,7 @@ class PageMatchingBegin extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.put<CtlMatchingBegin>(CtlMatchingBegin());
     controller.onVisible();
+    print("BUILD2");
 
     return Obx(() => Scaffold(
         backgroundColor: const Color(ColorContent.content1),

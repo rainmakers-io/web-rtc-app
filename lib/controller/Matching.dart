@@ -24,7 +24,7 @@ class CtlMatching extends SuperController {
 
   back() {
     closeSocket();
-    Get.offAndToNamed('/home');
+    Get.offNamed('/home');
   }
 
   closeMatchingResultModal() {
@@ -148,11 +148,11 @@ class CtlMatching extends SuperController {
   @override
   void onHidden() {
     print("onHidden");
-    closeSocket();
   }
 
   @override
   void onInactive() {
+    closeSocket();
     print("onInactive");
   }
 
@@ -165,6 +165,6 @@ class CtlMatching extends SuperController {
   void onResumed() {
     print("onResumed");
     // 이 페이지에서 밖으로 나갈 때 아이폰 이슈 수정하기
-    Get.offAllNamed('/home');
+    Get.offNamed('/home');
   }
 }

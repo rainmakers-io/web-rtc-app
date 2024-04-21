@@ -120,7 +120,7 @@ class BottomSheet extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: AtomFillButton(
                       onPressed: () {
-                        Get.offAll(PageMatching(), arguments: {
+                        Get.offAll(const PageMatching(), arguments: {
                           'sex': sex,
                           'locations': locations,
                           'ageRange': ageRange

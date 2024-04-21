@@ -10,7 +10,7 @@ import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
 import 'package:web_rtc_app/widgets/dialog/BottomSheetMatchingSuccess.dart';
 
 class PageMatching extends StatelessWidget {
-  PageMatching({super.key}) {}
+  const PageMatching({super.key});
 
   @override
   Widget build(BuildContext context) {
