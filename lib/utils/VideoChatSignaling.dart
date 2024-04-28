@@ -40,6 +40,7 @@ class VideoChatSignaling {
   };
 
   init() async {
+    print('INIT');
     navigator.mediaDevices.ondevicechange = (event) async {
       _mediaDevicesList = await navigator.mediaDevices.enumerateDevices();
     };
@@ -65,7 +66,6 @@ class VideoChatSignaling {
         remoteStream?.addTrack(track);
       });
     };
-    print('INIT');
   }
 
   connect() async {

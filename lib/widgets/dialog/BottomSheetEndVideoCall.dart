@@ -68,7 +68,8 @@ class BottomSheet extends StatelessWidget {
                                 width: 24,
                                 image: AssetImage('assets/images/close.png')),
                             onPressed: () {
-                              Get.offNamed('/home');
+                              Get.offNamedUntil(
+                                  '/home', ModalRoute.withName('/home'));
                             }))),
                 const SizedBox(
                   height: 16,
@@ -137,7 +138,8 @@ class BottomSheet extends StatelessWidget {
                     child: AtomFillButton(
                       backgroundColor: const Color(ColorContent.content1),
                       onPressed: () {
-                        Get.offNamed('/home');
+                        Get.offNamedUntil(
+                            '/home', ModalRoute.withName('/home'));
                       },
                       text: '나중에 할게요',
                     ),

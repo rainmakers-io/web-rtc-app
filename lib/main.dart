@@ -9,6 +9,8 @@ import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Health.dart';
 import 'package:web_rtc_app/pages/Home.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
+import 'package:web_rtc_app/pages/VideoChat.dart';
+import 'package:web_rtc_app/pages/my-page/Terms.dart';
 import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
 
@@ -72,6 +74,8 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/home', page: () => const PageHome()),
         GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
+        GetPage(name: '/video-chat', page:() => const PageVideoChat()),
+        GetPage(name: '/terms', page:() => PageTerms()),
         GetPage(name: '/health', page: () => const PageHealth()),
       ],
       initialBinding: BindingsBuilder(() {

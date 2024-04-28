@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/constants/User.dart';
-import 'package:web_rtc_app/pages/VideoChat.dart';
 import 'package:web_rtc_app/utils/Socket.dart';
 
 late CtlMatching ctlMatching;
@@ -24,7 +24,7 @@ class CtlMatching extends SuperController {
 
   back() {
     closeSocket();
-    Get.offNamed('/home');
+    Get.offNamedUntil('/home', ModalRoute.withName('/home'));
   }
 
   closeMatchingResultModal() {
@@ -94,7 +94,7 @@ class CtlMatching extends SuperController {
     var partnerId = _partnerInfo.value['id'];
     if (data["result"]) {
       // 매칭이 성사된 경우
-      Get.offAll(const PageVideoChat(), arguments: {
+      Get.offAllNamed('/video-chat', arguments: {
         'initiator': data["initiator"],
         'partnerId': partnerId,
       });
@@ -164,7 +164,6 @@ class CtlMatching extends SuperController {
   @override
   void onResumed() {
     print("onResumed");
-    // 이 페이지에서 밖으로 나갈 때 아이폰 이슈 수정하기
-    Get.offNamed('/home');
+    Get.offNamedUntil('/home', ModalRoute.withName('/home'));
   }
 }

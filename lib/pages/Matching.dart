@@ -15,6 +15,7 @@ class PageMatching extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(CtlMatching());
+    print("MATCHING BUILD");
 
     controller.initSocket();
     controller.openBottomSheet = null;

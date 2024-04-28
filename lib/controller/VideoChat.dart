@@ -88,8 +88,8 @@ class CtlVideoChat extends SuperController {
       _signaling?.onRemoteStream = ((stream) async {
         remoteRenderer.srcObject = stream;
         _isOnRemoteRenderer.value = true;
-          // Helper.selectAudioOutput(audios[0].deviceId);
-          Helper.setSpeakerphoneOn(true);
+        // Helper.selectAudioOutput(audios[0].deviceId);
+        Helper.setSpeakerphoneOn(true);
       });
       await _signaling?.connect();
       await _signaling?.init();
@@ -156,12 +156,13 @@ class CtlVideoChat extends SuperController {
     if (GetPlatform.isDesktop) return true;
     bool isGranted = true;
     do {
-      Map<Permission, PermissionStatus> statuses = await [Permission.camera, Permission.microphone].request();
+      Map<Permission, PermissionStatus> statuses =
+          await [Permission.camera, Permission.microphone].request();
       statuses.forEach((key, permission) {
-      if(permission.isDenied){
-        isGranted = false;
-      }
-    });
+        if (permission.isDenied) {
+          isGranted = false;
+        }
+      });
     } while (!isGranted);
     return true;
   }
@@ -172,8 +173,12 @@ class CtlVideoChat extends SuperController {
   }
 
   void off() {
+    // 이미 종료됐다면 무시
+    if (_signaling == null ||
+        _isOnLocalRenderer.value == false ||
+        _isOnRemoteRenderer.value == false) return;
     try {
-      print("OFF");
+      print("OFF VIDEOCHAT");
       _signaling?.dispose();
       _signaling = null;
       _isOnLocalRenderer.value = false;
@@ -198,8 +203,9 @@ class CtlVideoChat extends SuperController {
 
   @override
   void onClose() {
-    off();
     super.onClose();
+    off();
+    print("close3");
   }
 
   @override

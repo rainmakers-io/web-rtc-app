@@ -9,6 +9,7 @@ class PageHome extends GetView<CtlHome> {
   @override
   Widget build(BuildContext context) {
     controller.checkLoggedIn();
+    print("BUILD HOME");
     
     return Obx(() => Scaffold(
         bottomNavigationBar: BottomNavigationBar(

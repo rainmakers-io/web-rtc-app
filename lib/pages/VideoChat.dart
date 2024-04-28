@@ -79,7 +79,7 @@ class PageVideoChat extends StatelessWidget {
                 children: [
                   BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                      child: Container(color: Colors.black.withOpacity(0.6))),
+                      child: Container(color: Colors.black.withOpacity(1))),
                 ],
               ),
               // 컨텐츠 래퍼
