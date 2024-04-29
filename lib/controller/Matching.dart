@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/constants/User.dart';
+import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/Socket.dart';
 
 late CtlMatching ctlMatching;
@@ -62,6 +63,11 @@ class CtlMatching extends SuperController {
     var ageRange = Get.arguments["ageRange"];
     var sex = Get.arguments['sex'];
     me = await apiProvider.userService.me();
+    if (config.isAppStorePassMode()) {
+      Timer(const Duration(seconds: 2), () {
+        Get.offAllNamed('/video-chat');
+      });
+    }
     socket.socketIo.emit(ConstantUser.matchingEventsJson['START_MATCHING']!, {
       'userId': me['id'],
       'filter': {

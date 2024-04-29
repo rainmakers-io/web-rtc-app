@@ -8,6 +8,7 @@ import 'package:web_rtc_app/constants/Colors.dart';
 import 'package:web_rtc_app/constants/Fonts.dart';
 import 'package:web_rtc_app/constants/User.dart';
 import 'package:web_rtc_app/controller/VideoChat.dart';
+import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/Timer.dart';
 import 'package:web_rtc_app/widgets/atoms/VideoCallTimer.dart';
 import 'package:web_rtc_app/widgets/dialog/AlertDefault.dart';
@@ -146,19 +147,24 @@ class PageVideoChat extends StatelessWidget {
                                   onPressed: () async {
                                     // 유저 차단 확인 및 차단하기, 방 나가기 모달 띄우기
                                     var result = await DialogAlertDefault.show(
-                                        title:
-                                            '${controller.partnerInfo.value['nickname']}님을 차단할까요?',
+                                        title: controller.partnerInfo
+                                                    .value['nickname'] ==
+                                                ''
+                                            ? '상대방을 차단할까요?'
+                                            : '${controller.partnerInfo.value['nickname']}님을 차단할까요?',
                                         content: '차단 후에는 취소할 수 없어요.',
                                         okLabel: '차단하기',
                                         okBtnColor: ColorBase.danger,
                                         cancelLabel: '취소하기',
                                         imageFileName: 'ban.png');
                                     if (result == 'ok') {
-                                      await apiProvider.blockLogService
-                                          .blockUser({
-                                        'userId': controller
-                                            .partnerInfo.value['userId']
-                                      });
+                                      if (!config.isAppStorePassMode()) {
+                                        await apiProvider.blockLogService
+                                            .blockUser({
+                                          'userId': controller
+                                              .partnerInfo.value['userId']
+                                        });
+                                      }
 
                                       await DialogAlertDefault.show(
                                           title: '차단 완료 됐습니다.',

@@ -110,7 +110,7 @@ class CtlVideoChat extends SuperController {
         _partnerInfo.value['images'] = images['urls'];
       }
 
-      if (initiator) {
+      if (initiator != null) {
         // 상대방이 렌더링 되기까지 잠깐 기다린다.
         // 추후 방 입장 완료되었다는 이벤트 추가되면 좋을듯
         Timer(const Duration(seconds: 3), () {

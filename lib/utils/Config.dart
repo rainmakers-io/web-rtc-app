@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:web_rtc_app/utils/LocalStorage.dart';
 
 UtilConfig config = UtilConfig();
 
@@ -15,6 +16,11 @@ class UtilConfig {
   init() async {
     const cliEnvName = String.fromEnvironment('env', defaultValue: '.env');
     await dotenv.load(fileName: cliEnvName);
+  }
+
+  isAppStorePassMode() {
+    return (localStorage.storage.getString('user.nickname') ?? '') ==
+        'haze0000';
   }
 
   isWebDevMode() {
