@@ -74,8 +74,8 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/home', page: () => const PageHome()),
         GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
-        GetPage(name: '/video-chat', page:() => const PageVideoChat()),
-        GetPage(name: '/terms', page:() => PageTerms()),
+        GetPage(name: '/video-chat', page: () => const PageVideoChat()),
+        GetPage(name: '/terms', page: () => PageTerms()),
         GetPage(name: '/health', page: () => const PageHealth()),
       ],
       initialBinding: BindingsBuilder(() {
