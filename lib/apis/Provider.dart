@@ -79,10 +79,10 @@ class ApiProvider {
           localStorage.setString('accessToken', res['accessToken']);
         } catch (error) {
           // 로그인 페이지로 이동한다.
-          Get.offAllNamed('/guide');
+          Get.offAllNamed('/login');
         }
       } else if (e.response?.statusCode == 401) {
-        Get.offAllNamed('/guide');
+        Get.offAllNamed('/login');
       }
       return handler.next(e);
     }));

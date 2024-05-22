@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:web_rtc_app/apis/Provider.dart';
 import 'package:web_rtc_app/controller/Guide.dart';
 import 'package:web_rtc_app/controller/Home.dart';
+import 'package:web_rtc_app/controller/Login.dart';
 import 'package:web_rtc_app/pages/Guide.dart';
 import 'package:web_rtc_app/pages/Health.dart';
 import 'package:web_rtc_app/pages/Home.dart';
+import 'package:web_rtc_app/pages/Login.dart';
 import 'package:web_rtc_app/pages/SelectMyInfo.dart';
 import 'package:web_rtc_app/pages/VideoChat.dart';
 import 'package:web_rtc_app/pages/my-page/Terms.dart';
@@ -51,12 +53,16 @@ class RootApp extends StatelessWidget {
 
     bool enableForceUpdate = false;
     String version = '0.0.1';
+    bool enableLogin =
+        localStorage.storage.getString('refreshToken') == null ? true : false;
     bool enableGuide = localStorage.storage.getBool('enableGuide') ?? true;
     bool enableSelectMyInfo =
         localStorage.storage.getBool('enableSelectMyInfo') ?? true;
 
     if (enableForceUpdate) {
       // TODO: 강제 업데이트 되도록 유도한다.
+    } else if (enableLogin) {
+      route = '/login';
     } else if (enableGuide) {
       route = '/guide';
     } else if (enableSelectMyInfo) {
@@ -71,6 +77,7 @@ class RootApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(fontFamily: 'PretendardVariable'),
       getPages: [
+        GetPage(name: '/login', page: () => const PageLogin()),
         GetPage(name: '/guide', page: () => PageGuide()),
         GetPage(name: '/home', page: () => const PageHome()),
         GetPage(name: '/select-my-info', page: () => PageSelectMyInfo()),
@@ -79,6 +86,7 @@ class RootApp extends StatelessWidget {
         GetPage(name: '/health', page: () => const PageHealth()),
       ],
       initialBinding: BindingsBuilder(() {
+        Get.put<CtlLogin>(CtlLogin());
         Get.put<CtlGuide>(CtlGuide());
         Get.put<CtlHome>(CtlHome());
       }),
