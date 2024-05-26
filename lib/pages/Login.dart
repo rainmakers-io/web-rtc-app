@@ -103,26 +103,77 @@ class PageLogin extends GetView<CtlLogin> {
                         const SizedBox(
                           height: 16,
                         ),
-                        RichText(
-                            text: const TextSpan(
-                          children: [
-                            TextSpan(text: '가입 시 '),
-                            TextSpan(
-                                text: '서비스 이용약관',
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                '가입 시 ',
                                 style: TextStyle(
-                                    decoration: TextDecoration.underline)),
-                            TextSpan(text: ' 및 '),
-                            TextSpan(
-                                text: '개인정보 취급방침',
+                                    color: Color(ColorGrayScale.bf),
+                                    fontSize: FontCaptionMedium02.size,
+                                    fontWeight: FontCaptionMedium02.weight),
+                              ),
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero),
+                                onPressed: () {
+                                  controller.goTerms(Uri.parse(
+                                      'https://www.notion.so/Haze-a10b7e591a96452abeeb4a2db574fec4'));
+                                },
+                                child: const DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color:
+                                                    Color(ColorGrayScale.bf)))),
+                                    child: Text(
+                                      '서비스 이용약관',
+                                      style: TextStyle(
+                                          color: Color(ColorGrayScale.bf),
+                                          fontSize: FontCaptionMedium02.size,
+                                          fontWeight:
+                                              FontCaptionMedium02.weight),
+                                    )),
+                              ),
+                              const Text(
+                                ' 및 ',
                                 style: TextStyle(
-                                    decoration: TextDecoration.underline)),
-                            TextSpan(text: '에 동의하게 돼요.')
-                          ],
-                          style: TextStyle(
-                              color: Color(ColorGrayScale.bf),
-                              fontSize: FontCaptionMedium02.size,
-                              fontWeight: FontCaptionMedium02.weight),
-                        ))
+                                    color: Color(ColorGrayScale.bf),
+                                    fontSize: FontCaptionMedium02.size,
+                                    fontWeight: FontCaptionMedium02.weight),
+                              ),
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero),
+                                  onPressed: () {
+                                    controller.goTerms(Uri.parse(
+                                        'https://www.notion.so/5ec591e8defc4e6589a6b10ef5e5e703'));
+                                  },
+                                  child: const DecoratedBox(
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color:
+                                                    Color(ColorGrayScale.bf)))),
+                                    child: Text('개인정보 취급방침',
+                                        style: TextStyle(
+                                            color: Color(ColorGrayScale.bf),
+                                            fontSize: FontCaptionMedium02.size,
+                                            fontWeight:
+                                                FontCaptionMedium02.weight)),
+                                  )),
+                              const Text(
+                                '에 동의하게 돼요.',
+                                style: TextStyle(
+                                    color: Color(ColorGrayScale.bf),
+                                    fontSize: FontCaptionMedium02.size,
+                                    fontWeight: FontCaptionMedium02.weight),
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     )))));
   }

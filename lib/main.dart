@@ -15,6 +15,7 @@ import 'package:web_rtc_app/pages/VideoChat.dart';
 import 'package:web_rtc_app/pages/my-page/Terms.dart';
 import 'package:web_rtc_app/utils/Config.dart';
 import 'package:web_rtc_app/utils/LocalStorage.dart';
+import 'package:kakao_flutter_sdk_common/kakao_flutter_sdk_common.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,10 @@ void main() async {
       systemNavigationBarColor: Colors.transparent,
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.light));
+  KakaoSdk.init(
+    nativeAppKey: config.get('KAKAO_NATIVE_APP_KEY'),
+    javaScriptAppKey: config.get('KAKAO_JS_KEY'),
+  );
   runApp(const RootApp());
 
   // 스플레쉬 스크린 종료
