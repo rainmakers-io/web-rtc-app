@@ -910,7 +910,7 @@ class Photo extends GetView<CtlSelectMyInfo> {
                               title:
                                   '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
                               content:
-                                  '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+                                  '에러가 지속될 시 "teamhazein@gmail.com"으로 문의주시면 빠르게 해결하겠습니다.');
                           rethrow;
                         }
                       },
