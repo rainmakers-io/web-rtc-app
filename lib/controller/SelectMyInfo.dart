@@ -149,7 +149,7 @@ class CtlSelectMyInfo extends GetxController {
           // 데이터 포맷 에러
           DialogAlertDefault.show(
               title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-              content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+              content: '에러가 지속될 시 "teamhazein@gmail.com"으로 문의주시면 빠르게 해결하겠습니다.');
           break;
         }
     }
@@ -163,7 +163,7 @@ class CtlSelectMyInfo extends GetxController {
           // 데이터 포맷 에러
           DialogAlertDefault.show(
               title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-              content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+              content: '에러가 지속될 시 "teamhazein@gmail.com"으로 문의주시면 빠르게 해결하겠습니다.');
         }
     }
 
@@ -192,7 +192,7 @@ class CtlSelectMyInfo extends GetxController {
             {
               DialogAlertDefault.show(
                   title: '일시적인 에러로 서비스를 이용할 수 없습니다.\n잠시후 다시 시도해주세요.',
-                  content: '에러가 지속될 시 "abcd@naver.com"으로 문의주시면 빠르게 해결하겠습니다.');
+                  content: '에러가 지속될 시 "teamhazein@gmail.com"으로 문의주시면 빠르게 해결하겠습니다.');
               break;
             }
         }
