@@ -1,4 +1,4 @@
-![haze영상1차 (2)](https://gist.github.com/assets/25196026/d6ddaf9f-3fac-4c26-880e-d32be51aab76)
+![haze영상1차 (2)](./346271410-d6ddaf9f-3fac-4c26-880e-d32be51aab76.gif)
 
 # 시작하기
 1. flutter run --dart-define="env=.env.stag"
